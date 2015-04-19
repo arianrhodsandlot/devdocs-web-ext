@@ -1,0 +1,10 @@
+{
+  "appName": {
+    "message": "Quick DevDocs",
+    "description": "Find documents in DevDocs.io with a popup window from a Chrome Extension!"
+  },
+  "appDescription": {
+    "message": "Find documents in DevDocs.io with a popup window from a Chrome Extension!",
+    "description": "Find documents in DevDocs.io with a popup window from a Chrome Extension!"
+  }
+}

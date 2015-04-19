@@ -1,0 +1,66 @@
+doctype html
+html
+  head
+    meta(charset='utf-8')
+    link(rel='stylesheet' href='/bower_components/font-awesome/css/font-awesome.min.css')
+    link(rel='stylesheet' href='/styles/build/popup.css')
+  body
+    .navs
+      a.nav.active(href='#') 播放列表
+      a.nav(href='#') 今日推荐
+      a.nav(href='#') 搜索
+      a.nav(href='#') 精选集
+      a.nav(href='#') 正在播放
+
+    .sections
+      .section.local-lists.active
+        .empty
+          p 你还没有本地播放列表。
+          p 立即<a href="#" title="新建播放列表">新建一个</a>，
+          p 或<a href="#" title="转至精选集标签">从精选集导入</a>。
+
+      .section.recommended-songs
+        .loading-placeholder
+          .fa.fa-star.fa-spin
+
+      .section.search
+        form
+          input.input(name='query' autofocus='autofocus' placeholder='搜索歌曲、专辑……')
+        .search-results
+
+      .section.collections
+        .online-lists
+          h3.collections-title.my-collections-title
+            a(href='???') 我制作的
+          .my-collections
+
+          h3.collections-title.others-collections-title
+            a(href='???') 我收藏的
+          .others-collections
+
+      .section.nowplaying-list
+
+    .templates
+      script#songs-template(type='text/html')
+        | <% songs.forEach(function(song){ %>
+        .song
+          a.play.fa.fa-play(href='#')
+          a.title(href='http://www.xiami.com/song/1773637516' title!='<%= song.title %> - <%= song.album_name %>') <%= song.title %>
+          a.artist(href='http://www.xiami.com/album/1713541492' title!='<%= song.artist %>') <%= song.artist %>
+          a.actions.fa.fa-ellipsis-v(href='#')
+        | <% }); %>
+
+      script#collections-template(type='text/html')
+        | <% collections.forEach(function(collection){ %>
+        a.collection(href!='<%= collection.href %>')
+          img.cover(src!='<%= collection.cover %>')
+          .row
+            strong.title(title!='<%= collection.title %>') <%= collection.title %>
+            time.date <%= collection.date %>
+          .desc(title!='<%= collection.desc %>') <%= collection.desc %>
+          .author(title!='<%= collection.author %>') <%= collection.author %>
+        | <% }); %>
+
+    script(src='/bower_components/jquery/dist/jquery.min.js')
+    script(src='/bower_components/lodash/lodash.js')
+    script(src='/scripts/build/popup.js')

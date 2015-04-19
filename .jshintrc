@@ -1,0 +1,12 @@
+{
+  "node": true,
+  "browser": true,
+  "jquery": true,
+  "enforceall": true,
+  "asi": true,
+  "es5": true,
+  "globals" : {
+    "chrome": true,
+    "_": true
+  }
+}

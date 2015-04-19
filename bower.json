@@ -1,0 +1,9 @@
+{
+  "name": "xiame",
+  "version": "0.0.1",
+  "dependencies": {
+    "lodash": "",
+    "jquery": "",
+    "backbone": ""
+  }
+}

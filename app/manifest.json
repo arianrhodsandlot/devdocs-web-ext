@@ -1,0 +1,42 @@
+{
+  "name": "__MSG_appName__",
+  "version": "0.0.1",
+  "manifest_version": 2,
+  "description": "__MSG_appDescription__",
+  "icons": {
+    "16": "images/icon-16.png",
+    "128": "images/icon-128.png"
+  },
+  "default_locale": "en",
+  "background": {
+    "scripts": [
+      "/bower_components/jquery/dist/jquery.min.js",
+      "/bower_components/lodash/lodash.js",
+      "scripts/build/background.js"
+    ]
+  },
+  "browser_action": {
+    "default_icon": {
+      "19": "images/icon-19.png",
+      "38": "images/icon-38.png"
+    },
+    "default_title": "Quick DevDocs",
+    "default_popup": "pages/build/popup.html"
+  },
+  "options_page": "pages/build/options.html",
+  "omnibox": {
+    "keyword": "xm"
+  },
+  "content_scripts": [{
+    "matches": [
+      "http://*/*",
+      "https://*/*"
+    ],
+    "js": [
+      "scripts/build/contentscript.js"
+    ],
+    "run_at": "document_end",
+    "all_frames": false
+  }],
+  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
+}

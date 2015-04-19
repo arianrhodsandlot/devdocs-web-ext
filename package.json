@@ -1,0 +1,12 @@
+{
+  "name": "xiame",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {},
+  "devDependencies": {
+    "nib": "",
+    "gulp": "",
+    "gulp-jade": "",
+    "gulp-stylus": ""
+  }
+}

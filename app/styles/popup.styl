@@ -1,0 +1,53 @@
+global-reset()
+
+html
+  size auto 350px
+  overflow hidden
+body
+  size 400px
+  font-family 'Helvetica Neue', Arial, 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif
+  font-size 14px
+  overflow hidden
+  background #f9f9f9
+a
+  text-decoration none
+
+.hidden
+  display none
+
+.input
+  display block
+  padding 10px
+  font-size 14px
+  width calc(100% - 40px)
+  margin 10px auto 0 auto
+  background #fff
+  border #d4d4d4
+  border-radius 3px
+  outline none
+  &:focus
+    border #35b5f4
+    box-shadow 0 0 1px #35b5f4
+.results, .content
+  max-height 340px
+  overflow auto
+  margin 10px auto 0 auto
+  font-family Consolas
+.result
+  line-height 24px
+  width 100%
+  overflow ellipsis
+  cursor pointer
+  box-sizing border-box
+  padding 0 10px
+  &.active
+    background #e5e5e5
+.splash
+  color #d7d7d7
+  margin 100px
+  font-weight bold
+  font-size 30px
+  text-align center
+.content
+  padding 0 20px
+  overflow auto

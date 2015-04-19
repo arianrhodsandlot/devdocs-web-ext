@@ -4,6 +4,7 @@ html
     meta(charset='utf-8')
     link(rel='stylesheet' href='/bower_components/font-awesome/css/font-awesome.min.css')
     link(rel='stylesheet' href='/styles/build/popup.css')
+    link(rel='stylesheet' href='/styles/devdocs.io.css')
   body
     form
       input.input(name='a' autofocus='autofocus' placeholder='Search...')
@@ -12,10 +13,10 @@ html
     .content.hidden
     script.result-template(type='text/html')
       | <% _.each(obj, function(result) { %>
-      .result(data-type!='<%= result.type %>' data-path!='<%= result.path %>') <%= result.name %>
+      .result(data-type!='<%= result.type %>' data-path!='<%= result.path %>' data-category!='<%= result.category %>') <%= result.name %>
       | <% }) %>
 
     script(src='/bower_components/jquery/dist/jquery.min.js')
     script(src='/bower_components/lodash/lodash.js')
     script(src='/bower_components/backbone/backbone.js')
-    script(src='/scripts/build/popup.js')
+    script(src='/scripts/popup.js')

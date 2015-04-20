@@ -37,11 +37,11 @@ $(function() {
       this.$splash = $('.splash')
       this.$content = $('.content')
     },
-    search: function() {
+    search: _.debounce(function() {
       var query = this.$input.val()
 
       this.model.fetch(query)
-    },
+    }, 300),
     completeCategory: function(e) { //to do
       return e.which !== 9
     },
@@ -120,11 +120,13 @@ $(function() {
 
       appView.$input.val(name)
 
-      content.set({
-        category: category,
-        path: path,
-        hash: hash
-      })
+      if (path) {
+        content.set({
+          category: category,
+          path: path,
+          hash: hash
+        })
+      }
     },
     highlight: function(e) {
       $(e.target).addClass('active')
@@ -148,9 +150,17 @@ $(function() {
       var contentUrl = 'http://<%= obj.domain %>/<%= obj.category %>/<%= obj.path %>.html#<%= obj.hash %>';
       var hash = this.model.get('hash')
       var $content = this.$el
+      var category = this.model.get('category')
+
+      var newClass = 'content _'
+      if (category === 'backbone') {
+        newClass += 'underscore'
+      } else {
+        newClass += category
+      }
 
       $content
-        .attr('class', 'content _' + this.model.get('category'))
+        .attr('class', newClass)
         .html('<div class="loading-text">Loading...</div>')
 
       $.get(_.template(contentUrl)(this.model.attributes))
@@ -168,7 +178,7 @@ $(function() {
 
                 return $target.get(0) ?
                   $target.offset()
-                  .top - 50 :
+                  .top - 54 :
                   0
               })
               .find('h4')
@@ -195,11 +205,15 @@ $(function() {
 
       hash = hash ? hash : ''
 
-      this.model.set({
-        path: path,
-        hash: hash
-      })
-      return false
+      if (path) {
+        this.model.set({
+          path: path,
+          hash: hash
+        })
+        return false
+      } else {
+        return true
+      }
     }
   })
 

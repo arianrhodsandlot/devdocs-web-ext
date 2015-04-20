@@ -4,7 +4,6 @@ $(function() {
     fetch: function(query) {
       var that = this
       chrome.runtime.sendMessage(query, function(response) {
-        console.log(response)
         that.clear()
         if (response.length) {
           that.set(response)
@@ -13,6 +12,16 @@ $(function() {
     }
   })
   var entries = new Entries()
+
+  var Content = Backbone.Model.extend({
+    defaults: {
+      domain: 'maxcdn-docs.devdocs.io',
+      category: '',
+      path: '',
+      hash: ''
+    }
+  })
+  var content = new Content()
 
   var AppView = Backbone.View.extend({
     el: 'body',
@@ -109,13 +118,42 @@ $(function() {
 
       this.$el.addClass('hidden')
 
-      appView.$input.val(name).select()
+      appView.$input.val(name)
+
+      content.set({
+        category: category,
+        path: path,
+        hash: hash
+      })
+    },
+    highlight: function(e) {
+      $(e.target).addClass('active')
+    },
+    unhighlight: function(e) {
+      $(e.target).removeClass('active')
+    }
+  })
+
+  var ContentView = Backbone.View.extend({
+    el: '.content',
+    model: content,
+    events: {
+      'click a': 'redirect'
+    },
+    initialize: function() {
+      this.listenTo(this.model, 'change', this.render)
+    },
+    render: function() {
+      var that = this;
+      var contentUrl = 'http://<%= obj.domain %>/<%= obj.category %>/<%= obj.path %>.html#<%= obj.hash %>';
+      var hash = this.model.get('hash')
+      var $content = this.$el
 
       $content
-        .attr('class', 'content _' + category)
+        .attr('class', 'content _' + this.model.get('category'))
         .html('<div class="loading-text">Loading...</div>')
 
-      $.get('http://maxcdn-docs.devdocs.io/' + category + '/' + path + '.html' + hash)
+      $.get(_.template(contentUrl)(this.model.attributes))
         .done(function(html) {
           $content.html(html)
           _.defer(function() {
@@ -146,19 +184,28 @@ $(function() {
           })
         })
         .fail(function() {
+          console.log(that.model.attributes)
           $content.html('<div class="loading-text">Connect failed...</div>')
         })
+    },
+    redirect: function(e) {
+      var href = $(e.target).attr('href')
+      var path = href.split('#')[0]
+      var hash = href.split('#')[1]
+
+      hash = hash ? hash : ''
+
+      this.model.set({
+        path: path,
+        hash: hash
+      })
       return false
-    },
-    highlight: function(e) {
-      $(e.target).addClass('active')
-    },
-    unhighlight: function(e) {
-      $(e.target).removeClass('active')
     }
   })
 
   var appView = new AppView()
   var resultsView = new ResultsView()
+  var contentView = new ContentView()
   window.e = entries
+  window.c = contentView
 })

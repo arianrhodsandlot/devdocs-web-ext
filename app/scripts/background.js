@@ -24,12 +24,15 @@ $.when
 
 chrome.runtime.onMessage
   .addListener(function(message, sender, sendResponse) {
-    var response = message ?
+    var response
+    message = message.toLowerCase()
+    response = message ?
       _.filter(entries, function(entry) {
         var reg = new RegExp(_.reduce(message, function(prev, current) {
           return prev + current + '.*'
         }, '.*'), 'i')
-        return reg.test(entry.category + entry.name)
+        return _.contains(entry.category.toLowerCase() + entry.name.toLowerCase(), message) &&
+          reg.test(entry.category + entry.name)
       }) :
       []
     sendResponse(response)

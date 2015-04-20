@@ -5,7 +5,7 @@ $(function() {
       var that = this
       chrome.runtime.sendMessage(query, function(response) {
         console.log(response)
-          that.clear()
+        that.clear()
         if (response.length) {
           that.set(response)
         }
@@ -50,15 +50,17 @@ $(function() {
       var $prevResult = $activeResult.prev()
 
       $nextResult = $nextResult.get(0) ? $nextResult : $firstResult
-      $prevResult = $prevResult.get(0) ? $prevResult : $firstResult
+      $prevResult = $prevResult.get(0) ? $prevResult : $lastResult
       if (_.contains(_.values(_.pick(keyCodes, 'up', 'down')), e.which)) {
         $activeResult.removeClass('active')
         switch (e.which) {
           case 38:
             $prevResult.addClass('active')
+              .get(0).scrollIntoView(false)
             break
           case 40:
             $nextResult.addClass('active')
+              .get(0).scrollIntoView(false)
             break
         }
         return false
@@ -99,12 +101,15 @@ $(function() {
       var $target = this.$el.find('.active')
       var $content = $('.content')
       var pathAndHash = $target.data('path').split('#')
+      var name = $target.html()
       var category = $target.data('category')
       var path = pathAndHash[0]
       var hash = pathAndHash[1]
       hash = hash ? '#' + hash : ''
 
       this.$el.addClass('hidden')
+
+      appView.$input.val(name).select()
 
       $content
         .attr('class', 'content _' + category)
@@ -116,14 +121,18 @@ $(function() {
           _.defer(function() {
             $content
               .scrollTop(0)
-              .scrollTop($content
-                .find(
+              .scrollTop(function() {
+                var $target = $content.find(
                   _.contains(hash, '.') ?
                   '[id="' + hash.slice(1) + '"]' :
                   hash
                 )
-                .offset()
-                .top - 50)
+
+                return $target.get(0) ?
+                  $target.offset()
+                  .top - 50 :
+                  0
+              })
               .find('h4')
               .filter(function() {
                 return $(this).html() === 'Demo:'

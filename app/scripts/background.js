@@ -9,7 +9,7 @@ var getCagegories = function(cookies) {
 
   result = result && result.length ?
     result :
-    ['css', 'ruby', 'node']
+    ['css', 'dom', 'dom_events', 'html', 'http', 'javascript']
 
   categories = result
 }
@@ -18,9 +18,9 @@ var syncEntries = function() {
   console.log('selecting these categories...')
   console.log(categories && categories.join())
   var promises = _.map(categories, function(category) {
-    var domain = 'http://maxcdn-docs.devdocs.io'
+    var hosts = 'http://maxcdn-docs.devdocs.io'
     var path = '/' + category + '/index.json'
-    return $.ajax(domain + path)
+    return $.ajax(hosts + path)
   })
 
   $.when

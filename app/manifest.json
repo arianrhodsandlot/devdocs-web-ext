@@ -11,7 +11,7 @@
   "background": {
     "scripts": [
       "/bower_components/jquery/dist/jquery.min.js",
-      "/bower_components/lodash/lodash.js",
+      "/bower_components/lodash/lodash.min.js",
       "scripts/background.js"
     ]
   },

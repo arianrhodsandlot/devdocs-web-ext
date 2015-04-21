@@ -4,7 +4,7 @@ html
     meta(charset='utf-8')
     link(rel='stylesheet' href='/bower_components/font-awesome/css/font-awesome.min.css')
     link(rel='stylesheet' href='/styles/build/popup.css')
-    link(rel='stylesheet' href='/styles/devdocs.io.css')
+    link(rel='stylesheet' href='/styles/devdocs.io-3e3f6bc0e5dff8cae44d3417d3cac9f3.css')
   body
     form
       input.input(name='a' autofocus='autofocus' placeholder='Search...')
@@ -13,7 +13,7 @@ html
     .content.hidden
     script.result-template(type='text/html')
       | <% _.each(obj, function(result) { %>
-      .result(data-type!='<%= result.type %>' data-path!='<%= result.path %>' data-category!='<%= result.category %>') <%= result.name %>
+      .result(data-type!='<%= result.type %>' data-path!='<%= result.path %>' data-category!='<%= result.category %>') <%= _.escape(result.name) %>
       | <% }) %>
 
     script(src='/bower_components/jquery/dist/jquery.min.js')

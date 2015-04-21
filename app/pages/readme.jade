@@ -1,0 +1,17 @@
+doctype html
+html
+  head
+    title <%= readme %>
+    meta(charset='utf-8')
+    link(rel='stylesheet' href='/styles/build/readme.css')
+  body
+    script#template(type='text/html')
+      .container
+        h1 <%= readme %>
+        .content
+          p.p1 <%= p1 %>
+          p.p2 <%= p2 %>
+          p.p3 <%= p3 %>
+          p.p4 <%= p4 %>
+    script(src='/bower_components/lodash/lodash.js')
+    script(src='/scripts/readme.js')

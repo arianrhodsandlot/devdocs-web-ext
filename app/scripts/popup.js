@@ -118,8 +118,6 @@ $(function() {
 
       this.$el.addClass('hidden')
 
-      appView.$input.val(name)
-
       if (path) {
         content.set({
           category: category,
@@ -181,20 +179,27 @@ $(function() {
                   .top - 54 :
                   0
               })
+
+            //render iframe demos in jQuery documents
+            $content
               .find('h4')
               .filter(function() {
                 return $(this).html() === 'Demo:'
               })
               .after(function() {
                 var $iframe = $('<iframe>')
-                var html = _.unescape($(this).prev().html())
-                $iframe.contents().find('body').html('a')
+                var demoHtml = _.unescape($(this).prev().html())
+
+                demoHtml = demoHtml.replace(/"\/\/code.jquery.com\/jquery-1.10.2.js/, '"/bower_components/jquery/dist/jquery.min.js')
+
+                _.defer(function() {
+                  $iframe.contents().find('body').html(demoHtml)
+                })
                 return $iframe
               })
           })
         })
         .fail(function() {
-          console.log(that.model.attributes)
           $content.html('<div class="loading-text">Connect failed...</div>')
         })
     },

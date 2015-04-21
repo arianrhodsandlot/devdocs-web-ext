@@ -81,3 +81,12 @@ chrome.cookies.onChanged
       syncEntries()
     }
   }, 100))
+
+
+//open a welcome page after install
+if (!localStorage.getItem('install_time')) {
+  // localStorage.setItem('install_time', _.now());
+  chrome.tabs.create({
+    url: 'pages/build/readme.html'
+  });
+}

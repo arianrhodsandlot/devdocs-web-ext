@@ -14,7 +14,7 @@
   },
 
   "p2": {
-    "message": "弹出窗口的默认快捷键是<kbd>Alt</kbd>+<kbd>S</kbd>，如果希望修改请在Chrome的扩展管理界面（菜单 -> 更多 -> 扩展）中最下方的“键盘快捷键”处进行设置。"
+    "message": "弹出窗口的默认快捷键是<kbd>Alt</kbd>+<kbd>S</kbd>，如果希望修改请在Chrome的扩展管理界面（菜单 -> 更多工具 -> 扩展程序）中最下方的“键盘快捷键”处进行设置。"
   },
   "p3": {
     "message": "默认的文档是CSS、DOM、DOM Events、HTML、HTTP和JavaScript。"

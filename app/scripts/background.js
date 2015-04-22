@@ -1,5 +1,6 @@
 var categories
 var entries
+var cache = {}
 
 var getCagegories = function(cookies) {
   var result
@@ -41,6 +42,7 @@ var syncEntries = function() {
             category: categories[0]
           })
         })
+      cache = {}
     });
 }
 
@@ -52,33 +54,85 @@ chrome.cookies.get({
 
   syncEntries()
 
+
+  // send search results to popup page
   chrome.runtime.onMessage
     .addListener(function(message, sender, sendResponse) {
       var response
-      message = message.toLowerCase()
-      response = message ?
-        _.filter(entries, function(entry) {
-          var reg = new RegExp(_.reduce(message, function(prev, current) {
-            if (/\.|\(|\)/.test(current)) {
-              return prev
-            } else {
-              return prev + current + '.*'
+
+      var getChars = function(str) {
+        var words
+        str = _.trim(str)
+        words = str.toLowerCase().match(/\w+/g)
+        if (!words || words.length === 0) {
+          return ''
+        }
+        return words.join('')
+      }
+
+      var query = getChars(message);
+
+      if (query === '') {
+        response = []
+      } else if (cache[query]) {
+        response = cache[query]
+      } else {
+        var reg = new RegExp(_.reduce(query, function(prev, current) {
+          if (/\.|\(|\)/.test(current)) {
+            return prev
+          } else {
+            return prev + current + '.*'
+          }
+        }, '.*'), 'i')
+
+        response = _(_.clone(entries, true))
+          .map(function(entry) {
+            entry.query = query
+            return entry
+          })
+          .reject(function(entry) {
+            var name = getChars(entry.name)
+            var category = getChars(entry.category)
+
+            if (name === entry.query) {
+              entry.score = 10
+              entry.partten = name + ',' + entry.query
+            } else if (name.indexOf(entry.query) > -1) {
+              entry.score = 9
+              entry.partten = name + ',' + entry.query
+            } else if ((category + name).indexOf(entry.query) > -1) {
+              entry.score = 8
+              entry.partten = category + name + ',' + entry.query
+            } else if (reg.test(category + name)) {
+              entry.score = 7
+              entry.partten = reg + ',' + category + name
             }
-          }, '.*'), 'i')
-          return _.contains(entry.category.toLowerCase() + entry.name.toLowerCase(), message) ||
-            reg.test(entry.category + entry.name)
-        }) :
-        []
+
+            return _.isUndefined(entry.score)
+          })
+          .value()
+
+        response = _.sortBy(response, function(entry) {
+          return -entry.score
+        })
+
+        cache[query] = response
+      }
+
       sendResponse(response)
     });
 })
 
 chrome.cookies.onChanged
   .addListener(_.debounce(function(changeInfo) {
-    if (changeInfo.cookie.domain === 'devdocs.io' &&
-      changeInfo.cookie.name === 'docs') {
-      getCagegories(changeInfo.cookie.value)
-      syncEntries()
+    try {
+      if (changeInfo.cookie.domain === 'devdocs.io' &&
+        changeInfo.cookie.name === 'docs') {
+        getCagegories(changeInfo.cookie.value)
+        syncEntries()
+      }
+    } catch (e) {
+      console.error(e)
     }
   }, 100))
 

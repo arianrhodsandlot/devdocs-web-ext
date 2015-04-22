@@ -41,7 +41,7 @@ $(function() {
       var query = this.$input.val()
 
       this.model.fetch(query)
-    }, 300),
+    }, 200),
     completeCategory: function(e) { //to do
       return e.which !== 9
     },

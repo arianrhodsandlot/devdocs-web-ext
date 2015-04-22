@@ -3,7 +3,7 @@
     "message": "Quick DevDocs"
   },
   "appDescription": {
-    "message": "Find documents in DevDocs.io with a popup window from a Chrome Extension!"
+    "message": "Find documents in devdocs.io with a popup window from a Chrome Extension!"
   },
   "readme": {
     "message": "Thanks for installing Quick Devdocs!"
@@ -17,7 +17,7 @@
     "message": "The default hotkey of showing the popup window is <kbd>Alt</kbd>+<kbd>S</kbd>. If you want to edit this, go to the bottom of Chrome's extensions page (Menu -> More tools -> Extensions)."
   },
   "p3":{
-    "message": "The default selected documents are CSS, DOM, DOM Events, HTML, HTTP, and JavaScript."
+    "message": "The default enabled documents are CSS, DOM, DOM Events, HTML, HTTP, and JavaScript."
   },
   "p4": {
     "message": "To select the certain documents you need, like Node, Python or Angular.js, go to <a href='http://devdocs.io'>devdocs.io</a> and check them out."

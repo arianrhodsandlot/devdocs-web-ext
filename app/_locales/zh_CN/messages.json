@@ -3,7 +3,7 @@
     "message": "Quick DevDocs"
   },
   "appDescription": {
-    "message": "Find documents in DevDocs.io with a popup window from a Chrome Extension!"
+    "message": "通过一个扩展的弹出窗口来搜索devdocs.io中的文档！"
   },
   "readme": {
     "message": "感谢安装Quick Devdocs！"
@@ -17,9 +17,9 @@
     "message": "弹出窗口的默认快捷键是<kbd>Alt</kbd>+<kbd>S</kbd>，如果希望修改请在Chrome的扩展管理界面（菜单 -> 更多工具 -> 扩展程序）中最下方的“键盘快捷键”处进行设置。"
   },
   "p3": {
-    "message": "默认的文档是CSS、DOM、DOM Events、HTML、HTTP和JavaScript。"
+    "message": "默认启用的文档是CSS、DOM、DOM Events、HTML、HTTP和JavaScript。"
   },
   "p4": {
-    "message": "设定需要搜索其他文档，比如Node、Python或Angular.js，请在<a href='http://devdocs.io'>devdocs.io</a>中进行勾选。"
+    "message": "设定需要搜索的其他文档，比如Node、Python或Angular.js，请在<a href='http://devdocs.io'>devdocs.io</a>中进行勾选。"
   }
 }

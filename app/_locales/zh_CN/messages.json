@@ -6,11 +6,11 @@
     "message": "通过一个扩展的弹出窗口来搜索devdocs.io中的文档！"
   },
   "readme": {
-    "message": "感谢安装Quick Devdocs！"
+    "message": "感谢安装Quick DevDocs！"
   },
 
   "p1": {
-    "message": "这个扩展用于弹出一个弹出窗口用来搜索<a href='http://devdocs.io'>Devdocs</a>中的文档，免去打开单独页面的麻烦。"
+    "message": "这个扩展用于弹出一个弹出窗口用来搜索<a href='http://devdocs.io'>DevDocs</a>中的文档，免去打开单独页面的麻烦。"
   },
 
   "p2": {

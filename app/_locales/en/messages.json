@@ -6,11 +6,11 @@
     "message": "Find documents in devdocs.io with a popup window from a Chrome Extension!"
   },
   "readme": {
-    "message": "Thanks for installing Quick Devdocs!"
+    "message": "Thanks for installing Quick DevDocs!"
   },
 
   "p1": {
-    "message": "This extension is used for showing up a popup window for searching documents in <a href='http://devdocs.io'>Devdocs</a>, to avoid opening a single browser tab."
+    "message": "This extension is used for showing up a popup window for searching documents in <a href='http://devdocs.io'>DevDocs</a>, to avoid opening a single browser tab."
   },
 
   "p2": {

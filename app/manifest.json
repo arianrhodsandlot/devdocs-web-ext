@@ -24,9 +24,6 @@
     "default_popup": "pages/build/popup.html"
   },
   "options_page": "pages/build/options.html",
-  "omnibox": {
-    "keyword": "xm"
-  },
   "permissions": [
     "cookies",
     "http://devdocs.io/",

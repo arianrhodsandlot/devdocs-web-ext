@@ -98,6 +98,12 @@ $(function() {
       var html = _.trim(this.template(this.model.attributes))
       this.$el.html(html)
       this.$content.addClass('hidden').empty()
+      content
+        .set({
+          category: '',
+          path: '',
+          hash: ''
+        })
       if (html) {
         this.$el.removeClass('hidden')
         this.$splash.addClass('hidden')
@@ -119,11 +125,12 @@ $(function() {
       this.$el.addClass('hidden')
 
       if (path) {
-        content.set({
-          category: category,
-          path: path,
-          hash: hash
-        })
+        content
+          .set({
+            category: category,
+            path: path,
+            hash: hash
+          })
       }
     },
     highlight: function(e) {
@@ -150,6 +157,10 @@ $(function() {
       var $content = this.$el
       var category = this.model.get('category')
 
+      if (!category) {
+        return
+      }
+
       var newClass = 'content _'
       if (category === 'backbone') {
         newClass += 'underscore'
@@ -161,7 +172,7 @@ $(function() {
         .attr('class', newClass)
         .html('<div class="loading-text">Loading...</div>')
 
-      $.get(_.template(contentUrl)(this.model.attributes))
+      $.ajax(_.template(contentUrl)(this.model.attributes))
         .done(function(html) {
           $content.html(html)
           _.defer(function() {

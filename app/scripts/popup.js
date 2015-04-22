@@ -180,23 +180,13 @@ $(function() {
                   0
               })
 
-            //render iframe demos in jQuery documents
+            //remove demos in jQuery documents
             $content
               .find('h4')
               .filter(function() {
                 return $(this).html() === 'Demo:'
               })
-              .after(function() {
-                var $iframe = $('<iframe>')
-                var demoHtml = _.unescape($(this).prev().html())
-
-                demoHtml = demoHtml.replace(/"\/\/code.jquery.com\/jquery-1.10.2.js/, '"/bower_components/jquery/dist/jquery.min.js')
-
-                _.defer(function() {
-                  $iframe.contents().find('body').html(demoHtml)
-                })
-                return $iframe
-              })
+              .remove()
           })
         })
         .fail(function() {

@@ -1,12 +1,12 @@
 {
-  "name": "QuickDevDocs",
-  "version": "0.0.5",
+  "name": "Quick-DevDocs",
+  "version": "0.0.6",
   "private": true,
   "dependencies": {},
   "devDependencies": {
-    "nib": "",
-    "gulp": "",
-    "gulp-jade": "",
-    "gulp-stylus": ""
+    "nib": "~1.1.0",
+    "gulp": "~3.8.11",
+    "gulp-jade": "~1.0.0",
+    "gulp-stylus": "~2.0.1"
   }
 }

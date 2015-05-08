@@ -1,9 +1,9 @@
 {
-  "name": "xiame",
-  "version": "0.0.1",
+  "name": "Quick-DevDocs",
+  "version": "0.0.6",
   "dependencies": {
-    "lodash": "",
-    "jquery": "",
-    "backbone": ""
+    "lodash": "~3.8.0",
+    "jquery": "~2.1.4",
+    "backbone": "~1.1.1"
   }
 }

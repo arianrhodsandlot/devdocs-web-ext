@@ -49,7 +49,8 @@ $(function() {
       var keyCodes = {
         up: 38,
         down: 40,
-        enter: 13
+        enter: 13,
+        esc: 27
       }
 
       var $activeResult = this.$results.find('.active')
@@ -76,6 +77,12 @@ $(function() {
       } else if (e.which === keyCodes.enter) {
         resultsView.open()
         return false
+      } else if (e.which === keyCodes.esc) {
+        if (this.$input.val()) {
+          this.$input.val('')
+          this.search()
+          return false
+        }
       }
     }
   })
@@ -226,6 +233,14 @@ $(function() {
   var appView = new AppView()
   var resultsView = new ResultsView()
   var contentView = new ContentView()
-  window.e = entries
-  window.c = contentView
+
+  var app = {
+    entries: entries,
+    content: content,
+    appView: appView,
+    resultsView: resultsView,
+    contentView: contentView
+  }
+
+  window.app = app
 })

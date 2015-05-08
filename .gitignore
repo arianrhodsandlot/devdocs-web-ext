@@ -8,3 +8,10 @@ test/bower_components
 package
 **/build/**
 app.*
+
+*.zip
+*.crx
+
+*.sublime-workspace
+*.sublime-project
+*.pem

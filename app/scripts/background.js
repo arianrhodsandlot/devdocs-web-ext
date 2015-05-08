@@ -43,7 +43,7 @@ var syncEntries = function() {
           })
         })
       cache = {}
-    });
+    })
 }
 
 chrome.cookies.get({
@@ -70,7 +70,7 @@ chrome.cookies.get({
         return words.join('')
       }
 
-      var query = getChars(message);
+      var query = getChars(message)
 
       if (query === '') {
         response = []
@@ -120,7 +120,7 @@ chrome.cookies.get({
       }
 
       sendResponse(response)
-    });
+    })
 })
 
 chrome.cookies.onChanged
@@ -139,8 +139,8 @@ chrome.cookies.onChanged
 
 //open a welcome page after install
 if (!localStorage.getItem('install_time')) {
-  localStorage.setItem('install_time', _.now());
+  localStorage.setItem('install_time', _.now())
   chrome.tabs.create({
     url: 'pages/build/readme.html'
-  });
+  })
 }

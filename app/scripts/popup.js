@@ -50,7 +50,7 @@ $(function() {
         up: 38,
         down: 40,
         enter: 13
-      };
+      }
 
       var $activeResult = this.$results.find('.active')
       var $firstResult = this.$results.find('.result:first')
@@ -92,7 +92,7 @@ $(function() {
     initialize: function() {
       this.$splash = $('.splash')
       this.$content = $('.content')
-      this.listenTo(this.model, 'change', this.render);
+      this.listenTo(this.model, 'change', this.render)
     },
     render: function() {
       var html = _.trim(this.template(this.model.attributes))
@@ -151,8 +151,8 @@ $(function() {
       this.listenTo(this.model, 'change', this.render)
     },
     render: function() {
-      var that = this;
-      var contentUrl = 'http://<%= obj.domain %>/<%= obj.category %>/<%= obj.path %>.html#<%= obj.hash %>';
+      var that = this
+      var contentUrl = 'http://<%= obj.domain %>/<%= obj.category %>/<%= obj.path %>.html#<%= obj.hash %>'
       var hash = this.model.get('hash')
       var $content = this.$el
       var category = this.model.get('category')

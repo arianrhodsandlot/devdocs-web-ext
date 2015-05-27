@@ -1,13 +1,7 @@
 node_modules
-temp
-.tmp
-dist
-.sass-cache
-app/bower_components
-test/bower_components
-package
-**/build/**
+bower_components
 app.*
+app/components
 
 *.zip
 *.crx

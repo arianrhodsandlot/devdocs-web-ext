@@ -1,6 +1,6 @@
 {
   "name": "__MSG_appName__",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "manifest_version": 2,
   "description": "__MSG_appDescription__",
   "icons": {
@@ -10,8 +10,8 @@
   "default_locale": "en",
   "background": {
     "scripts": [
-      "/bower_components/jquery/dist/jquery.min.js",
-      "/bower_components/lodash/lodash.min.js",
+      "/components/jquery.min.js",
+      "/components/lodash.min.js",
       "scripts/background.js"
     ]
   },

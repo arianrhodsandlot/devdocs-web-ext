@@ -15,9 +15,9 @@ html
       .result._list-item(class!='_icon-<%= result.category %>' data-score!='<%= result.score + "|"+ result.message %>' data-type!='<%= result.type %>' data-path!='<%= result.path %>' data-category!='<%= result.category %>') <%= _.escape(result.name) %>
       | <% }) %>
 
-    script(src='/bower_components/jquery/dist/jquery.min.js')
-    script(src='/bower_components/lodash/lodash.min.js')
-    script(src='/bower_components/backbone/backbone.js')
+    script(src='/components/jquery.min.js')
+    script(src='/components/lodash.min.js')
+    script(src='/components/backbone.js')
     script(src='/scripts/popup.js')
 //- ._list-link:after,
 //- ._page a[href^="http:"]:after,

@@ -1,9 +1,9 @@
 # Quick DevDocs
 
 ## Overview
-[DevDocs](https://github.com/Thibaut/devdocs) is a great online documentations browser. However, sometimes you just want to simply look up a simple method without leaving your Chrome to read it intensively.
+[DevDocs](https://github.com/Thibaut/devdocs) is a great online documentations web app. However, sometimes you just want to simply look up a simple method without leaving the website you are currently reading to check out it intensively.
 
-Quick DevDocs can just be used for your quick looking-up. You can quickly search for a function name, or any other things in [devdocs.io](http://devdocs.io), in a popup extension window.
+[Quick DevDocs](https://chrome.google.com/webstore/detail/quick-devdocs/kdjoccdpjblcefijcfhnjoljodddedpj) can just be used for your quick looking-up. You can quickly search for a function name, or any other things in [devdocs.io](http://devdocs.io), in a popup extension window.
 
 ## Install
 

@@ -4,9 +4,9 @@
   "private": true,
   "dependencies": {},
   "devDependencies": {
-    "gulp": "^3.8.11",
-    "gulp-jade": "~1.0.0",
-    "gulp-stylus": "~2.0.1",
-    "nib": "~1.1.0"
+    "gulp": "^3.9.0",
+    "gulp-jade": "^1.0.1",
+    "gulp-stylus": "^2.0.5",
+    "nib": "^1.1.0"
   }
 }

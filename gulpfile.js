@@ -2,7 +2,6 @@ var gulp = require('gulp')
 var jade = require('gulp-jade')
 var stylus = require('gulp-stylus')
 var nib = require('nib')
-var del = require('del')
 
 gulp
   .task('jade', function() {

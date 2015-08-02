@@ -1,0 +1,66 @@
+html, body
+  margin 0
+  padding 0
+  color rgb(48, 57, 66)
+.hidden
+  display none
+h1
+  -webkit-margin-start 23px
+  color rgb(92, 97, 102)
+  margin-bottom 1em
+  margin-top 21px
+  font-size 1.5em
+h1, h2 ,h3
+  -webkit-user-select none
+  font-weight normal
+  line-height 1
+.option-navs
+  margin 12px 0
+  list-style none
+  padding 0
+  width 155px
+  float left
+  & > li
+    -webkit-border-start 6px solid transparent
+    -webkit-padding-start 18px
+    -webkit-user-select none
+    cursor pointer
+    margin 0
+    padding 0 0 0 18px
+    border-left 6px solid transparent
+    line-height 29px
+    &.selected
+      border-color rgb(78, 87, 100)
+      & > a
+        color rgb(70, 78, 90)
+    & > a
+      color rgb(153, 153, 153)
+      text-decoration none
+.option-page
+  float left
+  margin -57px 0 0 0
+  width 738px
+  & > h2
+    border-bottom 1px solid #eee
+    margin 0
+    padding 21px 0 13px 0
+  .item
+    padding 0 0 0 18px
+    line-height 30px
+  .theme .item span
+    margin 0 0 0 7px
+    vertical-align middle
+  iframe
+    border none
+    outline none
+    width 100%
+    height 500px
+  .size
+    .item
+      span
+        margin 0 7px 0 0
+        vertical-align middle
+      input
+        vertical-align middle
+    .reset
+      margin 10px 0 0 18px

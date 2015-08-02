@@ -4,40 +4,48 @@ html
     //- meta(http-equiv='refresh' content='0; url=http://devdocs.io')
     title 选项
     meta(charset="utf-8")
-  link(rel='stylesheet' href='/styles/vendor/widgets.css')
+    link(rel='stylesheet' href='/styles/vendor/widgets.css')
+    link(rel='stylesheet' href='/styles/build/options.css')
   body
     h1 Quick Devdocs
 
     ul.option-navs
-      li.option-nav: a(href="#") 外观
+      li.option-nav.selected: a(href="#") 外观
       li.option-nav: a(href="#") 文档
       li.option-nav: a(href="#") 关于
 
-    .option-page
+    .option-page.option-apparence
       h2 外观
-      section
+      section.theme
         h3 主题
-        label
+        div.item: label
           input(type='radio' name='value')
           span light
-        label
+        div.item: label
           input(type='radio' name='value')
           span dark
 
-      section
+      section.size
         h3 弹窗大小
-        input(type="range")
-        input(type="range")
-        button 重置为默认
+        div.item
+          span 宽度
+          input(type="range")
+        div.item
+          span 高度
+          input(type="range")
+        button.reset 重置为默认大小
 
-    .option-docs
+    .option-page.option-docs.hidden
       h2 文档
       section
-        p 去<a href='http://devdocs.io'>devdocs.io</a>选择
+        p 在<a href='http://devdocs.io'>devdocs.io</a>选择：
+        iframe(src='http://devdocs.io/')
 
-    .option-docs
+    .option-page.option-about.hidden
       h2 关于
       section
         p Quick DevDocs
         button 报告问题
         p 版本： 0.1.0
+  script(src='/components/jquery.min.js')
+  script(src='/scripts/options.js')

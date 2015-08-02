@@ -53,23 +53,23 @@ $(function() {
         esc: 27
       }
 
-      var $activeResult = this.$results.find('.active')
+      var $focusResult = this.$results.find('.focus')
       var $firstResult = this.$results.find('.result:first')
       var $lastResult = this.$results.find('.result:last')
-      var $nextResult = $activeResult.next()
-      var $prevResult = $activeResult.prev()
+      var $nextResult = $focusResult.next()
+      var $prevResult = $focusResult.prev()
 
       $nextResult = $nextResult.get(0) ? $nextResult : $firstResult
       $prevResult = $prevResult.get(0) ? $prevResult : $lastResult
       if (_.contains(_.values(_.pick(keyCodes, 'up', 'down')), e.which)) {
-        $activeResult.removeClass('active')
+        $focusResult.removeClass('focus')
         switch (e.which) {
           case 38:
-            $prevResult.addClass('active')
+            $prevResult.addClass('focus')
               .get(0).scrollIntoView(false)
             break
           case 40:
-            $nextResult.addClass('active')
+            $nextResult.addClass('focus')
               .get(0).scrollIntoView(false)
             break
         }
@@ -120,7 +120,7 @@ $(function() {
       }
     },
     open: function(e) {
-      var $target = this.$el.find('.active')
+      var $target = this.$el.find('.focus')
       var $content = $('.content')
       var pathAndHash = $target.data('path').split('#')
       var name = $target.html()
@@ -141,10 +141,13 @@ $(function() {
       }
     },
     highlight: function(e) {
-      $(e.target).addClass('active')
+      $(e.target)
+        .addClass('focus')
+        .siblings()
+        .removeClass('focus')
     },
     unhighlight: function(e) {
-      $(e.target).removeClass('active')
+      $(e.target).removeClass('focus')
     }
   })
 

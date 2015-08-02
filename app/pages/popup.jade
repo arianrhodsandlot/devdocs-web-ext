@@ -3,13 +3,16 @@ html
   head
     meta(charset='utf-8')
     link(rel='stylesheet' href='/styles/build/popup.css')
-    link(rel='stylesheet' href='/styles/vendor/devdocs.io-3e3f6bc0e5dff8cae44d3417d3cac9f3.css')
+    link(rel='stylesheet' href='/styles/vendor/devdocs-io-application-bf42c8d9812e14aa16252461f6b689300f89f2751f82bf2e264d906806531fb1.css')
+    //- link(rel='stylesheet' href='/styles/vendor/devdocs-io-application-dark-09028231586038c42947bf7728441747f50c9603085cac9f6d775d5ae02b91ee.css')
+
   body
-    form
-      input.input(name='a' autofocus='autofocus' placeholder='Search...')
+    ._header
+      form._search
+        input.input._search-input(name='a' autofocus='autofocus' placeholder='Search...')
     .splash DevDocs
     .results.hidden
-    .content.hidden
+    .content.hidden._content
     script.result-template(type='text/html')
       | <% _.each(obj, function(result) { %>
       .result._list-item(class!='_icon-<%= result.category %>' data-score!='<%= result.score + "|"+ result.message %>' data-type!='<%= result.type %>' data-path!='<%= result.path %>' data-category!='<%= result.category %>') <%= _.escape(result.name) %>

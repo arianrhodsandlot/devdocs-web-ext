@@ -19,27 +19,27 @@ html
       section.theme
         h3 主题
         div.item: label
-          input(type='radio' name='value')
+          input.light(type='radio' name='light')
           span light
         div.item: label
-          input(type='radio' name='value')
+          input.dark(type='radio' name='dark')
           span dark
 
       section.size
         h3 弹窗大小
         div.item
           span 宽度
-          input(type="range")
+          input.width(type="range" name='width' min=200 max=800 step=50 value=200)
         div.item
           span 高度
-          input(type="range")
+          input.height(type="range" name='height' min=200 max=800 step=50 value=200)
         button.reset 重置为默认大小
 
     .option-page.option-docs.hidden
       h2 文档
       section
-        p 在<a href='http://devdocs.io'>devdocs.io</a>选择：
-        iframe(src='http://devdocs.io/')
+        p 在<a href='http://devdocs.io'>devdocs.io</a>中选择：
+        iframe
 
     .option-page.option-about.hidden
       h2 关于

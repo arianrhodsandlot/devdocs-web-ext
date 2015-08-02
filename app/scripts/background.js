@@ -144,3 +144,15 @@ if (!localStorage.getItem('install_time')) {
     url: 'pages/build/readme.html'
   })
 }
+
+if (!localStorage.getItem('theme')) {
+  localStorage.setItem('theme', 'light')
+}
+
+if (!localStorage.getItem('width')) {
+  localStorage.setItem('width', 400)
+}
+
+if (!localStorage.getItem('height')) {
+  localStorage.setItem('height', 400)
+}

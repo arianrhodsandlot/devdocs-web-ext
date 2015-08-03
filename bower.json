@@ -2,14 +2,8 @@
   "name": "Quick-DevDocs",
   "version": "0.0.7",
   "dependencies": {
-<<<<<<< HEAD
     "lodash": "~3.10.0",
     "jquery": "~2.1.4",
     "backbone": "~1.2.1"
-=======
-    "jquery": "~2.1.4",
-    "backbone": "~1.2.1",
-    "lodash": "~3.10.0"
->>>>>>> origin/dev
   }
 }

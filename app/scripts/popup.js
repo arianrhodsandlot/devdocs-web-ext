@@ -1,5 +1,10 @@
 /* global Backbone */
 $(function() {
+  $(document.body).css({
+    width: localStorage.getItem('width') + 'px',
+    height: localStorage.getItem('height') + 'px'
+  })
+
   var Entries = Backbone.Model.extend({
     fetch: function(query) {
       var that = this

@@ -20,19 +20,23 @@ html
         h3 主题
         div.item: label
           input.light(type='radio' name='light')
-          span light
+          span 亮色
         div.item: label
           input.dark(type='radio' name='dark')
-          span dark
+          span 暗色
 
       section.size
         h3 弹窗大小
         div.item
-          span 宽度
-          input.width(type="range" name='width' min=200 max=800 step=50 value=200)
+          label 宽度
+          input.width(type="range" name='width' min=350 max=1000 step=50)
+          span.val.width-val 400
+          span px
         div.item
-          span 高度
-          input.height(type="range" name='height' min=200 max=800 step=50 value=200)
+          label 高度
+          input.height(type="range" name='height' min=300 max=1000 step=50)
+          span.val.height-val 400
+          span px
         button.reset 重置为默认大小
 
     .option-page.option-docs.hidden

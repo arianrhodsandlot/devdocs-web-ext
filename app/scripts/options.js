@@ -40,13 +40,17 @@ $(function() {
     .prop('checked', true)
 
   $('.size')
-    .on('change', '.width', function() {
+    .on('input', '.width', function() {
       var $width = $(this)
-      localStorage.setItem('width', $width.val())
+      var width = $width.val()
+      $width.next().html(width)
+      localStorage.setItem('width', width)
     })
-    .on('change', '.height', function() {
+    .on('input', '.height', function() {
       var $height = $(this)
-      localStorage.setItem('height', $height.val())
+      var height = $height.val()
+      $height.next().html(height)
+      localStorage.setItem('height', height)
     })
     .find('input')
     .val(function() {
@@ -54,4 +58,5 @@ $(function() {
       var key = $size.attr('name')
       return localStorage.getItem(key)
     })
+    .trigger('input')
 })

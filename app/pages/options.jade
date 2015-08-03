@@ -14,15 +14,15 @@ html
       li.option-nav: a(href="#") 文档
       li.option-nav: a(href="#") 关于
 
-    .option-page.option-apparence
+    form.option-page.option-apparence
       h2 外观
       section.theme
         h3 主题
         div.item: label
-          input.light(type='radio' name='light')
+          input.light(type='radio' name='theme' value='light')
           span 亮色
         div.item: label
-          input.dark(type='radio' name='dark')
+          input.dark(type='radio' name='theme' value='dark')
           span 暗色
 
       section.size
@@ -37,19 +37,19 @@ html
           input.height(type="range" name='height' min=300 max=1000 step=50)
           span.val.height-val 400
           span px
-        button.reset 重置为默认大小
 
     .option-page.option-docs.hidden
       h2 文档
       section
         p 在<a href='http://devdocs.io'>devdocs.io</a>中选择：
+        p.arrow ↓
         iframe
 
     .option-page.option-about.hidden
       h2 关于
       section
         p Quick DevDocs
-        button 报告问题
+        button.report 报告问题
         p 版本： 0.1.0
   script(src='/components/jquery.min.js')
   script(src='/scripts/options.js')

@@ -25,8 +25,21 @@ $(function() {
     .on('show', (function() {
       var $iframe = $('.option-docs iframe')
       return function() {
-        if (!$iframe.attr(src)) {
+        if (!$iframe.attr('src')) {
           $iframe.attr('src', 'http://devdocs.io')
+            .load(function() {
+              $('.arrow')
+                .click(function(){
+                  $(this).remove()
+                })
+                .css('top', '-400px')
+                .fadeIn(100)
+                .animate({
+                  top: '-130px'
+                }, 300)
+                .delay(2000)
+                .fadeOut(100)
+            })
         }
       }
     })())
@@ -34,7 +47,7 @@ $(function() {
   $('.theme')
     .on('change', 'input', function() {
       var $themeInput = $(this)
-      localStorage.setItem('theme', $themeInput.attr('name'))
+      localStorage.setItem('theme', $themeInput.val())
     })
     .find('.' + localStorage.getItem('theme'))
     .prop('checked', true)
@@ -59,4 +72,9 @@ $(function() {
       return localStorage.getItem(key)
     })
     .trigger('input')
+
+  $('.report')
+    .click(function() {
+      location.href = 'mailto:' + 'theguidanceofawhitetower@gmail.com'
+    })
 })

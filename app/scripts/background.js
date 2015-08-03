@@ -1,3 +1,4 @@
+/* global _, chrome */
 var categories
 var entries
 var cache = {}

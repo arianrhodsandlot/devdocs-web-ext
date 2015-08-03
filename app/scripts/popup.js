@@ -1,10 +1,5 @@
-/* global Backbone */
+/* global _, Backbone, chrome */
 $(function() {
-  $(document.body).css({
-    width: localStorage.getItem('width') + 'px',
-    height: localStorage.getItem('height') + 'px'
-  })
-
   var Entries = Backbone.Model.extend({
     fetch: function(query) {
       var that = this
@@ -124,11 +119,9 @@ $(function() {
         this.$splash.removeClass('hidden')
       }
     },
-    open: function(e) {
+    open: function() {
       var $target = this.$el.find('.focus')
-      var $content = $('.content')
       var pathAndHash = $target.data('path').split('#')
-      var name = $target.html()
       var category = $target.data('category')
       var path = pathAndHash[0]
       var hash = pathAndHash[1]
@@ -166,7 +159,6 @@ $(function() {
       this.listenTo(this.model, 'change', this.render)
     },
     render: function() {
-      var that = this
       var contentUrl = 'http://<%= obj.domain %>/<%= obj.category %>/<%= obj.path %>.html#<%= obj.hash %>'
       var hash = this.model.get('hash')
       var $content = this.$el
@@ -185,7 +177,7 @@ $(function() {
 
       $content
         .attr('class', newClass)
-        .html('<div class="loading-text">Loading...</div>')
+        .html('<div class="loading-text _splash-title">Loading...</div>')
 
       $.ajax(_.template(contentUrl)(this.model.attributes))
         .done(function(html) {
@@ -251,4 +243,17 @@ $(function() {
   }
 
   window.app = app
+
+  // apply optionis
+  $(document.body)
+    .css({
+      width: localStorage.getItem('width') + 'px',
+      height: localStorage.getItem('height') + 'px'
+    })
+    .addClass(localStorage.getItem('theme'))
+
+  $('#' + localStorage.getItem('theme'))
+    .attr('href', function() {
+      return $(this).data('href')
+    })
 })

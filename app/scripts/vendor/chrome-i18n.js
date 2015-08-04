@@ -38,10 +38,13 @@
 				} else {
 					child = +term[0];
 				}
+				/*
 				elt.insertBefore(
 					  document.createTextNode(i18n(term[term.length - 1]))
 					, elt.children.item(child - 1)
 				);
+				*/
+				elt.innerHTML = i18n(term[term.length - 1]);
 			}
 		}
 	}

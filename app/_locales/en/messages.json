@@ -5,21 +5,66 @@
   "appDescription": {
     "message": "Find documents in devdocs.io with a popup window from a Chrome Extension!"
   },
-  "readme": {
+
+  "readmeTitle": {
     "message": "Thanks for installing Quick DevDocs!"
   },
-
-  "p1": {
+  "readmeP1": {
     "message": "This extension is used for showing up a popup window for searching documents in <a href='http://devdocs.io'>DevDocs</a>, to avoid opening a single browser tab."
   },
-
-  "p2": {
+  "readmeP2": {
     "message": "The default hotkey of showing the popup window is <kbd>Alt</kbd>+<kbd>S</kbd>. If you want to edit this, go to the bottom of Chrome's extensions page (Menu -> More tools -> Extensions)."
   },
-  "p3":{
+  "readmeP3": {
     "message": "The default enabled documents are CSS, DOM, DOM Events, HTML, HTTP, and JavaScript."
   },
-  "p4": {
+  "readmeP4": {
     "message": "To select the certain documents you need, like Node, Python or Angular.js, go to <a href='http://devdocs.io'>devdocs.io</a> and check them out."
+  },
+
+  "optionsTitle": {
+    "message": "Options"
+  },
+  "optionsApparence": {
+    "message": "Apparence"
+  },
+  "optionsDocs": {
+    "message": "Docs"
+  },
+  "optionsAbout": {
+    "message": "About"
+  },
+  "optionsTheme": {
+    "message": "Theme"
+  },
+  "optionsLight": {
+    "message": "light"
+  },
+  "optionsDark": {
+    "message": "dark"
+  },
+  "optionsWindowSize": {
+    "message": "Window size"
+  },
+  "optionsWidth": {
+    "message": "width"
+  },
+  "optionsHeight": {
+    "message": "height"
+  },
+  "optionsSelectFrom": {
+    "message": "Select in <a href='http://devdocs.io'>devdocs.io</a>:"
+  },
+  "optionsAboutDesc": {
+    "message": "A third party <a href='http://devdocs.io'>DevDocs</a> extension for Google Chrome."
+  },
+  "optionsReport": {
+    "message": "Report an issue"
+  },
+  "optionsVersion": {
+    "message": "version: "
+  },
+  "optionsOpenSource": {
+    "message": "Quick DevDocs is an open-source software, hosted on <a href=\"https://github.com/arianrhodsandlot/Quick-DevDocs\">GitHub</a>."
   }
 }

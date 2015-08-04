@@ -1,17 +1,15 @@
 doctype html
 html
   head
-    title <%= readme %>
+    title(data-i18n='readmeTitle')
     meta(charset='utf-8')
     link(rel='stylesheet' href='/styles/build/readme.css')
   body
-    script#template(type='text/html')
-      .container
-        h1 <%= readme %>
-        .content
-          p.p1 <%= p1 %>
-          p.p2 <%= p2 %>
-          p.p3 <%= p3 %>
-          p.p4 <%= p4 %>
-    script(src='/components/lodash.min.js')
-    script(src='/scripts/readme.js')
+    .container
+      h1(data-i18n='readmeTitle')
+      .content
+        p.p1(data-i18n='readmeP1')
+        p.p2(data-i18n='readmeP2')
+        p.p3(data-i18n='readmeP3')
+        p.p4(data-i18n='readmeP4')
+    script(src='/scripts/vendor/chrome-i18n.js')

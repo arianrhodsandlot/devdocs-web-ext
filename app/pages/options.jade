@@ -2,7 +2,7 @@ doctype html
 html
   head
     //- meta(http-equiv='refresh' content='0; url=http://devdocs.io')
-    title 选项
+    title(data-i18n="optionsTitle")
     meta(charset="utf-8")
     link(rel='stylesheet' href='/styles/vendor/widgets.css')
     link(rel='stylesheet' href='/styles/build/options.css')
@@ -10,54 +10,58 @@ html
     h1 Quick Devdocs
 
     ul.option-navs
-      li.option-nav.selected: a(href="#") 外观
-      li.option-nav: a(href="#") 文档
-      li.option-nav: a(href="#") 关于
+      li.option-nav.selected: a(href="#" data-i18n="optionsApparence")
+      li.option-nav: a(href="#" data-i18n="optionsDocs")
+      li.option-nav: a(href="#" data-i18n="optionsAbout")
 
     form.option-page.option-apparence
-      h2 外观
+      h2(data-i18n="optionsApparence")
       section.theme
-        h3 主题
+        h3(data-i18n="optionsTheme")
         div.item: label
           input.light(type='radio' name='theme' value='light')
-          span 亮色
+          span(data-i18n="optionsLight")
         div.item: label
           input.dark(type='radio' name='theme' value='dark')
-          span 暗色
+          span(data-i18n="optionsDark")
 
       section.size
-        h3 弹窗大小
+        h3(data-i18n="optionsWindowSize")
         div.item
-          label 宽度
+          label(data-i18n="optionsWidth")
           input.width(type="range" name='width' min=300 max=1200 step=50)
           span.val.width-val 400
           span px
         div.item
-          label 高度
+          label(data-i18n="optionsHeight")
           input.height(type="range" name='height' min=300 max=1000 step=50)
           span.val.height-val 400
           span px
 
     .option-page.option-docs.hidden
-      h2 文档
+      h2(data-i18n="optionsDocs")
       section
-        p 在<a href='http://devdocs.io'>devdocs.io</a>中选择：
+        p(data-i18n="optionsSelectFrom")
         p.arrow ↓
         iframe
 
     .option-page.option-about.hidden
-      h2 关于
+      h2(data-i18n="optionsAbout")
       section
         .oh
           img.fl(src='/images/icon-38.png')
           .fl.about-content
             h3 Quick DevDocs
-            p A third-party extention of DevDocs for Google Chrome.
+            p(data-i18n="optionsAboutDesc")
 
         a(href='mailto:theguidanceofawhitetower@gmail.com?subject=I found a problem in Quick DevDocs...')
-          button.report 报告问题
+          button.report(data-i18n="optionsReport")
 
-        p 版本： 0.1.0
-        p Quick DevDocs is a open-source software hosted on <a href="https://github.com/arianrhodsandlot/Quick-DevDocs">GitHub</a>.
+        p
+          span(data-i18n="optionsVersion")
+          span 0.1.0
+        p(data-i18n="optionsOpenSource")
+
   script(src='/components/jquery.min.js')
+  script(src='/scripts/vendor/chrome-i18n.js')
   script(src='/scripts/options.js')

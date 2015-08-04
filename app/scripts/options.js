@@ -19,6 +19,7 @@ $(function() {
         .removeClass('selected')
 
       switchOptionPage(index)
+      return false
     })
 
   $('.option-docs')
@@ -27,7 +28,7 @@ $(function() {
       return function() {
         if (!$iframe.attr('src')) {
           $iframe.attr('src', 'http://devdocs.io')
-            .load(function() {
+            .ready(function() {
               $('.arrow')
                 .click(function(){
                   $(this).remove()

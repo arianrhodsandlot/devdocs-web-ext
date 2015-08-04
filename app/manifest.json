@@ -1,6 +1,6 @@
 {
   "name": "__MSG_appName__",
-  "version": "0.0.7",
+  "version": "0.1.0",
   "manifest_version": 2,
   "description": "__MSG_appDescription__",
   "icons": {
@@ -33,7 +33,8 @@
   "commands": {
     "_execute_browser_action": {
       "suggested_key": {
-        "default": "Alt+S"
+        "default": "Alt+S",
+        "mac": "Alt+S"
       }
     }
   }

@@ -1,0 +1,70 @@
+{
+  "appName": {
+    "message": "Quick DevDocs"
+  },
+  "appDescription": {
+    "message": "通過一個擴展的彈出視窗來搜索devdocs.io中的文檔！"
+  },
+
+  "readmeTitle": {
+    "message": "感謝安裝Quick DevDocs！"
+  },
+  "readmeP1": {
+    "message": "這個擴展用於彈出一個彈出視窗用來搜索<a href='http://devdocs.io'>DevDocs</a>中的文檔，免去打開單獨頁面的麻煩。"
+  },
+  "readmeP2": {
+    "message": "彈出視窗的預設快速鍵是<kbd>Alt</kbd>+<kbd>S</kbd>，如果希望修改請在Chrome的擴展管理介面（菜单 -> 更多工具 -> 擴充功能）中最下方的「鍵盤快速鍵」處進行設置。"
+  },
+  "readmeP3": {
+    "message": "預設啟用的文檔是CSS、DOM、DOM Events、HTML、HTTP和JavaScript。"
+  },
+  "readmeP4": {
+    "message": "設定需要搜索的其他文檔，比如Node、Python或Angular.js，請在<a href='http://devdocs.io'>devdocs.io</a>中進行勾選。"
+  },
+
+  "optionsTitle": {
+    "message": "選項"
+  },
+  "optionsApparence": {
+    "message": "外觀"
+  },
+  "optionsDocs": {
+    "message": "文檔"
+  },
+  "optionsAbout": {
+    "message": "關於"
+  },
+  "optionsTheme": {
+    "message": "主題"
+  },
+  "optionsLight": {
+    "message": "亮色"
+  },
+  "optionsDark": {
+    "message": "暗色"
+  },
+  "optionsWindowSize": {
+    "message": "視窗大小"
+  },
+  "optionsWidth": {
+    "message": "寬度"
+  },
+  "optionsHeight": {
+    "message": "高度"
+  },
+  "optionsSelectFrom": {
+    "message": "在<a href='http://devdocs.io'>devdocs.io</a>中選擇："
+  },
+  "optionsAboutDesc": {
+    "message": "一個第三方<a href='http://devdocs.io'>DevDocs</a>的Google Chrome擴充功能。"
+  },
+  "optionsReport": {
+    "message": "回報問題"
+  },
+  "optionsVersion": {
+    "message": "版本："
+  },
+  "optionsOpenSource": {
+    "message": "Quick DevDocs是一個開源軟體，其原始程式碼託管于<a href=\"https://github.com/arianrhodsandlot/Quick-DevDocs\">GitHub</a>上。"
+  }
+}

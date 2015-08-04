@@ -1,6 +1,6 @@
 {
   "name": "Quick-DevDocs",
-  "version": "0.0.7",
+  "version": "0.1.0",
   "dependencies": {
     "lodash": "~3.10.0",
     "jquery": "~2.1.4",

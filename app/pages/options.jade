@@ -29,7 +29,7 @@ html
         h3 弹窗大小
         div.item
           label 宽度
-          input.width(type="range" name='width' min=350 max=1000 step=50)
+          input.width(type="range" name='width' min=300 max=1200 step=50)
           span.val.width-val 400
           span px
         div.item
@@ -48,8 +48,16 @@ html
     .option-page.option-about.hidden
       h2 关于
       section
-        p Quick DevDocs
-        button.report 报告问题
+        .oh
+          img.fl(src='/images/icon-38.png')
+          .fl.about-content
+            h3 Quick DevDocs
+            p A third-party extention of DevDocs for Google Chrome.
+
+        a(href='mailto:theguidanceofawhitetower@gmail.com?subject=I found a problem in Quick DevDocs...')
+          button.report 报告问题
+
         p 版本： 0.1.0
+        p Quick DevDocs is a open-source software hosted on <a href="https://github.com/arianrhodsandlot/Quick-DevDocs">GitHub</a>.
   script(src='/components/jquery.min.js')
   script(src='/scripts/options.js')

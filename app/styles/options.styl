@@ -17,6 +17,10 @@ h1, h2 ,h3
   -webkit-user-select none
   font-weight normal
   line-height 1
+.fl
+  float left
+.oh
+  overflow hidden
 .option-navs
   margin 12px 0
   list-style none
@@ -42,7 +46,8 @@ h1, h2 ,h3
 .option-page
   float left
   margin -57px 0 0 0
-  width 738px
+  max-width calc(100% - 180px)
+  width 800px
   & > h2
     border-bottom 1px solid #eee
     margin 0
@@ -64,9 +69,13 @@ h1, h2 ,h3
         margin 0 7px 0 0
       span, label
         vertical-align middle
-      input
+      input[type="range"]
         vertical-align middle
         cursor pointer
+      .width
+        width 9 * 20 px
+      .height
+        width 7 * 20 px
       .val
         margin 0 2px 0 10px
     .reset
@@ -79,3 +88,10 @@ h1, h2 ,h3
     text-shadow 0 0 10px #7BAAF7, 0 0 150px #7BAAF7
     color #7BAAF7
     display none
+
+.option-page
+  .about-content
+    margin 0 0 0 10px
+
+  .report
+    margin 20px 0 10px 0

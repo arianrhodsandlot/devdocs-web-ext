@@ -72,9 +72,4 @@ $(function() {
       return localStorage.getItem(key)
     })
     .trigger('input')
-
-  $('.report')
-    .click(function() {
-      location.href = 'mailto:' + 'theguidanceofawhitetower@gmail.com'
-    })
 })

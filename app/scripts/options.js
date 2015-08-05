@@ -39,7 +39,7 @@ $(function() {
       return function() {
         if (!$iframe.attr('src')) {
           $iframe.attr('src', 'http://devdocs.io')
-            .ready(function() {
+            .load(function() {
               var $arrow = $('.arrow')
               $arrow
                 .click(function() {

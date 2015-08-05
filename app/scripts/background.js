@@ -139,16 +139,12 @@ chrome.cookies.onChanged
 
 
 //open a welcome page after install
-if (!localStorage.getItem('install_time')) {
-  localStorage.setItem('install_time', _.now())
-  chrome.tabs.create({
-    url: 'pages/build/options.html#welcome'
-  })
-}
+if (!localStorage.getItem('install_time') ||
+  !localStorage.getItem('version')) {
 
-//open a welcome page after install
-if (!localStorage.getItem('version')) {
+  localStorage.setItem('install_time', _.now())
   localStorage.setItem('version', '0.1.0')
+
   chrome.tabs.create({
     url: 'pages/build/options.html#welcome'
   })

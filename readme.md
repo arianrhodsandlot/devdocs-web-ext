@@ -12,11 +12,7 @@
 
 ## Screenshots
 
-![](https://lh3.googleusercontent.com/K-Inq-bgerRfTIkyaySBt4bem1w0x4MVgbFuIUNjr165X7_sxBCDJmVt5Wto9MpRhyTMWVthDw=s640-h400-e365-rw)
-
-![](https://lh3.googleusercontent.com/g2EkkUPuOdpxCOiwSjBwjBGD4_U_qO5lYJtsfOtyBj23TmBXCVNIHcSDkUibeiiilL1IinGx2T0=s640-h400-e365-rw)
-
-![](https://lh3.googleusercontent.com/-AiQvSzWJzF4woxZ5los7szKypfh4fTl8kWOFm4U7Ngb39OcFJpOYQiPMB8b1mpK--cF4cAd0p4=s640-h400-e365-rw)
+![](http://i.imgur.com/KiFjEjK.gif)
 
 ## License
 

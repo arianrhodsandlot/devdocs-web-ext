@@ -142,7 +142,15 @@ chrome.cookies.onChanged
 if (!localStorage.getItem('install_time')) {
   localStorage.setItem('install_time', _.now())
   chrome.tabs.create({
-    url: 'pages/build/readme.html'
+    url: 'pages/build/options.html#welcome'
+  })
+}
+
+//open a welcome page after install
+if (!localStorage.getItem('version')) {
+  localStorage.setItem('version', '0.1.0')
+  chrome.tabs.create({
+    url: 'pages/build/options.html#welcome'
   })
 }
 
@@ -151,9 +159,9 @@ if (!localStorage.getItem('theme')) {
 }
 
 if (!localStorage.getItem('width')) {
-  localStorage.setItem('width', 400)
+  localStorage.setItem('width', 600)
 }
 
 if (!localStorage.getItem('height')) {
-  localStorage.setItem('height', 400)
+  localStorage.setItem('height', 600)
 }

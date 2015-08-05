@@ -10,10 +10,20 @@ html
     h1 Quick Devdocs
 
     ul.option-navs
-      li.option-nav.selected: a(href="#" data-i18n="optionsApparence")
-      li.option-nav: a(href="#" data-i18n="optionsDocs")
-      li.option-nav: a(href="#" data-i18n="optionsWelcom")
-      li.option-nav: a(href="#" data-i18n="optionsAbout")
+      li.option-nav.option-welcome: a(href="#welcome" data-i18n="optionsWelcom")
+      li.option-nav.option-apparence.selected: a(href="#apparence" data-i18n="optionsApparence")
+      li.option-nav.option-docs: a(href="#docs" data-i18n="optionsDocs")
+      li.option-nav.option-about: a(href="#about" data-i18n="optionsAbout")
+
+    .option-page.option-welcome.hidden
+      h2(data-i18n="optionsWelcom")
+      .container
+        h3(data-i18n='readmeTitle')
+        .content
+          p.p1(data-i18n='readmeP1')
+          p.p2(data-i18n='readmeP2')
+          p.p3(data-i18n='readmeP3')
+          p.p4(data-i18n='readmeP4')
 
     form.option-page.option-apparence
       h2(data-i18n="optionsApparence")
@@ -45,17 +55,6 @@ html
         p(data-i18n="optionsSelectFrom")
         p.arrow ↓
         .iframe-container: iframe
-
-    .option-page.option-welcome.hidden
-      h2(data-i18n="optionsWelcom")
-
-      .container
-        h3(data-i18n='readmeTitle')
-        .content
-          p.p1(data-i18n='readmeP1')
-          p.p2(data-i18n='readmeP2')
-          p.p3(data-i18n='readmeP3')
-          p.p4(data-i18n='readmeP4')
 
     .option-page.option-about.hidden
       h2(data-i18n="optionsAbout")

@@ -1,33 +1,37 @@
 $(function() {
   var $optionPages = $('.option-page')
+  var $optionNavs = $('.option-nav')
 
   var switchOptionPage = function(index) {
     var $prevPage = $optionPages.not('.hidden')
     var $currentPage = $optionPages.eq(index)
 
+    $optionNavs
+      .removeClass('selected')
+      .eq(index)
+      .addClass('selected')
+
     $prevPage.addClass('hidden')
     $currentPage
       .removeClass('hidden')
       .addClass('showing')
-      .trigger('show')
 
     setTimeout(function() {
-      $currentPage.removeClass('showing')
+      $currentPage
+        .removeClass('showing')
+        .trigger('show')
     }, 100)
   }
 
-  $('.option-navs')
-    .on('click', '.option-nav', function() {
-      var $nav = $(this)
-      var index = $nav.index()
-      $nav
-        .addClass('selected')
-        .siblings()
-        .removeClass('selected')
-
+  $(window)
+    .on('hashchange', function() {
+      var $targetNav = $(location.hash.replace(/#/, '.option-'))
+      var index = $targetNav.index()
+      console.log($targetNav, index)
+      index = index !== -1 ? index : 0
       switchOptionPage(index)
-      return false
     })
+    .trigger('hashchange')
 
   $('.option-docs')
     .on('show', (function() {

@@ -23,7 +23,7 @@
     "default_title": "Quick DevDocs",
     "default_popup": "pages/build/popup.html"
   },
-  "options_page": "pages/build/options.html",
+  "options_page": "pages/build/options.html#apparence",
   "permissions": [
     "cookies",
     "http://devdocs.io/",

@@ -19,7 +19,7 @@
     "message": "預設啟用的文檔是CSS、DOM、DOM Events、HTML、HTTP和JavaScript。"
   },
   "readmeP4": {
-    "message": "設定需要搜索的其他文檔，比如Node、Python或Angular.js，請在<a href='http://devdocs.io'>devdocs.io</a>中進行勾選。"
+    "message": "設定需要搜索的其他文檔，比如Node、Python或Angular.js，請前往请前往<a href='#docs'>文檔選項</a>或<a href='http://devdocs.io'>devdocs.io</a>進行勾選。"
   },
 
   "optionsTitle": {
@@ -30,6 +30,9 @@
   },
   "optionsDocs": {
     "message": "文檔"
+  },
+  "optionsWelcom": {
+    "message": "歡迎"
   },
   "optionsAbout": {
     "message": "關於"

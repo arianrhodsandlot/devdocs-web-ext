@@ -12,6 +12,7 @@ html
     ul.option-navs
       li.option-nav.selected: a(href="#" data-i18n="optionsApparence")
       li.option-nav: a(href="#" data-i18n="optionsDocs")
+      li.option-nav: a(href="#" data-i18n="optionsWelcom")
       li.option-nav: a(href="#" data-i18n="optionsAbout")
 
     form.option-page.option-apparence
@@ -43,7 +44,18 @@ html
       section
         p(data-i18n="optionsSelectFrom")
         p.arrow ↓
-        iframe
+        .iframe-container: iframe
+
+    .option-page.option-welcome.hidden
+      h2(data-i18n="optionsWelcom")
+
+      .container
+        h3(data-i18n='readmeTitle')
+        .content
+          p.p1(data-i18n='readmeP1')
+          p.p2(data-i18n='readmeP2')
+          p.p3(data-i18n='readmeP3')
+          p.p4(data-i18n='readmeP4')
 
     .option-page.option-about.hidden
       h2(data-i18n="optionsAbout")

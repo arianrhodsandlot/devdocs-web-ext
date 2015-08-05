@@ -19,7 +19,7 @@
     "message": "The default enabled documents are CSS, DOM, DOM Events, HTML, HTTP, and JavaScript."
   },
   "readmeP4": {
-    "message": "To select the certain documents you need, like Node, Python or Angular.js, go to <a href='http://devdocs.io'>devdocs.io</a> and check them out."
+    "message": "To select other documents you need, such as Node, Python or Angular.js, go to <a href='#docs'>Docs tab</a> or <a href='http://devdocs.io'>devdocs.io</a> to select them."
   },
 
   "optionsTitle": {
@@ -30,6 +30,9 @@
   },
   "optionsDocs": {
     "message": "Docs"
+  },
+  "optionsWelcom": {
+    "message": "Welcome"
   },
   "optionsAbout": {
     "message": "About"

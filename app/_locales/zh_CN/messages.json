@@ -19,7 +19,7 @@
     "message": "默认启用的文档是CSS、DOM、DOM Events、HTML、HTTP和JavaScript。"
   },
   "readmeP4": {
-    "message": "设定需要搜索的其他文档，比如Node、Python或Angular.js，请在<a href='http://devdocs.io'>devdocs.io</a>中进行勾选。"
+    "message": "设定需要搜索的其他文档，比如Node、Python或Angular.js，请前往<a href='#docs'>文档选项</a>或<a href='http://devdocs.io'>devdocs.io</a>进行勾选。"
   },
 
   "optionsTitle": {
@@ -30,6 +30,9 @@
   },
   "optionsDocs": {
     "message": "文档"
+  },
+  "optionsWelcom": {
+    "message": "欢迎"
   },
   "optionsAbout": {
     "message": "关于"

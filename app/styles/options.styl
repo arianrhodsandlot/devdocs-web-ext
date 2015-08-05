@@ -48,6 +48,14 @@ h1, h2 ,h3
   margin -57px 0 0 0
   max-width calc(100% - 180px)
   width 800px
+  transition all .2s
+  relative left 0
+  opacity 1
+
+  &.showing
+    opacity 0
+    left -10px
+
   & > h2
     border-bottom 1px solid #eee
     margin 0
@@ -84,12 +92,19 @@ h1, h2 ,h3
       margin 10px 0 0 18px
 .option-docs
   .arrow
-    absolute top -130px left 120px
+    absolute top -250px left -80px
     font-size 350px
     line-height 1
     text-shadow 0 0 10px #7BAAF7, 0 0 150px #7BAAF7
     color #7BAAF7
-    display none
+    transition all .3s
+    opacity 0
+    &.showing
+      top -130px
+      opacity 1
+    &.transparent
+      top -130px
+      opacity 0
 
 .option-page
   .about-content

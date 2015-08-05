@@ -1,12 +1,19 @@
 $(function() {
-  var $optionPage = $('.option-page')
+  var $optionPages = $('.option-page')
 
   var switchOptionPage = function(index) {
-    $optionPage
-      .addClass('hidden')
-      .eq(index)
+    var $prevPage = $optionPages.not('.hidden')
+    var $currentPage = $optionPages.eq(index)
+
+    $prevPage.addClass('hidden')
+    $currentPage
       .removeClass('hidden')
+      .addClass('showing')
       .trigger('show')
+
+    setTimeout(function() {
+      $currentPage.removeClass('showing')
+    }, 100)
   }
 
   $('.option-navs')
@@ -29,17 +36,24 @@ $(function() {
         if (!$iframe.attr('src')) {
           $iframe.attr('src', 'http://devdocs.io')
             .ready(function() {
-              $('.arrow')
-                .click(function(){
+              var $arrow = $('.arrow')
+              $arrow
+                .click(function() {
                   $(this).remove()
                 })
-                .css('top', '-400px')
-                .fadeIn(100)
-                .animate({
-                  top: '-130px'
-                }, 300)
-                .delay(2000)
-                .fadeOut(100)
+              setTimeout(function() {
+                $arrow.addClass('showing')
+              }, 500)
+
+              setTimeout(function() {
+                $arrow
+                  .removeClass('showing')
+                  .addClass('transparent')
+              }, 1500)
+
+              setTimeout(function() {
+                $arrow.remove()
+              }, 1800)
             })
         }
       }

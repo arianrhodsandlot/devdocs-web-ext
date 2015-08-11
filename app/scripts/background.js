@@ -1,60 +1,56 @@
 /* global _, chrome */
-var categories
-var entries
-var cache = {}
-
-var getCategories = function(cookies) {
-  var result
-  if (cookies) {
-    result = cookies.split('/')
-  }
-
-  result = result && result.length ?
-    result :
-    ['css', 'dom', 'dom_events', 'html', 'http', 'javascript']
-
-  categories = result
-}
-
-var syncEntries = function() {
-  console.log('selecting these categories...')
-  console.log(categories && categories.join())
-  var promises = _.map(categories, function(category) {
-    var hosts = 'http://maxcdn-docs.devdocs.io'
-    var path = '/' + category + '/index.json'
-    return $.ajax(hosts + path)
-  })
-
-  $.when
-    .apply($, promises)
-    .done(function() {
-      entries = categories.length > 1 ? _(arguments)
-        .map(function(result, index) {
-          return _.map(result[0].entries, function(entry) {
-            return _.extend(entry, {
-              category: categories[index]
-            })
-          })
-        })
-        .flatten()
-        .value() :
-        _.map(arguments[0].entries, function(entry) {
-          return _.extend(entry, {
-            category: categories[0]
-          })
-        })
-      cache = {}
-    })
-}
-
 chrome.cookies.get({
   url: 'http://devdocs.io',
   name: 'docs'
-}, function(docs) {
-  getCategories(docs ? docs.value : '')
+}, function(docsCookies) {
 
-  syncEntries()
+  var getCategoriesFromCookies = function(cookies) {
+    var defaultCategories = ['css', 'dom', 'dom_events', 'html', 'http', 'javascript']
+    return cookies ? cookies.split('/') : defaultCategories
+  }
 
+  var getQueryFromCategory = function(category) {
+    var hosts = 'http://maxcdn-docs.devdocs.io'
+    var path = '/' + category + '/index.json'
+    return $.ajax(hosts + path)
+  }
+
+  var getQueriesFromCategories = _.compose(_.map, getQueryFromCategory)
+
+  var queries = _.compose(getQueriesFromCategories, getCategoriesFromCookies)(docsCookies)
+
+  var getEntries = function() {
+    console.log('selecting these categories...')
+    console.log(categories && categories.join())
+
+    var promises = _.map(categories, )
+
+    $.when
+      .apply($, promises)
+      .done(function() {
+        entries = categories.length > 1 ? _(arguments)
+          .map(function(result, index) {
+            return _.map(result[0].entries, function(entry) {
+              return _.extend(entry, {
+                category: categories[index]
+              })
+            })
+          })
+          .flatten()
+          .value() :
+          _.map(arguments[0].entries, function(entry) {
+            return _.extend(entry, {
+              category: categories[0]
+            })
+          })
+        cache = {}
+      })
+  }
+
+  $.when(queries)
+    .done(function() {
+
+    })
 
   // send search results to popup page
   chrome.runtime.onMessage

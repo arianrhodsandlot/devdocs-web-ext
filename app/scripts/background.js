@@ -3,11 +3,10 @@ chrome.cookies.get({
   url: 'http://devdocs.io',
   name: 'docs'
 }, function(docsCookies) {
-
-  var getCategoriesFromCookies = function(cookies) {
+  var getCategoriesFromCookies = _.memoize(function(cookies) {
     var defaultCategories = ['css', 'dom', 'dom_events', 'html', 'http', 'javascript']
     return cookies ? cookies.split('/') : defaultCategories
-  }
+  })
 
   var getQueryFromCategory = function(category) {
     var hosts = 'http://maxcdn-docs.devdocs.io'
@@ -15,41 +14,39 @@ chrome.cookies.get({
     return $.ajax(hosts + path)
   }
 
-  var getQueriesFromCategories = _.compose(_.map, getQueryFromCategory)
+  var getQueriesFromCategories = _.partial(_.map, _, getQueryFromCategory)
 
-  var queries = _.compose(getQueriesFromCategories, getCategoriesFromCookies)(docsCookies)
+  var getQueriesFromCookies = _.compose(getQueriesFromCategories, getCategoriesFromCookies)
 
-  var getEntries = function() {
-    console.log('selecting these categories...')
-    console.log(categories && categories.join())
-
-    var promises = _.map(categories, )
-
-    $.when
-      .apply($, promises)
-      .done(function() {
-        entries = categories.length > 1 ? _(arguments)
-          .map(function(result, index) {
-            return _.map(result[0].entries, function(entry) {
-              return _.extend(entry, {
-                category: categories[index]
-              })
-            })
-          })
-          .flatten()
-          .value() :
-          _.map(arguments[0].entries, function(entry) {
-            return _.extend(entry, {
-              category: categories[0]
-            })
-          })
-        cache = {}
-      })
+  var getCategory = function(category) {
+    return {
+      category: category
+    }
   }
 
-  $.when(queries)
-    .done(function() {
+  var queries = getQueriesFromCookies(docsCookies)
+  var categories = getCategoriesFromCookies(docsCookies)
+  var queriesWithCategories = _.zip(queries, categories)
 
+  _.map(queriesWithCategories, function(queryWidhCategory) {
+    var query = _.first(queryWidhCategory)
+    var category = _.last(queryWidhCategory)
+
+    query
+      .then(function(res) {
+        var entries = res.entries
+        var getExtendedEntry = _.compose(function(o) {
+          return function(p) {
+            return _.assign(o, p)
+          }
+        }, getCategory)(category)
+        return _.map(entries, getExtendedEntry)
+      })
+  })
+
+  $.when(queries)
+    .then(function(a) {
+      console.log(a)
     })
 
   // send search results to popup page

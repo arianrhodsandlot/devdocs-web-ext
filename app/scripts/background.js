@@ -3,7 +3,7 @@ var categories
 var entries
 var cache = {}
 
-var getCagegories = function(cookies) {
+var getCategories = function(cookies) {
   var result
   if (cookies) {
     result = cookies.split('/')
@@ -51,7 +51,7 @@ chrome.cookies.get({
   url: 'http://devdocs.io',
   name: 'docs'
 }, function(docs) {
-  getCagegories(docs ? docs.value : '')
+  getCategories(docs ? docs.value : '')
 
   syncEntries()
 
@@ -129,7 +129,7 @@ chrome.cookies.onChanged
     try {
       if (changeInfo.cookie.domain === 'devdocs.io' &&
         changeInfo.cookie.name === 'docs') {
-        getCagegories(changeInfo.cookie.value)
+        getCategories(changeInfo.cookie.value)
         syncEntries()
       }
     } catch (e) {

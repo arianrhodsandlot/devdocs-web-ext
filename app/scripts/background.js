@@ -5,115 +5,92 @@ chrome.cookies.get({
 }, function(docsCookies) {
   var getCategoriesFromCookies = _.memoize(function(cookies) {
     var defaultCategories = ['css', 'dom', 'dom_events', 'html', 'http', 'javascript']
-    return cookies ? cookies.split('/') : defaultCategories
+    return _.get(cookies, 'value') ? cookies.value.split('/') : defaultCategories
   })
-
   var getQueryFromCategory = function(category) {
     var hosts = 'http://maxcdn-docs.devdocs.io'
     var path = '/' + category + '/index.json'
     return $.ajax(hosts + path)
   }
-
   var getQueriesFromCategories = _.partial(_.map, _, getQueryFromCategory)
-
   var getQueriesFromCookies = _.compose(getQueriesFromCategories, getCategoriesFromCookies)
-
-  var getCategory = function(category) {
-    return {
-      category: category
-    }
-  }
-
-  var queries = getQueriesFromCookies(docsCookies)
-  var categories = getCategoriesFromCookies(docsCookies)
-  var queriesWithCategories = _.zip(queries, categories)
-
-  _.map(queriesWithCategories, function(queryWidhCategory) {
+  var processPromise = function(queryWidhCategory) {
     var query = _.first(queryWidhCategory)
     var category = _.last(queryWidhCategory)
-
-    query
-      .then(function(res) {
-        var entries = res.entries
-        var getExtendedEntry = _.compose(function(o) {
-          return function(p) {
-            return _.assign(o, p)
-          }
-        }, getCategory)(category)
-        return _.map(entries, getExtendedEntry)
+    var getExtendedEntry = function(entry) {
+      return _.assign(entry, {
+        category: category
       })
-  })
+    }
+    var getEntriesFromRes = function(res) {
+      return _.map(res.entries, getExtendedEntry)
+    }
+    return query.then(getEntriesFromRes)
+  }
+  var queriesWithCategories = _.zip(getQueriesFromCookies(docsCookies),getCategoriesFromCookies(docsCookies))
+  var getChars = function(str) {
+    var words = _.trim(str).toLowerCase().match(/\w+/g)
+    if (!words || words.length === 0) {
+      return ''
+    }
+    return words.join('')
+  }
+  var getRegFromQuery = _.compose(
+    _.partial(RegExp, _, 'i'),
+    _.partial(_.reduce, _, function(prev, current) {
+      return prev + /\.|\(|\)/.test(current) ? '' : (current + '.*')
+    }, '.*')
+  )
 
-  $.when(queries)
-    .then(function(a) {
-      console.log(a)
+  $.when.apply($, _.map(queriesWithCategories, processPromise))
+    .then(function(){
+      return _.flatten(arguments)
     })
+    .then(function(entries) {
+      var search = _.memoize(function(query) {
+        var testName = _.bind(RegExp.prototype.test, getRegFromQuery(query))
 
-  // send search results to popup page
-  chrome.runtime.onMessage
-    .addListener(function(message, sender, sendResponse) {
-      var response
+        var getEntryScore = function(entry) {
+          var name = getChars(entry.name)
+          var fullName = entry.category + name
 
-      var getChars = function(str) {
-        var words
-        str = _.trim(str)
-        words = str.toLowerCase().match(/\w+/g)
-        if (!words || words.length === 0) {
-          return ''
-        }
-        return words.join('')
-      }
-
-      var query = getChars(message)
-
-      if (query === '') {
-        response = []
-      } else if (cache[query]) {
-        response = cache[query]
-      } else {
-        var reg = new RegExp(_.reduce(query, function(prev, current) {
-          if (/\.|\(|\)/.test(current)) {
-            return prev
+          if (name === query) {
+            return 10
+          } else if (fullName === query) {
+            return 9
+          } else if (_.contains(name, query)) {
+            return 8
+          } else if (_.contains(fullName, query)) {
+            return 7
+          } else if (testName(name)) {
+            return 6
+          } else if (testName(fullName)) {
+            return 5
           } else {
-            return prev + current + '.*'
+            return 0
           }
-        }, '.*'), 'i')
-
-        response = _(_.clone(entries, true))
-          .map(function(entry) {
-            entry.query = query
-            return entry
+        }
+        var addEntryScore = function(entry) {
+          return _.assign(entry, {
+            score: getEntryScore(entry)
           })
-          .reject(function(entry) {
-            var name = getChars(entry.name)
-            var category = getChars(entry.category)
+        }
 
-            if (name === entry.query) {
-              entry.score = 10
-              entry.partten = name + ',' + entry.query
-            } else if (name.indexOf(entry.query) > -1) {
-              entry.score = 9
-              entry.partten = name + ',' + entry.query
-            } else if ((category + name).indexOf(entry.query) > -1) {
-              entry.score = 8
-              entry.partten = category + name + ',' + entry.query
-            } else if (reg.test(category + name)) {
-              entry.score = 7
-              entry.partten = reg + ',' + category + name
-            }
+        return _.compose(_.isEmpty, getChars)(query) ?
+          null :
+          _.sortBy(
+            _.filter(
+              _.map(entries, addEntryScore),
+              'score'
+            ),
+            _.partial(_.get, _, 'score')
+          )
+      })
 
-            return _.isUndefined(entry.score)
-          })
-          .value()
-
-        response = _.sortBy(response, function(entry) {
-          return -entry.score
+      chrome.runtime.onMessage
+        .addListener(function(message, sender, sendResponse) {
+          return _.compose(sendResponse, search, getChars)(message)
         })
-
-        cache[query] = response
-      }
-
-      sendResponse(response)
     })
 })
 

@@ -95,10 +95,7 @@ var getSearcher = function(entries) {
       _.sortBy(
         _.filter(
           _.map(entries, addEntryScore),
-          _.compose(
-            _.negate(_.isNaN),
-            getScore
-          )
+          _.compose(_.negate(_.isNaN), getScore)
         ),
         getScore
       )

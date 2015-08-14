@@ -1,15 +1,15 @@
-var gulp = require('gulp')
-var jade = require('gulp-jade')
-var stylus = require('gulp-stylus')
-var nib = require('nib')
+import gulp from 'gulp'
+import jade from 'gulp-jade'
+import stylus from 'gulp-stylus'
+import nib from 'nib'
 
 gulp
-  .task('jade', function() {
+  .task('jade', () => {
     gulp.src('./app/pages/*.jade')
       .pipe(jade())
       .pipe(gulp.dest('./app/pages/build'))
   })
-  .task('stylus', function() {
+  .task('stylus', () => {
     gulp.src('./app/styles/*.styl')
       .pipe(stylus({
         use: nib(),
@@ -18,11 +18,11 @@ gulp
       }))
       .pipe(gulp.dest('./app/styles/build'))
   })
-  .task('watch', function() {
+  .task('watch', () => {
     gulp.watch('./app/pages/*.jade', ['jade'])
     gulp.watch('./app/styles/*.styl', ['stylus'])
   })
-  .task('cp', function() {
+  .task('cp', () => {
     gulp.src([
         './bower_components/backbone/backbone.js',
         './bower_components/jquery/dist/jquery.min.js',
@@ -30,4 +30,4 @@ gulp
       ])
       .pipe(gulp.dest('./app/components'));
   })
-  .task('default', ['jade', 'stylus', 'watch'])
+  .task('default', ['cp', 'jade', 'stylus', 'watch'])

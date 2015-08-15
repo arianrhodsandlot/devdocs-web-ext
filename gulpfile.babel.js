@@ -2,6 +2,7 @@ import gulp from 'gulp'
 import jade from 'gulp-jade'
 import stylus from 'gulp-stylus'
 import nib from 'nib'
+import del from 'del'
 
 gulp
   .task('jade', () => {
@@ -31,3 +32,12 @@ gulp
       .pipe(gulp.dest('./app/components'));
   })
   .task('default', ['cp', 'jade', 'stylus', 'watch'])
+
+gulp
+  .task('pack', () => {
+    del('crx', () => {
+      gulp
+        .src(['./app/**/*', '!./app/**/*.styl', '!./app/**/*.jade'])
+        .pipe(gulp.dest('./crx'))
+    })
+  })

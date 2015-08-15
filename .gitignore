@@ -10,3 +10,4 @@ app/components
 *.sublime-project
 *.pem
 build
+crx

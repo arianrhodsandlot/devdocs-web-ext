@@ -1,9 +1,9 @@
 /* global _, Backbone, chrome */
-$(function() {
-  var Entries = Backbone.Model.extend({
-    fetch: function(query) {
-      var that = this
-      chrome.runtime.sendMessage(query, function(response) {
+$(() => {
+  let Entries = Backbone.Model.extend({
+    fetch: (query) => {
+      let that = this
+      chrome.runtime.sendMessage(query, (response) => {
         that.clear()
         if (response.length) {
           that.set(response)
@@ -11,9 +11,9 @@ $(function() {
       })
     }
   })
-  var entries = new Entries()
+  let entries = new Entries()
 
-  var Content = Backbone.Model.extend({
+  let Content = Backbone.Model.extend({
     defaults: {
       domain: 'maxcdn-docs.devdocs.io',
       category: '',
@@ -21,9 +21,9 @@ $(function() {
       hash: ''
     }
   })
-  var content = new Content()
+  let content = new Content()
 
-  var AppView = Backbone.View.extend({
+  let AppView = Backbone.View.extend({
     el: 'body',
     model: entries,
     events: {
@@ -31,33 +31,33 @@ $(function() {
       'keydown .input': 'completeCategory',
       'keydown': 'pick'
     },
-    initialize: function() {
+    initialize: () => {
       this.$input = $('.input')
       this.$results = $('.results')
       this.$splash = $('.splash')
       this.$content = $('.content')
     },
-    search: _.debounce(function() {
-      var query = this.$input.val()
+    search: _.debounce(() => {
+      let query = this.$input.val()
 
       this.model.fetch(query)
     }, 200),
-    completeCategory: function(e) { //to do
+    completeCategory: (e) => { //to do
       return e.which !== 9
     },
-    pick: function(e) {
-      var keyCodes = {
+    pick: (e) => {
+      let keyCodes = {
         up: 38,
         down: 40,
         enter: 13,
         esc: 27
       }
 
-      var $focusResult = this.$results.find('.focus')
-      var $firstResult = this.$results.find('.result:first')
-      var $lastResult = this.$results.find('.result:last')
-      var $nextResult = $focusResult.next()
-      var $prevResult = $focusResult.prev()
+      let $focusResult = this.$results.find('.focus')
+      let $firstResult = this.$results.find('.result:first')
+      let $lastResult = this.$results.find('.result:last')
+      let $nextResult = $focusResult.next()
+      let $prevResult = $focusResult.prev()
 
       $nextResult = $nextResult.get(0) ? $nextResult : $firstResult
       $prevResult = $prevResult.get(0) ? $prevResult : $lastResult
@@ -87,7 +87,7 @@ $(function() {
     }
   })
 
-  var ResultsView = Backbone.View.extend({
+  let ResultsView = Backbone.View.extend({
     el: '.results',
     template: _.template($('.result-template').html()),
     model: entries,
@@ -96,13 +96,13 @@ $(function() {
       'mouseenter .result': 'highlight',
       'mouseleave .result': 'unhighlight'
     },
-    initialize: function() {
+    initialize: () => {
       this.$splash = $('.splash')
       this.$content = $('.content')
       this.listenTo(this.model, 'change', this.render)
     },
-    render: function() {
-      var html = _.trim(this.template(this.model.attributes))
+    render: () => {
+      let html = _.trim(this.template(this.model.attributes))
       this.$el.html(html)
       this.$content.addClass('hidden').empty()
       content
@@ -119,12 +119,12 @@ $(function() {
         this.$splash.removeClass('hidden')
       }
     },
-    open: function() {
-      var $target = this.$el.find('.focus')
-      var pathAndHash = $target.data('path').split('#')
-      var category = $target.data('category')
-      var path = pathAndHash[0]
-      var hash = pathAndHash[1]
+    open: () => {
+      let $target = this.$el.find('.focus')
+      let pathAndHash = $target.data('path').split('#')
+      let category = $target.data('category')
+      let path = pathAndHash[0]
+      let hash = pathAndHash[1]
       hash = hash ? '#' + hash : ''
 
       this.$el.addClass('hidden')
@@ -138,37 +138,37 @@ $(function() {
           })
       }
     },
-    highlight: function(e) {
+    highlight: (e) => {
       $(e.target)
         .addClass('focus')
         .siblings()
         .removeClass('focus')
     },
-    unhighlight: function(e) {
+    unhighlight: (e) => {
       $(e.target).removeClass('focus')
     }
   })
 
-  var ContentView = Backbone.View.extend({
+  let ContentView = Backbone.View.extend({
     el: '.content',
     model: content,
     events: {
       'click a': 'redirect'
     },
-    initialize: function() {
+    initialize: () => {
       this.listenTo(this.model, 'change', this.render)
     },
-    render: function() {
-      var contentUrl = 'http://<%= obj.domain %>/<%= obj.category %>/<%= obj.path %>.html#<%= obj.hash %>'
-      var hash = this.model.get('hash')
-      var $content = this.$el
-      var category = this.model.get('category')
+    render: () => {
+      let contentUrl = 'http://<%= obj.domain %>/<%= obj.category %>/<%= obj.path %>.html#<%= obj.hash %>'
+      let hash = this.model.get('hash')
+      let $content = this.$el
+      let category = this.model.get('category')
 
       if (!category) {
         return
       }
 
-      var newClass = 'content _'
+      let newClass = 'content _'
       if (category === 'backbone') {
         newClass += 'underscore'
       } else {
@@ -180,13 +180,13 @@ $(function() {
         .html('<div class="loading-text _splash-title">Loading...</div>')
 
       $.ajax(_.template(contentUrl)(this.model.attributes))
-        .done(function(html) {
+        .done((html) => {
           $content.html(html)
-          _.defer(function() {
+          _.defer(() => {
             $content
               .scrollTop(0)
-              .scrollTop(function() {
-                var $target = $content.find(
+              .scrollTop(() => {
+                let $target = $content.find(
                   _.contains(hash, '.') ?
                   '[id="' + hash.slice(1) + '"]' :
                   hash
@@ -201,20 +201,20 @@ $(function() {
             //remove demos in jQuery documents
             $content
               .find('h4')
-              .filter(function() {
+              .filter(() => {
                 return $(this).html() === 'Demo:'
               })
               .remove()
           })
         })
-        .fail(function() {
+        .fail(() => {
           $content.html('<div class="loading-text">Connect failed...</div>')
         })
     },
-    redirect: function(e) {
-      var href = $(e.target).attr('href')
-      var path = href.split('#')[0]
-      var hash = href.split('#')[1]
+    redirect: (e) => {
+      let href = $(e.target).attr('href')
+      let path = href.split('#')[0]
+      let hash = href.split('#')[1]
 
       hash = hash ? hash : ''
 
@@ -230,11 +230,11 @@ $(function() {
     }
   })
 
-  var appView = new AppView()
-  var resultsView = new ResultsView()
-  var contentView = new ContentView()
+  let appView = new AppView()
+  let resultsView = new ResultsView()
+  let contentView = new ContentView()
 
-  var app = {
+  let app = {
     entries: entries,
     content: content,
     appView: appView,
@@ -253,7 +253,7 @@ $(function() {
     .addClass(localStorage.getItem('theme'))
 
   $('#' + localStorage.getItem('theme'))
-    .attr('href', function() {
+    .attr('href', () => {
       return $(this).data('href')
     })
 })

@@ -22,16 +22,14 @@ gulp
       .pipe(gulp.dest('./app/styles/build'))
   })
   .task('babel', function() {
-    gulp.src(['./app/scripts/*.js', './app/scripts/*.jsx'])
+    gulp.src('./app/scripts/*.js?(x)')
       .pipe(babel())
-      .pipe(uglify())
       .pipe(gulp.dest('./app/scripts/build'));
   })
   .task('watch', () => {
     gulp.watch('./app/pages/*.jade', ['jade'])
     gulp.watch('./app/styles/*.styl', ['stylus'])
-    gulp.watch('./app/styles/*.js', ['babel'])
-    gulp.watch('./app/styles/*.jsx', ['babel'])
+    gulp.watch('./app/scripts/*.js?(x)', ['babel'])
   })
   .task('cp', () => {
     gulp.src([

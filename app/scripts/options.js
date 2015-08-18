@@ -1,10 +1,10 @@
-$(function() {
-  var $optionPages = $('.option-page')
-  var $optionNavs = $('.option-nav')
+$(() => {
+  let $optionPages = $('.option-page')
+  let $optionNavs = $('.option-nav')
 
-  var switchOptionPage = function(index) {
-    var $prevPage = $optionPages.not('.hidden')
-    var $currentPage = $optionPages.eq(index)
+  let switchOptionPage = (index) => {
+    let $prevPage = $optionPages.not('.hidden')
+    let $currentPage = $optionPages.eq(index)
 
     $optionNavs
       .removeClass('selected')
@@ -16,7 +16,7 @@ $(function() {
       .removeClass('hidden')
       .addClass('showing')
 
-    setTimeout(function() {
+    setTimeout(() => {
       $currentPage
         .removeClass('showing')
         .trigger('show')
@@ -24,9 +24,9 @@ $(function() {
   }
 
   $(window)
-    .on('hashchange', function() {
-      var $targetNav = $(location.hash.replace(/#/, '.option-'))
-      var index = $targetNav.index()
+    .on('hashchange', () => {
+      let $targetNav = $(location.hash.replace(/#/, '.option-'))
+      let index = $targetNav.index()
       console.log($targetNav, index)
       index = index !== -1 ? index : 0
       switchOptionPage(index)
@@ -34,28 +34,28 @@ $(function() {
     .trigger('hashchange')
 
   $('.option-docs')
-    .on('show', (function() {
-      var $iframe = $('.option-docs iframe')
-      return function() {
+    .on('show', (() => {
+      let $iframe = $('.option-docs iframe')
+      return () => {
         if (!$iframe.attr('src')) {
           $iframe.attr('src', 'http://devdocs.io')
-            .load(function() {
-              var $arrow = $('.arrow')
+            .load(() => {
+              let $arrow = $('.arrow')
               $arrow
-                .click(function() {
+                .click(() => {
                   $(this).remove()
                 })
-              setTimeout(function() {
+              setTimeout(() => {
                 $arrow.addClass('showing')
               }, 500)
 
-              setTimeout(function() {
+              setTimeout(() => {
                 $arrow
                   .removeClass('showing')
                   .addClass('transparent')
               }, 1500)
 
-              setTimeout(function() {
+              setTimeout(() => {
                 $arrow.remove()
               }, 1800)
             })
@@ -64,30 +64,30 @@ $(function() {
     })())
 
   $('.theme')
-    .on('change', 'input', function() {
-      var $themeInput = $(this)
+    .on('change', 'input', () => {
+      let $themeInput = $(this)
       localStorage.setItem('theme', $themeInput.val())
     })
     .find('.' + localStorage.getItem('theme'))
     .prop('checked', true)
 
   $('.size')
-    .on('input', '.width', function() {
-      var $width = $(this)
-      var width = $width.val()
+    .on('input', '.width', () => {
+      let $width = $(this)
+      let width = $width.val()
       $width.next().html(width)
       localStorage.setItem('width', width)
     })
-    .on('input', '.height', function() {
-      var $height = $(this)
-      var height = $height.val()
+    .on('input', '.height', () => {
+      let $height = $(this)
+      let height = $height.val()
       $height.next().html(height)
       localStorage.setItem('height', height)
     })
     .find('input')
-    .val(function() {
-      var $size = $(this)
-      var key = $size.attr('name')
+    .val(() => {
+      let $size = $(this)
+      let key = $size.attr('name')
       return localStorage.getItem(key)
     })
     .trigger('input')

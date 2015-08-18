@@ -25,9 +25,9 @@ gulp
   })
   .task('cp', () => {
     gulp.src([
-        './bower_components/backbone/backbone.js',
-        './bower_components/jquery/dist/jquery.min.js',
-        './bower_components/lodash/lodash.min.js'
+        './node_modules/backbone/backbone.min.js',
+        './node_modules/jquery/dist/jquery.min.js',
+        './node_modules/lodash/lodash.min.js'
       ])
       .pipe(gulp.dest('./app/components'));
   })

@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "backbone": "^1.2.1",
+    "backbone": "^1.2.2",
     "jquery": "^2.1.4",
     "lodash": "^3.10.1"
   },

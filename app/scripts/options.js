@@ -39,26 +39,6 @@ $(() => {
       return () => {
         if (!$iframe.attr('src')) {
           $iframe.attr('src', 'http://devdocs.io')
-            .load(() => {
-              let $arrow = $('.arrow')
-              $arrow
-                .click(() => {
-                  $(this).remove()
-                })
-              setTimeout(() => {
-                $arrow.addClass('showing')
-              }, 500)
-
-              setTimeout(() => {
-                $arrow
-                  .removeClass('showing')
-                  .addClass('transparent')
-              }, 1500)
-
-              setTimeout(() => {
-                $arrow.remove()
-              }, 1800)
-            })
         }
       }
     })())

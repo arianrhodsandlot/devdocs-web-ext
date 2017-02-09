@@ -106,7 +106,7 @@ let getmsghandler = function(searcher) {
   return function(message, sender, sendResponse) {
     console.log('msg is coming')
     const response = _.compose(searcher, getChars)(message)
-    return sendResponse(response.slice(0, 100))
+    return sendResponse(response ? response.slice(0, 100) : response)
   }
 }
 let getpromises = function(cookie) {
@@ -129,15 +129,15 @@ chrome.cookies.get({
   listenpromise = startlisten(cookie)
 })
 
-chrome.cookies.onChanged.addListener(_.debounce(function(changeInfo) {
+chrome.cookies.onChanged.addListener((function(changeInfo) {
   let cookie = changeInfo.cookie
   if (cookie.name !== 'docs') return
-  if (_.includes(['devdocs.io', '.devdocs.io'], cookie.domain)) return
+  if (!_.includes(['devdocs.io', '.devdocs.io'], cookie.domain)) return
 
   console.log('Cookie is changed to ' + cookie.value + '!')
   listenpromise.then(_.bind(chrome.runtime.onMessage.removeListener, chrome.runtime.onMessage))
   listenpromise = startlisten(cookie)
-}, 500))
+}))
 
 //open a welcome page after install
 if (_.any([localStorage.install_time, localStorage.version], _.isUndefined)) {

@@ -26,7 +26,8 @@
   "options_page": "pages/build/options.html#apparence",
   "permissions": [
     "cookies",
-    "http://devdocs.io/",
+    "*://devdocs.io/",
+    "*://*.devdocs.io",
     "http://maxcdn-docs.devdocs.io/"
   ],
   "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",

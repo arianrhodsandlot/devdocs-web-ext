@@ -105,7 +105,8 @@ let getSearcher = function(entries) {
 let getmsghandler = function(searcher) {
   return function(message, sender, sendResponse) {
     console.log('msg is coming')
-    return _.compose(sendResponse, searcher, getChars)(message)
+    const response = _.compose(searcher, getChars)(message)
+    return sendResponse(response.slice(0, 100))
   }
 }
 let getpromises = function(cookie) {

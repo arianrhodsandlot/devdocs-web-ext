@@ -1,12 +1,11 @@
 /* global _, Backbone, chrome */
-$(() => {
+$(function () {
   let Entries = Backbone.Model.extend({
-    fetch: (query) => {
-      let that = this
+    fetch (query) {
       chrome.runtime.sendMessage(query, (response) => {
-        that.clear()
+        this.clear()
         if (response.length) {
-          that.set(response)
+          this.set(response)
         }
       })
     }
@@ -31,21 +30,21 @@ $(() => {
       'keydown .input': 'completeCategory',
       'keydown': 'pick'
     },
-    initialize: () => {
+    initialize () {
       this.$input = $('.input')
       this.$results = $('.results')
       this.$splash = $('.splash')
       this.$content = $('.content')
     },
-    search: _.debounce(() => {
+    search: _.debounce(function () {
       let query = this.$input.val()
 
       this.model.fetch(query)
     }, 200),
-    completeCategory: (e) => { //to do
+    completeCategory (e) { //to do
       return e.which !== 9
     },
-    pick: (e) => {
+    pick (e) {
       let keyCodes = {
         up: 38,
         down: 40,
@@ -96,12 +95,12 @@ $(() => {
       'mouseenter .result': 'highlight',
       'mouseleave .result': 'unhighlight'
     },
-    initialize: () => {
+    initialize () {
       this.$splash = $('.splash')
       this.$content = $('.content')
       this.listenTo(this.model, 'change', this.render)
     },
-    render: () => {
+    render () {
       let html = _.trim(this.template(this.model.attributes))
       this.$el.html(html)
       this.$content.addClass('hidden').empty()
@@ -119,7 +118,7 @@ $(() => {
         this.$splash.removeClass('hidden')
       }
     },
-    open: () => {
+    open () {
       let $target = this.$el.find('.focus')
       let pathAndHash = $target.data('path').split('#')
       let category = $target.data('category')
@@ -155,10 +154,10 @@ $(() => {
     events: {
       'click a': 'redirect'
     },
-    initialize: () => {
+    initialize () {
       this.listenTo(this.model, 'change', this.render)
     },
-    render: () => {
+    render () {
       let contentUrl = 'http://<%= obj.domain %>/<%= obj.category %>/<%= obj.path %>.html#<%= obj.hash %>'
       let hash = this.model.get('hash')
       let $content = this.$el
@@ -182,10 +181,10 @@ $(() => {
       $.ajax(_.template(contentUrl)(this.model.attributes))
         .done((html) => {
           $content.html(html)
-          _.defer(() => {
+          _.defer(function () {
             $content
               .scrollTop(0)
-              .scrollTop(() => {
+              .scrollTop(function () {
                 let $target = $content.find(
                   _.contains(hash, '.') ?
                   '[id="' + hash.slice(1) + '"]' :
@@ -201,7 +200,7 @@ $(() => {
             //remove demos in jQuery documents
             $content
               .find('h4')
-              .filter(() => {
+              .filter(function () {
                 return $(this).html() === 'Demo:'
               })
               .remove()
@@ -253,7 +252,7 @@ $(() => {
     .addClass(localStorage.getItem('theme'))
 
   $('#' + localStorage.getItem('theme'))
-    .attr('href', () => {
+    .attr('href', function () {
       return $(this).data('href')
     })
 })

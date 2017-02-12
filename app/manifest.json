@@ -10,8 +10,8 @@
   "default_locale": "en",
   "background": {
     "scripts": [
-      "/components/jquery.min.js",
-      "/components/lodash.min.js",
+      "/vendor/jquery.min.js",
+      "/vendor/lodash.min.js",
       "scripts/background.js"
     ]
   },
@@ -21,9 +21,9 @@
       "38": "images/icon-38.png"
     },
     "default_title": "Quick DevDocs",
-    "default_popup": "pages/build/popup.html"
+    "default_popup": "pages/popup.html"
   },
-  "options_page": "pages/build/options.html#apparence",
+  "options_page": "pages/options.html#apparence",
   "permissions": [
     "cookies",
     "*://devdocs.io/",
@@ -34,8 +34,7 @@
   "commands": {
     "_execute_browser_action": {
       "suggested_key": {
-        "default": "Alt+S",
-        "mac": "Alt+S"
+        "default": "Alt+S"
       }
     }
   }

@@ -1,4 +1,4 @@
-$(() => {
+$(function () {
   let $optionPages = $('.option-page')
   let $optionNavs = $('.option-nav')
 
@@ -16,7 +16,7 @@ $(() => {
       .removeClass('hidden')
       .addClass('showing')
 
-    setTimeout(() => {
+    setTimeout(function () {
       $currentPage
         .removeClass('showing')
         .trigger('show')
@@ -24,19 +24,18 @@ $(() => {
   }
 
   $(window)
-    .on('hashchange', () => {
+    .on('hashchange', function () {
       let $targetNav = $(location.hash.replace(/#/, '.option-'))
       let index = $targetNav.index()
-      console.log($targetNav, index)
       index = index !== -1 ? index : 0
       switchOptionPage(index)
     })
     .trigger('hashchange')
 
   $('.option-docs')
-    .on('show', (() => {
+    .on('show', (function () {
       let $iframe = $('.option-docs iframe')
-      return () => {
+      return function () {
         if (!$iframe.attr('src')) {
           $iframe.attr('src', 'http://devdocs.io')
         }
@@ -44,7 +43,7 @@ $(() => {
     })())
 
   $('.theme')
-    .on('change', 'input', () => {
+    .on('change', 'input', function () {
       let $themeInput = $(this)
       localStorage.setItem('theme', $themeInput.val())
     })
@@ -52,20 +51,20 @@ $(() => {
     .prop('checked', true)
 
   $('.size')
-    .on('input', '.width', () => {
+    .on('input', '.width', function () {
       let $width = $(this)
       let width = $width.val()
       $width.next().html(width)
       localStorage.setItem('width', width)
     })
-    .on('input', '.height', () => {
+    .on('input', '.height', function () {
       let $height = $(this)
       let height = $height.val()
       $height.next().html(height)
       localStorage.setItem('height', height)
     })
     .find('input')
-    .val(() => {
+    .val(function () {
       let $size = $(this)
       let key = $size.attr('name')
       return localStorage.getItem(key)

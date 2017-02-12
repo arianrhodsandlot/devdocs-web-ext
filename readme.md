@@ -7,9 +7,7 @@
 
 ## Install
 
-+ Visit [Chrome Web Store](https://chrome.google.com/webstore/detail/quick-devdocs/kdjoccdpjblcefijcfhnjoljodddedpj) to install it.
-+ Or visit [release page](https://github.com/arianrhodsandlot/Quick-DevDocs/releases) to download the crx file directly, then drag it to your Chrome extension page.
-+ Or build from source in this repository. Run `gulp pack`, then use Chrome to create a crx file from the directory called `crx`, which is generated just now.
+Visit [Chrome Web Store](https://chrome.google.com/webstore/detail/quick-devdocs/kdjoccdpjblcefijcfhnjoljodddedpj) to install it.
 
 ## Screenshots
 

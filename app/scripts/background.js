@@ -142,12 +142,12 @@ chrome.cookies.onChanged.addListener((function(changeInfo) {
 //open a welcome page after install
 if (_.any([localStorage.install_time, localStorage.version], _.isUndefined)) {
   chrome.tabs.create({
-    url: 'pages/build/options.html#welcome'
+    url: 'pages/options.html#welcome'
   })
 }
 
 _.assign(localStorage, {
-  version: '0.1.3',
+  version: '0.1.4',
   install_time: _.now(),
   theme: 'light',
   width: 600,

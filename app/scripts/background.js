@@ -147,7 +147,7 @@ if (_.any([localStorage.install_time, localStorage.version], _.isUndefined)) {
 }
 
 _.assign(localStorage, {
-  version: '0.1.2',
+  version: '0.1.3',
   install_time: _.now(),
   theme: 'light',
   width: 600,

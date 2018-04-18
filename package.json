@@ -1,0 +1,37 @@
+{
+  "name": "quick-devdocs",
+  "version": "1.0.0",
+  "description": "## Overview [DevDocs](https://github.com/Thibaut/devdocs) is a great online documentations web app. However, sometimes you just want to simply look up a simple method without leaving the website you are currently reading to check out it intensively.",
+  "main": "index.js",
+  "dependencies": {
+    "babel-loader": "^7.1.4",
+    "buble": "^0.19.3",
+    "concurrently": "^3.5.1",
+    "css-loader": "^0.28.11",
+    "extract-loader": "^2.0.1",
+    "file-loader": "^1.1.11",
+    "html-loader": "^0.5.5",
+    "html-webpack-plugin": "^3.2.0",
+    "parcel-bundler": "^1.7.1",
+    "style-loader": "^0.20.3",
+    "url-loader": "^1.0.1",
+    "web-ext": "^2.6.0",
+    "webpack": "^4.6.0",
+    "webpack-cli": "^2.0.14"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "concurrently 'webpack -w' 'web-ext run -s extension --verbose'",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arianrhodsandlot/Quick-DevDocs.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/arianrhodsandlot/Quick-DevDocs/issues"
+  },
+  "homepage": "https://github.com/arianrhodsandlot/Quick-DevDocs#readme"
+}

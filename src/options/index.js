@@ -1,3 +1,6 @@
+import $ from 'jquery'
+import './chrome-i18n'
+
 $(function () {
   let $optionPages = $('.option-page')
   let $optionNavs = $('.option-nav')
@@ -37,7 +40,7 @@ $(function () {
       let $iframe = $('.option-docs iframe')
       return function () {
         if (!$iframe.attr('src')) {
-          $iframe.attr('src', 'http://devdocs.io')
+          $iframe.attr('src', 'https://devdocs.io/settings')
         }
       }
     })())

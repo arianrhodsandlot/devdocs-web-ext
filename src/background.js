@@ -1,4 +1,6 @@
-/* global _, chrome */
+import _ from 'lodash'
+import $ from 'jquery'
+window.$ = $
 let log = function(msg) {
   return function(x) {
     console.log(msg)
@@ -16,7 +18,8 @@ let getQueryFromCategory = function(category) {
   let path = '/' + category + '/index.json'
   return $.ajax(hosts + path)
 }
-let getQueriesFromCookie = _.compose(
+
+let getQueriesFromCookie = _.flowRight(
   log('Fetching documents\'s entries...'),
   _.partial(_.map, _, getQueryFromCategory),
   getCategoriesFromCookie
@@ -26,7 +29,8 @@ let processPromise = function(queryWidhCategory) {
   let category = _.last(queryWidhCategory)
   let getExtendedEntry = function(entry) {
     return _.assign(entry, {
-      category: category
+      category: category,
+      version: category.includes('~') ? category.split('~')[1] : ''
     })
   }
   let getEntriesFromRes = function(res) {
@@ -49,7 +53,7 @@ let getChars = function(str) {
   }
   return words.join('')
 }
-let getRegFromQuery = _.compose(
+let getRegFromQuery = _.flowRight(
   _.partial(RegExp, _, 'i'),
   _.partial(_.reduce, _, function(prev, current) {
     return prev + (
@@ -68,9 +72,9 @@ let getEntryScore = function(entry, query) {
     return 0
   } else if (fullName === query) {
     return 1
-  } else if (_.contains(name, query)) {
+  } else if (_.includes(name, query)) {
     return 2
-  } else if (_.contains(fullName, query)) {
+  } else if (_.includes(fullName, query)) {
     return 3
   } else if (testName(name)) {
     return 4
@@ -90,12 +94,12 @@ let getSearcher = function(entries) {
         score: getEntryScore(entry, query)
       })
     }
-    return _.compose(_.isEmpty, getChars)(query) ?
+    return _.flowRight(_.isEmpty, getChars)(query) ?
       null :
       _.sortBy(
         _.filter(
           _.map(entries, addEntryScore),
-          _.compose(_.negate(_.isNaN), getScore)
+          _.flowRight(_.negate(_.isNaN), getScore)
         ),
         getScore
       )
@@ -105,7 +109,7 @@ let getSearcher = function(entries) {
 let getmsghandler = function(searcher) {
   return function(message, sender, sendResponse) {
     console.log('msg is coming')
-    const response = _.compose(searcher, getChars)(message)
+    const response = _.flowRight(searcher, getChars)(message)
     return sendResponse(response ? response.slice(0, 100) : response)
   }
 }
@@ -114,7 +118,7 @@ let getpromises = function(cookie) {
 }
 let startlisten = function(cookie) {
   return $.when.apply($, getpromises(cookie)).then(function() {
-    let listener = _.compose(getmsghandler, getSearcher, _.flatten)(arguments)
+    let listener = _.flowRight(getmsghandler, getSearcher, _.flatten)(arguments)
     chrome.runtime.onMessage.addListener(listener)
     return listener
   })
@@ -140,14 +144,14 @@ chrome.cookies.onChanged.addListener((function(changeInfo) {
 }))
 
 //open a welcome page after install
-if (_.any([localStorage.install_time, localStorage.version], _.isUndefined)) {
+if (_.some([localStorage.install_time, localStorage.version], _.isUndefined)) {
   chrome.tabs.create({
-    url: 'pages/options.html#welcome'
+    url: 'dist/options.html#welcome'
   })
 }
 
 _.assign(localStorage, {
-  version: '0.1.4',
+  version: '0.1.5',
   install_time: _.now(),
   theme: 'light',
   width: 600,

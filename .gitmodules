@@ -1,0 +1,3 @@
+[submodule "vendor/devdocs"]
+	path = vendor/devdocs
+	url = https://github.com/freeCodeCamp/devdocs.git

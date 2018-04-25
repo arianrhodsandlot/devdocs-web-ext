@@ -11,3 +11,4 @@ app/components
 *.pem
 build
 crx
+extension/dist/

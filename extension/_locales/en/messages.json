@@ -1,13 +1,13 @@
 {
   "appName": {
-    "message": "Quick DevDocs"
+    "message": "DevDocs Web Ext"
   },
   "appDescription": {
     "message": "Find documents in devdocs.io with a popup window from a Chrome Extension!"
   },
 
   "readmeTitle": {
-    "message": "Thanks for installing Quick DevDocs!"
+    "message": "Thanks for installing DevDocs Web Ext!"
   },
   "readmeP1": {
     "message": "This extension is used for showing up a popup window for searching documents in <a href='http://devdocs.io'>DevDocs</a>, to avoid opening a single browser tab."
@@ -68,6 +68,6 @@
     "message": "version: "
   },
   "optionsOpenSource": {
-    "message": "Quick DevDocs is an open-source software, hosted on <a href=\"https://github.com/arianrhodsandlot/Quick-DevDocs\">GitHub</a>."
+    "message": "DevDocs Web Ext is an open-source software, hosted on <a href=\"https://github.com/arianrhodsandlot/Quick-DevDocs\">GitHub</a>."
   }
 }

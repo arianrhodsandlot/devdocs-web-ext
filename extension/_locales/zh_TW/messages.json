@@ -1,13 +1,13 @@
 {
   "appName": {
-    "message": "Quick DevDocs"
+    "message": "DevDocs Web Ext"
   },
   "appDescription": {
     "message": "通過一個擴展的彈出視窗來搜索devdocs.io中的文檔！"
   },
 
   "readmeTitle": {
-    "message": "感謝安裝Quick DevDocs！"
+    "message": "感謝安裝DevDocs Web Ext！"
   },
   "readmeP1": {
     "message": "這個擴展用於彈出一個彈出視窗用來搜索<a href='http://devdocs.io'>DevDocs</a>中的文檔，免去打開單獨頁面的麻煩。"
@@ -68,6 +68,6 @@
     "message": "版本："
   },
   "optionsOpenSource": {
-    "message": "Quick DevDocs是一個開源軟體，其原始程式碼託管于<a href=\"https://github.com/arianrhodsandlot/Quick-DevDocs\">GitHub</a>上。"
+    "message": "DevDocs Web Ext是一個開源軟體，其原始程式碼託管于<a href=\"https://github.com/arianrhodsandlot/Quick-DevDocs\">GitHub</a>上。"
   }
 }

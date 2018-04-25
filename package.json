@@ -1,19 +1,26 @@
 {
-  "name": "quick-devdocs",
-  "version": "1.0.0",
-  "description": "## Overview [DevDocs](https://github.com/Thibaut/devdocs) is a great online documentations web app. However, sometimes you just want to simply look up a simple method without leaving the website you are currently reading to check out it intensively.",
+  "name": "devdocs-web-ext",
+  "version": "0.1.5",
+  "description": "Find documents in devdocs.io with a popup window from a Chrome Extension!",
   "main": "index.js",
   "dependencies": {
-    "babel-loader": "^7.1.4",
-    "buble": "^0.19.3",
+    "@babel/core": "^7.0.0-beta.46",
+    "@babel/preset-env": "^7.0.0-beta.46",
+    "babel-loader": "^8.0.0-beta.2",
+    "compass-mixins": "^0.12.10",
     "concurrently": "^3.5.1",
     "css-loader": "^0.28.11",
-    "extract-loader": "^2.0.1",
+    "extract-text-webpack-plugin": "^4.0.0-beta.0",
     "file-loader": "^1.1.11",
-    "html-loader": "^0.5.5",
     "html-webpack-plugin": "^3.2.0",
-    "parcel-bundler": "^1.7.1",
+    "jquery": "^3.3.1",
+    "node-sass": "^4.8.3",
+    "pug": "^2.0.3",
+    "pug-loader": "^2.4.0",
+    "sass-loader": "^7.0.1",
     "style-loader": "^0.20.3",
+    "svelte": "^2.1.1",
+    "svelte-loader": "^2.8.1",
     "url-loader": "^1.0.1",
     "web-ext": "^2.6.0",
     "webpack": "^4.6.0",
@@ -21,8 +28,9 @@
   },
   "devDependencies": {},
   "scripts": {
-    "start": "concurrently 'webpack -w' 'web-ext run -s extension --verbose'",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "concurrently 'webpack -w' 'web-ext run -s extension'",
+    "build": "webpack -p && web-ext build -s extension -a artifacts -o",
+    "test": "web-ext lint -s extension"
   },
   "repository": {
     "type": "git",
@@ -33,5 +41,23 @@
   "bugs": {
     "url": "https://github.com/arianrhodsandlot/Quick-DevDocs/issues"
   },
-  "homepage": "https://github.com/arianrhodsandlot/Quick-DevDocs#readme"
+  "homepage": "https://github.com/arianrhodsandlot/Quick-DevDocs#readme",
+  "babel": {
+    "presets": [
+      [
+        "@babel/preset-env",
+        {
+          "targets": {
+            "browsers": [
+              "last 2 versions",
+              "> 1%"
+            ]
+          }
+        }
+      ]
+    ],
+    "plugins": [
+      "syntax-dynamic-import"
+    ]
+  }
 }

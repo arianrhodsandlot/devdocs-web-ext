@@ -1,0 +1,15 @@
+doctype html
+html._mobile
+  head
+    meta(charset="utf-8")
+    title popup
+    each css in htmlWebpackPlugin.files.css
+      if css.includes('devdocs')
+        link(data-href=css rel='stylesheet')
+      else
+        link(href=css rel='stylesheet')
+  body._native-scrollbars
+    ._app
+    each chunk in htmlWebpackPlugin.files.chunks
+      if chunk.entry.endsWith('-js.js')
+        script(src=chunk.entry)

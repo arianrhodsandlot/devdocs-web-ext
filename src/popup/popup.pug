@@ -11,5 +11,5 @@ html._mobile
   body._native-scrollbars
     ._app
     each chunk in htmlWebpackPlugin.files.chunks
-      if chunk.entry.endsWith('-js.js')
+      unless chunk.entry.endsWith('-style.js')
         script(src=chunk.entry)

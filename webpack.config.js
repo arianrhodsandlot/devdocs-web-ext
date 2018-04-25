@@ -20,29 +20,26 @@ module.exports = {
     path: path.resolve('./extension/dist')
   },
   module: {
-    rules: [      {
+    rules: [{
       test: /\.(png|jpg|gif)$/,
-      use: [
-        {
-          loader: 'url-loader',
-          options: {
-            limit: 8192
-          }
+      use: [{
+        loader: 'url-loader',
+        options: {
+          limit: 8192
         }
-      ]
+      }]
     }, {
       test: /\.(js)$/,
       exclude: /node_modules/,
       use: [{
-          loader: "babel-loader"
-        }
-      ]
+        loader: 'babel-loader'
+      }]
     }, {
       test: /\.(css)$/,
       use: ExtractTextPlugin.extract({
         fallback: 'style-loader',
         use: [{
-          loader: "css-loader",
+          loader: 'css-loader',
           options: {
             sourceMap: true
           }
@@ -53,12 +50,12 @@ module.exports = {
       use: ExtractTextPlugin.extract({
         fallback: 'style-loader',
         use: [{
-          loader: "css-loader",
+          loader: 'css-loader',
           options: {
             sourceMap: true
           }
         }, {
-          loader: "sass-loader",
+          loader: 'sass-loader',
           options: {
             sourceMap: true,
             includePaths: [
@@ -82,17 +79,29 @@ module.exports = {
     }]
   },
   devtool: process.env.NODE_ENV === 'production' ? false : 'inline-cheap-source-map',
+  optimization: {
+    splitChunks: {
+      minSize: 0,
+      cacheGroups: {
+        commons: {
+          test: /[\\/]node_modules[\\/]/,
+          name: 'vendors',
+          chunks: 'all'
+        }
+      }
+    }
+  },
   plugins: [
     new HtmlWebpackPlugin({
       filename: 'popup.html',
       template: 'src/popup/popup.pug',
       inject: false,
-      chunks: ['devdocs-style', 'devdocs-dark-style', 'popup-style', 'popup-js']
+      chunks: ['devdocs-style', 'devdocs-dark-style', 'popup-style', 'vendors', 'popup-js']
     }),
     new HtmlWebpackPlugin({
       filename: 'options.html',
       template: 'src/options/options.pug',
-      chunks: ['options-style', 'options-js']
+      chunks: ['options-style', 'vendors', 'options-js']
     }),
     new ExtractTextPlugin({
       filename: '[name].css'

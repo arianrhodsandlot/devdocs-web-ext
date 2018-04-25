@@ -8,7 +8,6 @@
     "@babel/preset-env": "^7.0.0-beta.46",
     "babel-loader": "^8.0.0-beta.2",
     "compass-mixins": "^0.12.10",
-    "concurrently": "^3.5.1",
     "css-loader": "^0.28.11",
     "extract-text-webpack-plugin": "^4.0.0-beta.0",
     "file-loader": "^1.1.11",
@@ -28,20 +27,20 @@
   },
   "devDependencies": {},
   "scripts": {
-    "start": "concurrently 'webpack -w' 'web-ext run -s extension'",
+    "start": "webpack -w",
     "build": "webpack -p && web-ext build -s extension -a artifacts -o",
     "test": "web-ext lint -s extension"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/arianrhodsandlot/Quick-DevDocs.git"
+    "url": "git+https://github.com/arianrhodsandlot/DevDocs-Web-Ext.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/arianrhodsandlot/Quick-DevDocs/issues"
+    "url": "https://github.com/arianrhodsandlot/DevDocs-Web-Ext/issues"
   },
-  "homepage": "https://github.com/arianrhodsandlot/Quick-DevDocs#readme",
+  "homepage": "https://github.com/arianrhodsandlot/DevDocs-Web-Ext#readme",
   "babel": {
     "presets": [
       [

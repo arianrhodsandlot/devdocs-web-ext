@@ -26,7 +26,7 @@
   <div class="_list" ref:list>
     {#each results as result, i}
       <div class="_list-item _list-hover _list-result _icon-{result.category.split('~')[0]} {focusPos === i ? 'focus' : ''}" on:click="open(result)">
-        <div class="_list-count">{result.version}</div>
+        <div class="_list-count">{getCategoryVersion(result.category)}</div>
         <div class="_list-text">{result.name}</div>
       </div>
     {/each}
@@ -49,6 +49,7 @@
 </svg>
 
 <script>
+import '@babel/polyfill'
 import browser from 'webextension-polyfill'
 
 export default {
@@ -68,7 +69,11 @@ export default {
     input.focus()
 
     const code = 'getSelection().toString().trim().slice(0, 50)'
-    const [selection] = await browser.tabs.executeScript({code})
+
+    let selection
+    try {
+      [selection] = await browser.tabs.executeScript({code})
+    } catch (e) {}
     if (selection) {
       this.set({query: selection})
       input.dispatchEvent(new Event('input'))
@@ -97,6 +102,11 @@ export default {
     },
     maxFocusPos ({results}) {
       return results.length - 1
+    }
+  },
+  helpers: {
+    getCategoryVersion (category) {
+      return category.includes('~') ? category.split('~')[1] : ''
     }
   },
   methods: {
@@ -173,7 +183,9 @@ export default {
         content: ''
       }))
 
+      console.log(query)
       const results = await browser.runtime.sendMessage(query) || []
+      console.log(results)
       this.set({results, focusPos: 0})
 
       if (this.refs.list) {

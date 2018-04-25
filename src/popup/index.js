@@ -1,5 +1,4 @@
 import App from './App.svelte'
-import './popup.sass'
 
 const {width, height, theme} = localStorage
 

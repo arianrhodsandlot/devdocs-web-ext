@@ -1,7 +1,7 @@
 const path = require('path')
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-const ExtractTextPlugin = require("extract-text-webpack-plugin")
+const ExtractTextPlugin = require('extract-text-webpack-plugin')
 
 module.exports = {
   mode: process.env.NODE_ENV || 'development',
@@ -81,13 +81,13 @@ module.exports = {
       }]
     }]
   },
-  devtool: 'source-map',
+  devtool: process.env.NODE_ENV === 'production' ? false : 'inline-cheap-source-map',
   plugins: [
     new HtmlWebpackPlugin({
       filename: 'popup.html',
       template: 'src/popup/popup.pug',
       inject: false,
-      chunks: ['devdocs-style', 'devdocs-dark-style', 'popup-js']
+      chunks: ['devdocs-style', 'devdocs-dark-style', 'popup-style', 'popup-js']
     }),
     new HtmlWebpackPlugin({
       filename: 'options.html',

@@ -1,158 +1,101 @@
-import _ from 'lodash'
-import $ from 'jquery'
-window.$ = $
-let log = function(msg) {
-  return function(x) {
-    console.log(msg)
-    return x
-  }
-}
-let getCategoriesFromCookie = function(cookie) {
-  let defaultCategories = ['css', 'dom', 'dom_events', 'html', 'http', 'javascript']
-  return _.get(cookie, 'value') ?
-    cookie.value.split('/') :
-    defaultCategories
-}
-let getQueryFromCategory = function(category) {
-  let hosts = 'http://maxcdn-docs.devdocs.io'
-  let path = '/' + category + '/index.json'
-  return $.ajax(hosts + path)
+import '@babel/polyfill'
+import browser from 'webextension-polyfill'
+import sortBy from 'lodash/sortBy'
+import debounce from 'lodash/debounce'
+
+window.allEntries = []
+
+const updateAllEntries = debounce(async function () {
+  allEntries = []
+  const defaultCategories = ['css', 'dom', 'dom_events', 'html', 'http', 'javascript']
+  const cookie = await browser.cookies.get({url: 'http://devdocs.io', name: 'docs'})
+  const categories = cookie.value ? cookie.value.split('/') : defaultCategories
+  categories.forEach(async (category) => {
+    const categoryUrl = `http://maxcdn-docs.devdocs.io/${category}/index.json`
+    const res = await fetch(categoryUrl)
+    const text = await res.text()
+    const {entries} = JSON.parse(text)
+    const extendedEntries = entries.map((entry) => ({...entry, category}))
+    allEntries.push(...extendedEntries)
+  })
+}, 100)
+
+const stripSpaces = function (str) {
+  let words = str.trim().toLowerCase().match(/\w+/g)
+  return words ? words.join('') : ''
 }
 
-let getQueriesFromCookie = _.flowRight(
-  log('Fetching documents\'s entries...'),
-  _.partial(_.map, _, getQueryFromCategory),
-  getCategoriesFromCookie
-)
-let processPromise = function(queryWidhCategory) {
-  let query = _.first(queryWidhCategory)
-  let category = _.last(queryWidhCategory)
-  let getExtendedEntry = function(entry) {
-    return _.assign(entry, {
-      category: category,
-      version: category.includes('~') ? category.split('~')[1] : ''
-    })
-  }
-  let getEntriesFromRes = function(res) {
-    return _.map(res.entries, getExtendedEntry)
-  }
-  return query.then(getEntriesFromRes)
-}
-
-let getQueriesWithCategories = function(cookie) {
-  return _.zip(
-    getQueriesFromCookie(cookie),
-    getCategoriesFromCookie(cookie)
-  )
-}
-
-let getChars = function(str) {
-  let words = _.trim(str).toLowerCase().match(/\w+/g)
-  if (!words || words.length === 0) {
-    return ''
-  }
-  return words.join('')
-}
-let getRegFromQuery = _.flowRight(
-  _.partial(RegExp, _, 'i'),
-  _.partial(_.reduce, _, function(prev, current) {
-    return prev + (
-      /\.|\(|\)/.test(current) ?
-      '' :
-      (current + '.*')
-    )
+const calcEntryScoreByQuery = function (entry, query) {
+  const name = stripSpaces(entry.name)
+  const fullName = entry.category + name
+  const fuzzyRegStr = Array.from(query).reduce((prev, current)=> {
+    current = /\.|\(|\)/.test(current) ? '' : (current + '.*')
+    return `${prev}${current}`
   }, '.*')
-)
-let getEntryScore = function(entry, query) {
-  let name = getChars(entry.name)
-  let fullName = entry.category + name
-  let testName = _.bind(RegExp.prototype.test, getRegFromQuery(query))
+  const fuzzyReg = new RegExp(fuzzyRegStr, 'i')
 
   if (name === query) {
     return 0
   } else if (fullName === query) {
     return 1
-  } else if (_.includes(name, query)) {
+  } else if (name.includes(query)) {
     return 2
-  } else if (_.includes(fullName, query)) {
+  } else if (fullName.includes(query)) {
     return 3
-  } else if (testName(name)) {
+  } else if (fuzzyReg.test(name)) {
     return 4
-  } else if (testName(fullName)) {
+  } else if (fuzzyReg.test(fullName)) {
     return 5
-  } else {
-    return NaN
   }
+  return NaN
 }
 
-let getScore = _.partial(_.get, _, 'score')
-let getSearcher = function(entries) {
-  return _.memoize(function(query) {
-    console.log('searching for ' + query)
-    let addEntryScore = function(entry) {
-      return _.assign(entry, {
-        score: getEntryScore(entry, query)
-      })
-    }
-    return _.flowRight(_.isEmpty, getChars)(query) ?
-      null :
-      _.sortBy(
-        _.filter(
-          _.map(entries, addEntryScore),
-          _.flowRight(_.negate(_.isNaN), getScore)
-        ),
-        getScore
-      )
-  })
+const search = function (query) {
+  query = stripSpaces(query)
+  if (!query) return []
 
-}
-let getmsghandler = function(searcher) {
-  return function(message, sender, sendResponse) {
-    console.log('msg is coming')
-    const response = _.flowRight(searcher, getChars)(message)
-    return sendResponse(response ? response.slice(0, 100) : response)
+  const matchedEntries = []
+  const matchedGroupedEntries = []
+
+  for (const entry of allEntries) {
+    const score = calcEntryScoreByQuery(entry, query)
+    if (isNaN(score)) continue
+
+    matchedGroupedEntries[score] = matchedGroupedEntries[score] || []
+    matchedGroupedEntries[score].push({...entry, score, index: allEntries.indexOf(entry)})
   }
-}
-let getpromises = function(cookie) {
-  return _.map(getQueriesWithCategories(cookie), processPromise)
-}
-let startlisten = function(cookie) {
-  return $.when.apply($, getpromises(cookie)).then(function() {
-    let listener = _.flowRight(getmsghandler, getSearcher, _.flatten)(arguments)
-    chrome.runtime.onMessage.addListener(listener)
-    return listener
-  })
+
+  for (const group of matchedGroupedEntries) {
+    if (!group) continue
+    matchedEntries.push(...group)
+  }
+
+  const results = sortBy(matchedEntries, ['score', 'name']).slice(0, 50)
+
+  return results
 }
 
-let listenpromise
-
-chrome.cookies.get({
-  url: 'http://devdocs.io',
-  name: 'docs'
-}, function(cookie) {
-  listenpromise = startlisten(cookie)
+browser.cookies.onChanged.addListener(({cookie: {domain, name}}) => {
+  if (!(['devdocs.io', '.devdocs.io'].includes(domain))) return
+  if (name !== 'docs') return
+  updateAllEntries()
 })
 
-chrome.cookies.onChanged.addListener((function(changeInfo) {
-  let cookie = changeInfo.cookie
-  if (cookie.name !== 'docs') return
-  if (!_.includes(['devdocs.io', '.devdocs.io'], cookie.domain)) return
+browser.runtime.onMessage.addListener((query) => {
+  return search(query)
+})
 
-  console.log('Cookie is changed to ' + cookie.value + '!')
-  listenpromise.then(_.bind(chrome.runtime.onMessage.removeListener, chrome.runtime.onMessage))
-  listenpromise = startlisten(cookie)
-}))
+updateAllEntries()
 
-//open a welcome page after install
-if (_.some([localStorage.install_time, localStorage.version], _.isUndefined)) {
-  chrome.tabs.create({
+if (!localStorage.install_time || !localStorage.version) {
+  browser.tabs.create({
     url: 'dist/options.html#welcome'
   })
 }
 
-_.assign(localStorage, {
+Object.assign(localStorage, {
   version: '0.1.5',
-  install_time: _.now(),
+  install_time: Date.now(),
   theme: 'light',
   width: 600,
   height: 600

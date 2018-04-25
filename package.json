@@ -5,6 +5,7 @@
   "main": "index.js",
   "dependencies": {
     "@babel/core": "^7.0.0-beta.46",
+    "@babel/polyfill": "^7.0.0-beta.46",
     "@babel/preset-env": "^7.0.0-beta.46",
     "babel-loader": "^8.0.0-beta.2",
     "compass-mixins": "^0.12.10",
@@ -28,8 +29,8 @@
   },
   "devDependencies": {},
   "scripts": {
-    "start": "webpack -w",
-    "build": "webpack -p && web-ext build -s extension -a artifacts -o",
+    "start": "NODE_ENV=development webpack -w",
+    "build": "NODE_ENV=production webpack -p && web-ext build -s extension -a artifacts -o",
     "test": "web-ext lint -s extension"
   },
   "repository": {
@@ -49,8 +50,7 @@
         {
           "targets": {
             "browsers": [
-              "last 2 versions",
-              "> 1%"
+              ">0.25%"
             ]
           }
         }

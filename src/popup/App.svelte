@@ -3,7 +3,7 @@
 <div class="_header">
   <form class="_search" autocomplete="off">
     <svg><use xlink:href="#icon-search"/></svg>
-    <input placeholder="Search..." class="input _search-input" bind:value=query on:input="search(this.value)" ref:input>
+    <input placeholder="Search..." class="input _search-input" bind:value=query on:input="search()" ref:input>
   </form>
 </div>
 
@@ -15,19 +15,19 @@
       <div class="_content-loading"></div>
     </div>
     {:else}
-    <div class="_page _angular" ref:page>
+    <div class="_page _{getCategoryPageClass(contentEntry.category)}" ref:page>
       {@html content}
     </div>
     {/if}
   </div>
 </div>
-{:elseif results.length}
+{:elseif entries.length}
 <div class="_sidebar">
   <div class="_list" ref:list>
-    {#each results as result, i}
-      <div class="_list-item _list-hover _list-result _icon-{result.category.split('~')[0]} {focusPos === i ? 'focus' : ''}" on:click="open(result)">
-        <div class="_list-count">{getCategoryVersion(result.category)}</div>
-        <div class="_list-text">{result.name}</div>
+    {#each entries as entry, i}
+      <div class="_list-item _list-hover _list-entry _icon-{getCategoryName(entry.category)} {focusPos === i ? 'focus' : ''}" on:click="openContent(entry)">
+        <div class="_list-count">{getCategoryVersion(entry.category)}</div>
+        <div class="_list-text">{entry.name}</div>
       </div>
     {/each}
   </div>
@@ -57,13 +57,13 @@ export default {
     return {
       query: '',
       focusPos: 0,
-      results: [],
+      entries: [],
       content: '',
+      contentEntry: null,
       contentLoading: false
     }
   },
   async oncreate () {
-    window.app = this
     const {input} = this.refs
 
     input.focus()
@@ -88,25 +88,83 @@ export default {
           input.dispatchEvent(new Event('input'))
           break
         case 'page':
-          this.set({contentLoading: true})
-          setTimeout(() => {
-            this.open(lastViewed.result)
-          }, 50)
+          if (lastViewed.entry) {
+            this.set({contentLoading: true})
+            setTimeout(() => {
+              this.openContent(lastViewed.entry)
+            }, 50)
+          }
           break
       }
     }
   },
   computed: {
-    focusResult ({results, focusPos}) {
-      return results[focusPos]
+    focusEntry ({entries, focusPos}) {
+      return entries[focusPos]
     },
-    maxFocusPos ({results}) {
-      return results.length - 1
+    maxFocusPos ({entries}) {
+      return entries.length - 1
+    },
+    contentEntryUrl ({contentEntry}) {
+      if (!contentEntry) return
+      const [entryPath, entryHash] = contentEntry.path.split('#')
+      const pathAndHash = entryHash ? `${entryPath}.html#${entryHash}` : `${entryPath}.html`
+      return `http://docs.devdocs.io/${contentEntry.category}/${pathAndHash}`
     }
   },
   helpers: {
     getCategoryVersion (category) {
       return category.includes('~') ? category.split('~')[1] : ''
+    },
+    getCategoryName (category) {
+      return category.split('~')[0]
+    },
+    getCategoryPageClass (category) {
+      const categoryName = category.split('~')[0]
+      switch (categoryName) {
+        case 'ansible':
+        case 'bottle':
+        case 'codeigniter':
+        case 'django':
+        case 'falcon':
+        case 'matplotlib':
+        case 'numpy':
+        case 'pandas':
+        case 'python':
+        case 'scikit_image':
+        case 'scikit_learn':
+        case 'statsmodels':
+        case 'twig':
+          return 'sphinx'
+        case 'babel':
+        case 'bluebird':
+        case 'eslint':
+        case 'homebrew':
+        case 'jsdoc':
+        case 'react':
+        case 'relay':
+          return 'simple'
+        case 'backbone':
+          return 'underscore'
+        case 'chef':
+        case 'cmake':
+        case 'godot':
+        case 'julia':
+        case 'opentsdb':
+          return 'sphinx_simple'
+        case 'cpp':
+          return 'c'
+        case 'padrino':
+          return 'rubydoc'
+        case 'phoenix':
+          return 'elixir'
+        case 'sass':
+          return 'yard'
+        case 'symfony':
+          return 'laravel'
+        default:
+          return categoryName
+      }
     }
   },
   methods: {
@@ -114,14 +172,14 @@ export default {
       switch (event.key) {
         case 'ArrowUp':
           event.preventDefault()
-          this.focusPrevResult()
+          this.focusPrevEntry()
           break
         case 'ArrowDown':
           event.preventDefault()
-          this.focusNextResult()
+          this.focusNextEntry()
           break
         case 'Tab':
-          const {content, results} = this.get()
+          const {content, entries} = this.get()
           if (content) {
             event.preventDefault()
             if (event.shiftKey) {
@@ -129,12 +187,12 @@ export default {
             } else {
               this.scrollToNextPage()
             }
-          } else if (results.length) {
+          } else if (entries.length) {
             event.preventDefault()
             if (event.shiftKey) {
-              this.focusPrevResult()
+              this.focusPrevEntry()
             } else {
-              this.focusNextResult()
+              this.focusNextEntry()
             }
           }
           break
@@ -160,21 +218,22 @@ export default {
           break
         case 'Enter':
           event.preventDefault()
-          this.openFocusResult()
+          this.openContent(this.get().focusEntry)
           break
       }
     },
-    focusNextResult () {
+    focusNextEntry () {
       const {focusPos, maxFocusPos} = this.get()
       this.set({focusPos: focusPos === maxFocusPos ? 0 : focusPos + 1})
       this.refs.list.children[this.get().focusPos].scrollIntoView({behavior: 'smooth'})
     },
-    focusPrevResult () {
+    focusPrevEntry () {
       const {focusPos, maxFocusPos} = this.get()
       this.set({focusPos: focusPos === 0 ? maxFocusPos : focusPos - 1})
       this.refs.list.children[this.get().focusPos].scrollIntoView({behavior: 'smooth'})
     },
-    async search (query) {
+    async search () {
+      const {query} = this.get()
       this.set({content: ''})
 
       localStorage.setItem('lastViewed', JSON.stringify({
@@ -183,58 +242,48 @@ export default {
         content: ''
       }))
 
-      console.log(query)
-      const results = await browser.runtime.sendMessage(query) || []
-      console.log(results)
-      this.set({results, focusPos: 0})
+      const entries = await browser.runtime.sendMessage(query) || []
+      this.set({entries, focusPos: 0})
 
       if (this.refs.list) {
         this.refs.list.scrollTo(0, 0)
       }
     },
-    openFocusResult () {
-      this.open(this.get().focusResult)
-    },
     scrollToNextPage () {
       const {page} = this.refs
       page.style['scroll-behavior'] = 'smooth'
-      page.scrollTo(0, page.scrollTop + app.refs.page.offsetHeight)
+      page.scrollTo(0, page.scrollTop + this.refs.page.offsetHeight)
       delete page.style['scroll-behavior']
     },
     scrollToPrevPage () {
       const {page} = this.refs
       page.style['scroll-behavior'] = 'smooth'
-      page.scrollTo(0, page.scrollTop - app.refs.page.offsetHeight)
+      page.scrollTo(0, page.scrollTop - this.refs.page.offsetHeight)
       delete page.style['scroll-behavior']
     },
-    async open (result) {
-      if (!result) return
-      const [resultPath, resultHash] = result.path.split('#')
-      const pathAndHash = resultHash ? `${resultPath}.html#${resultHash}` : `${resultPath}.html`
-      const contentUrl = `http://maxcdn-docs.devdocs.io/${result.category}/${pathAndHash}`
-      this.set({contentLoading: true})
+    async openContent (entry) {
+      if (!entry) return
+      this.set({contentEntry: entry, contentLoading: true})
 
       this.refs.input.select()
 
-      const res = await fetch(contentUrl)
+      const res = await fetch(this.get().contentEntryUrl)
       const content = await res.text()
 
-      this.set({
-        content,
-        contentLoading: false
-      })
+      this.set({content, contentLoading: false})
 
       localStorage.setItem('lastViewed', JSON.stringify({
         type: 'page',
-        result,
+        entry,
         query: this.get().query
       }))
 
       const {page} = this.refs
       page.scrollTo(0, 0)
 
-      if (resultHash) {
-        const scrollTargetId = resultHash.includes('.') ? resultHash.slice(1) : resultHash
+      const entryHash = entry.path.split('#')[1]
+      if (entryHash) {
+        const scrollTargetId = entryHash.startsWith('.') ? entryHash.slice(1) : entryHash
         const scrollTarget = document.getElementById(scrollTargetId)
         if (scrollTarget) {
           page.scrollTo(0, scrollTarget.offsetTop)

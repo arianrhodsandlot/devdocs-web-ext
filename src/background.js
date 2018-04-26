@@ -3,7 +3,7 @@ import browser from 'webextension-polyfill'
 import sortBy from 'lodash/sortBy'
 import debounce from 'lodash/debounce'
 
-window.allEntries = []
+let allEntries = []
 
 const updateAllEntries = debounce(async function () {
   allEntries = []
@@ -38,14 +38,18 @@ const calcEntryScoreByQuery = function (entry, query) {
     return 0
   } else if (fullName === query) {
     return 1
-  } else if (name.includes(query)) {
+  } else if (name.startsWith(query)) {
     return 2
-  } else if (fullName.includes(query)) {
+  } else if (fullName.startsWith(query)) {
     return 3
-  } else if (fuzzyReg.test(name)) {
+  } else if (name.includes(query)) {
     return 4
-  } else if (fuzzyReg.test(fullName)) {
+  } else if (fullName.includes(query)) {
     return 5
+  } else if (fuzzyReg.test(name)) {
+    return 6
+  } else if (fuzzyReg.test(fullName)) {
+    return 7
   }
   return NaN
 }
@@ -70,7 +74,7 @@ const search = function (query) {
     matchedEntries.push(...group)
   }
 
-  const results = sortBy(matchedEntries, ['score', 'name']).slice(0, 50)
+  const results = sortBy(matchedEntries, ['score', 'name']).slice(0, 20)
 
   return results
 }

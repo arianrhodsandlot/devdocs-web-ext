@@ -1,6 +1,6 @@
 {
   "name": "devdocs-web-ext",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "Find documents in devdocs.io with a popup window from a Chrome Extension!",
   "main": "index.js",
   "dependencies": {
@@ -19,7 +19,7 @@
     "extract-text-webpack-plugin": "^4.0.0-beta.0",
     "file-loader": "^1.1.11",
     "html-webpack-plugin": "^3.2.0",
-    "node-sass": "^4.8.3",
+    "node-sass": "^4.9.0",
     "pug": "^2.0.3",
     "pug-loader": "^2.4.0",
     "sass-loader": "^7.0.1",

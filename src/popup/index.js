@@ -1,7 +1,9 @@
 import Raven from 'raven-js'
 import App from './App.svelte'
 
-Raven.config('https://d2ddb64170f34a2ca621de47235480bc@sentry.io/1196839').install()
+if (process.env.NODE_ENV === 'production') {
+  Raven.config('https://d2ddb64170f34a2ca621de47235480bc@sentry.io/1196839').install()
+}
 
 const {width, height, theme} = localStorage
 

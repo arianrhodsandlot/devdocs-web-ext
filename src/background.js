@@ -2,6 +2,9 @@ import '@babel/polyfill'
 import browser from 'webextension-polyfill'
 import sortBy from 'lodash/sortBy'
 import debounce from 'lodash/debounce'
+import Raven from 'raven-js'
+
+Raven.config('https://d2ddb64170f34a2ca621de47235480bc@sentry.io/1196839').install()
 
 let allEntries = []
 

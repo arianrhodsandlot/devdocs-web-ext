@@ -7,6 +7,7 @@
     "@babel/polyfill": "^7.0.0-beta.46",
     "compass-mixins": "^0.12.10",
     "jquery": "^3.3.1",
+    "raven-js": "^3.24.2",
     "svelte": "^2.1.1",
     "webextension-polyfill": "^0.2.1"
   },

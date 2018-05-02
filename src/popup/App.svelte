@@ -35,9 +35,19 @@
 {:else}
 <div class="_container" role="document">
   <div class="_content" role="main">
-    <div>
-      <div class="_splash-title">DevDocs Web Ext</div>
+    {#if searchLoading}
+    <div class="_page">
+      <div class="_content-loading"></div>
     </div>
+    {:else}
+    <div>
+      {#if failMessage}
+      <div class="_splash-title error">{failMessage}</div>
+      {:else}
+      <div class="_splash-title">DevDocs Web Ext</div>
+      {/if}
+    </div>
+    {/if}
   </div>
 </div>
 {/if}
@@ -60,7 +70,9 @@ export default {
       entries: [],
       content: '',
       contentEntry: null,
-      contentLoading: false
+      contentLoading: false,
+      searchLoading: false,
+      failMessage: ''
     }
   },
   async oncreate () {
@@ -234,7 +246,7 @@ export default {
     },
     async search () {
       const {query} = this.get()
-      this.set({content: ''})
+      this.set({content: '', searchLoading: true})
 
       localStorage.setItem('lastViewed', JSON.stringify({
         type: 'list',
@@ -242,8 +254,18 @@ export default {
         content: ''
       }))
 
-      const entries = await browser.runtime.sendMessage(query) || []
-      this.set({entries, focusPos: 0})
+      let entries = []
+      let focusPos = 0
+      let failMessage = ''
+
+      const response = await browser.runtime.sendMessage(query)
+      if (response.status === 'success') {
+        entries = response.content
+      } else if (response.status === 'fail') {
+        failMessage = response.message
+        console.log(failMessage)
+      }
+      this.set({entries, focusPos, failMessage, searchLoading: false})
 
       if (this.refs.list) {
         this.refs.list.scrollTo(0, 0)

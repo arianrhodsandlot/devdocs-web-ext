@@ -10,19 +10,32 @@ if (process.env.NODE_ENV === 'production') {
 
 let allEntries = []
 
-const updateAllEntries = debounce(async function () {
-  allEntries = []
-  const defaultCategories = ['css', 'dom', 'dom_events', 'html', 'http', 'javascript']
+const getCategories = async function () {
   const cookie = await browser.cookies.get({url: 'http://devdocs.io', name: 'docs'})
-  const categories = (cookie && cookie.value) ? cookie.value.split('/') : defaultCategories
-  categories.forEach(async (category) => {
-    const categoryUrl = `http://docs.devdocs.io/${category}/index.json`
-    const res = await fetch(categoryUrl)
-    const text = await res.text()
-    const {entries} = JSON.parse(text)
-    const extendedEntries = entries.map((entry) => ({...entry, category}))
-    allEntries.push(...extendedEntries)
-  })
+  const categories = cookie.value ? cookie.value.split('/') : defaultCategories
+  return categories
+}
+
+const getExtendedEntries = function (category) {
+  const categoryUrl = `http://docs.devdocs.io/${category}/index.json`
+  return fetch(categoryUrl)
+    .then((res) => res.text())
+    .then((text) => {
+      const {entries} = JSON.parse(text)
+      const extendedEntries = entries.map((entry) => ({...entry, category}))
+      return extendedEntries
+    })
+}
+
+const flatten = function (list) {
+  return list.reduce((accumulator, currentValue) => accumulator.concat(currentValue), [])
+}
+
+const updateAllEntries = debounce(async function () {
+  const defaultCategories = ['css', 'dom', 'dom_events', 'html', 'http', 'javascript']
+  const categories = await getCategories()
+  const groupedEntries = await Promise.all(categories.map(getExtendedEntries))
+  allEntries = flatten(groupedEntries)
 }, 100)
 
 const stripSpaces = function (str) {
@@ -59,9 +72,28 @@ const calcEntryScoreByQuery = function (entry, query) {
   return NaN
 }
 
-const search = function (query) {
+browser.cookies.onChanged.addListener(({cookie: {domain, name}}) => {
+  if (!(['devdocs.io', '.devdocs.io'].includes(domain))) return
+  if (name !== 'docs') return
+  updateAllEntries()
+})
+
+browser.runtime.onMessage.addListener(async function (query) {
   query = stripSpaces(query)
   if (!query) return []
+
+  if (!allEntries.length) {
+    try {
+      await updateAllEntries()
+    } catch (e) {
+      if (e.name === 'TypeError' && e.message === 'Failed to fetch') {
+        return {
+          status: 'fail',
+          message: `Failed to get contents from docs.devdocs.io. Please try later.`
+        }
+      }
+    }
+  }
 
   const matchedEntries = []
   const matchedGroupedEntries = []
@@ -81,20 +113,11 @@ const search = function (query) {
 
   const results = sortBy(matchedEntries, ['score', 'name']).slice(0, 20)
 
-  return results
-}
-
-browser.cookies.onChanged.addListener(({cookie: {domain, name}}) => {
-  if (!(['devdocs.io', '.devdocs.io'].includes(domain))) return
-  if (name !== 'docs') return
-  updateAllEntries()
+  return {
+    status: 'success',
+    content: results
+  }
 })
-
-browser.runtime.onMessage.addListener((query) => {
-  return search(query)
-})
-
-updateAllEntries()
 
 if (!localStorage.install_time || !localStorage.version) {
   browser.tabs.create({
@@ -109,3 +132,5 @@ Object.assign(localStorage, {
   width: 600,
   height: 600
 })
+
+updateAllEntries()

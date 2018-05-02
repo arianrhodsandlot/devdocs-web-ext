@@ -113,9 +113,12 @@ browser.runtime.onMessage.addListener(async function (query) {
 
   const results = sortBy(matchedEntries, ['score', 'name']).slice(0, 20)
 
-  return {
+  return results.length ? {
     status: 'success',
     content: results
+  } : {
+    status: 'fail',
+    message: 'No matched results.'
   }
 })
 

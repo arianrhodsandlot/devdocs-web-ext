@@ -175,6 +175,7 @@ export default {
   },
   methods: {
     onKeydown (event) {
+      const {content, entries} = this.get()
       switch (event.key) {
         case 'ArrowUp':
           event.preventDefault()
@@ -185,7 +186,6 @@ export default {
           this.focusNextEntry()
           break
         case 'Tab':
-          const {content, entries} = this.get()
           if (content) {
             event.preventDefault()
             if (event.shiftKey) {
@@ -199,6 +199,26 @@ export default {
               this.focusPrevEntry()
             } else {
               this.focusNextEntry()
+            }
+          }
+          break
+        case 'PageDown':
+          if (content) {
+            event.preventDefault()
+            this.scrollToNextPage()
+          } else if (entries.length) {
+            event.preventDefault()
+            this.focusNextEntry()
+          }
+          break
+        case 'PageUp':
+          if (content) {
+            event.preventDefault()
+            if (event.shiftKey) {
+            this.scrollToPrevPage()
+          } else if (entries.length) {
+            event.preventDefault()
+            this.focusPrevEntry()
             }
           }
           break

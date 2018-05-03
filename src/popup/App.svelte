@@ -3,7 +3,7 @@
 <div class="_header">
   <form class="_search" autocomplete="off">
     <svg><use xlink:href="#icon-search"/></svg>
-    <input placeholder="Search..." class="input _search-input" bind:value=query on:input="search()" ref:input>
+    <input placeholder="Search..." class="input _search-input" spellcheck="false" bind:value=query on:input="search()" ref:input>
   </form>
 </div>
 

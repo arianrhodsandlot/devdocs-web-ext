@@ -1,5 +1,8 @@
 # DevDocs Web Ext
 
+[![Chrome Web Store](https://img.shields.io/chrome-web-store/v/kdjoccdpjblcefijcfhnjoljodddedpj.svg)](https://chrome.google.com/webstore/detail/devdocs-web-ext/kdjoccdpjblcefijcfhnjoljodddedpj)
+ [![Chrome Web Store](https://img.shields.io/chrome-web-store/users/kdjoccdpjblcefijcfhnjoljodddedpj.svg)](https://chrome.google.com/webstore/detail/devdocs-web-ext/kdjoccdpjblcefijcfhnjoljodddedpj) [![Chrome Web Store](https://img.shields.io/chrome-web-store/stars/kdjoccdpjblcefijcfhnjoljodddedpj.svg)](https://chrome.google.com/webstore/detail/devdocs-web-ext/kdjoccdpjblcefijcfhnjoljodddedpj)
+
 #### Note
 Quick DevDocs has been rebranded as DevDocs Web Ext!
 

@@ -178,12 +178,16 @@ export default {
       const {content, entries} = this.get()
       switch (event.key) {
         case 'ArrowUp':
-          event.preventDefault()
-          this.focusPrevEntry()
+          if (entries.length) {
+            event.preventDefault()
+            this.focusPrevEntry()
+          }
           break
         case 'ArrowDown':
-          event.preventDefault()
-          this.focusNextEntry()
+          if (entries.length) {
+            event.preventDefault()
+            this.focusNextEntry()
+          }
           break
         case 'Tab':
           if (content) {

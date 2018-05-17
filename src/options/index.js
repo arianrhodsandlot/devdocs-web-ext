@@ -1,5 +1,5 @@
 import Raven from 'raven-js'
-import $ from 'cash-dom'
+import $ from 'jquery'
 import './chrome-i18n'
 
 if (process.env.NODE_ENV === 'production') {

@@ -11,8 +11,9 @@ if (process.env.NODE_ENV === 'production') {
 let allEntries = []
 
 const getCategories = async function () {
+  const defaultCategories = ['css', 'dom', 'dom_events', 'html', 'http', 'javascript']
   const cookie = await browser.cookies.get({url: 'http://devdocs.io', name: 'docs'})
-  const categories = cookie.value ? cookie.value.split('/') : defaultCategories
+  const categories = cookie && cookie.value ? cookie.value.split('/') : defaultCategories
   return categories
 }
 
@@ -32,7 +33,6 @@ const flatten = function (list) {
 }
 
 const updateAllEntries = debounce(async function () {
-  const defaultCategories = ['css', 'dom', 'dom_events', 'html', 'http', 'javascript']
   const categories = await getCategories()
   const groupedEntries = await Promise.all(categories.map(getExtendedEntries))
   allEntries = flatten(groupedEntries)

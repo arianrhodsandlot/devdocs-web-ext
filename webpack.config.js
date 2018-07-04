@@ -35,6 +35,44 @@ module.exports = {
         loader: 'babel-loader'
       }]
     }, {
+      test: /vendor\/devdocs\/assets\/javascripts\/app\/searcher\.coffee/,
+      use: [{
+        loader: 'exports-loader',
+        options: {
+          'app.Searcher': true
+        }
+      }, {
+        loader: 'imports-loader',
+        options: {
+          app: `>${JSON.stringify({config: {max_results: 50}})}`,
+          $: 'jquery',
+          Events: '../lib/events.coffee',
+          util: '../lib/util.coffee'
+        }
+      }, {
+        loader: 'coffee-loader'
+      }]
+    }, {
+      test: /vendor\/devdocs\/assets\/javascripts\/lib\/events\.coffee/,
+      use: [{
+        loader: 'exports-loader',
+        options: {
+          'this.Events': true
+        }
+      }, {
+        loader: 'coffee-loader'
+      }]
+    }, {
+      test: /vendor\/devdocs\/assets\/javascripts\/lib\/util\.coffee/,
+      use: [{
+        loader: 'imports-loader',
+        options: {
+          $: 'jquery'
+        }
+      }, {
+        loader: 'coffee-loader'
+      }]
+    }, {
       test: /\.(css)$/,
       use: ExtractTextPlugin.extract({
         fallback: 'style-loader',

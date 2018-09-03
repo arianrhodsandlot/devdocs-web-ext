@@ -36,7 +36,9 @@ const updateSearchFn = debounce(async function () {
     const attr = 'name'
     return new Promise((resolve) => {
       searcher.find(allEntries, attr, q)
-      searcher.on('results', resolve)
+      searcher.on('results', (results) => {
+        resolve(results)
+      })
     })
   }
 }, 100)

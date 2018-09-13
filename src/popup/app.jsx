@@ -1,22 +1,23 @@
 import React from 'react'
-import { HashRouter, Route, Switch } from "react-router-dom"
+import { Router, Route, Switch } from "react-router-dom"
 import Header from './header.jsx'
 import Home from './home.jsx'
 import Search from './search.jsx'
 import Content from './content.jsx'
+import history from './history'
 
 const App = () => (
   <div className="_app">
-    <HashRouter>
+    <Router history={history}>
       <Header />
-    </HashRouter>
-    <HashRouter>
+    </Router>
+    <Router history={history}>
       <Switch>
         <Route exact path="/" component={Home} />
         <Route path="/search" component={Search} />
         <Route path="*" component={Content} />
       </Switch>
-    </HashRouter>
+    </Router>
   </div>
 )
 

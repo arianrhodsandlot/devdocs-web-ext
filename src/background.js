@@ -27,18 +27,18 @@ const flatten = function (list) {
 }
 
 let search
-const searcher = new Searcher()
 const updateSearchFn = debounce(async function () {
   const categories = await getCategories()
   const groupedEntries = await Promise.all(categories.map(getExtendedEntries))
   const allEntries = flatten(groupedEntries)
   search = function search (q) {
-    const attr = 'name'
     return new Promise((resolve) => {
-      searcher.find(allEntries, attr, q)
+      const searcher = new Searcher()
+      const attr = 'name'
       searcher.on('results', (results) => {
         resolve(results)
       })
+      searcher.find(allEntries, attr, q)
     })
   }
 }, 100)
@@ -50,7 +50,7 @@ browser.cookies.onChanged.addListener(({cookie: {domain, name}}) => {
 })
 
 browser.runtime.onMessage.addListener(async function (query) {
-  if (search) {
+  if (!search) {
     try {
       await updateSearchFn()
     } catch (e) {

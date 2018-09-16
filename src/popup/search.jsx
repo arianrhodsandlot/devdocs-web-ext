@@ -17,16 +17,13 @@ class Search extends Component {
 
     this.entryRefs = []
 
-    this.componentWillReceiveProps(props)
+    this.search(props)
   }
 
-  componentWillReceiveProps (props) {
-    const {query} = querystring.parse(props.location.search.slice(1))
-    if (!query) {
-      props.history.replace('/')
-      return false
+  componentDidUpdate (prevProps) {
+    if (this.props.location !== prevProps.location) {
+      this.search()
     }
-    this.search(query)
   }
 
   componentDidMount () {
@@ -85,7 +82,7 @@ class Search extends Component {
 
   getEntryUrl (entry) {
     const [entryPath, entryHash] = entry.path.split('#')
-    const pathAndHash = entryHash ? `${entryPath}.html#${entryHash}` : `${entryPath}.html`
+    const pathAndHash = entryHash ? `${entryPath}#${entryHash}` : `${entryPath}`
     return `/${entry.category}/${pathAndHash}`
   }
 
@@ -105,12 +102,23 @@ class Search extends Component {
     return ref
   }
 
-  async search (query) {
-    await browser.runtime.sendMessage(query)
-    const response = await browser.runtime.sendMessage(query)
+  async search () {
+    const {query} = querystring.parse(this.props.location.search.slice(1))
+    if (!query) {
+      this.props.history.replace('/')
+      return
+    }
+
     let entries = []
     let focusPos = 0
     let failMessage = ''
+
+    let response
+    try {
+      response = await browser.runtime.sendMessage(query)
+    } catch (e) {
+      failMessage = e.message
+    }
     if (response.status === 'success') {
       entries = response.content
     } else if (response.status === 'fail') {

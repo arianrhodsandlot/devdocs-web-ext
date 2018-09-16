@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import querystring from 'querystring'
 import { withRouter } from 'react-router'
+import key from 'keymaster'
 
 class Header extends Component {
   constructor (props) {
@@ -15,14 +16,48 @@ class Header extends Component {
     this.state = {
       query: query,
       content: '',
-      redirect: ''
+      redirect: '',
+      scope: '',
+      inputPaddingLeft: 0
     }
+    this.inputRef = React.createRef()
+    this.scopeRef = React.createRef()
 
     this.handleChange = this.handleChange.bind(this)
   }
 
   componentDidMount () {
-    this.refs.input.select()
+    this.inputRef.current.select()
+
+    key.filter = () => true
+    key('tab', () => {
+      if (this.state.scope) return
+      const scope = this.guessScope()
+      if (!scope) return
+      this.addScope(scope)
+      this.inputRef.current.value = ''
+      return false
+    })
+    key('backspace', () => {
+      if (!this.inputRef.current.value) {
+        this.removeScope()
+        return false
+      }
+    })
+  }
+
+  guessScope () {
+    return this.inputRef.current.value
+  }
+
+  addScope (scope) {
+    this.setState({scope}, () => {
+      this.setState({inputPaddingLeft: this.scopeRef.current.offsetWidth + 10})
+    })
+  }
+
+  removeScope () {
+    this.setState({scope: '', inputPaddingLeft: 0})
   }
 
   handleChange (event) {
@@ -32,11 +67,13 @@ class Header extends Component {
   }
 
   render () {
+    const {query, scope, inputPaddingLeft} = this.state
     return (
       <div className="_header">
         <form className="_search" autoComplete="off">
           <svg><use href="#icon-search"/></svg>
-          <input defaultValue={this.state.query} placeholder="Search..." className="input _search-input" spellCheck="false" onChange={this.handleChange} autoFocus ref="input" />
+          <input defaultValue={query} placeholder="Search..." className="input _search-input" spellCheck="false" onChange={this.handleChange} autoFocus ref={this.inputRef} style={scope ? {paddingLeft: inputPaddingLeft} : {}} />
+          {scope ? <div className="_search-tag" ref={this.scopeRef}>{scope}</div> : null}
         </form>
 
         <svg className="_settings" xmlns="http://www.w3.org/2000/svg">

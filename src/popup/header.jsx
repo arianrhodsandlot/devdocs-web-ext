@@ -10,7 +10,7 @@ class Header extends Component {
     if (props.location.pathname === '/search') {
       query = querystring.parse(props.location.search.slice(1)).query.trim()
     }
-    query = query || ''
+    query = query || localStorage.lastQuery || ''
 
     this.state = {
       query: query,
@@ -26,8 +26,9 @@ class Header extends Component {
   }
 
   handleChange (event) {
-    const query = event.target.value
-    this.props.history.replace('/search?query=' + query.trim())
+    const query = event.target.value.trim()
+    localStorage.lastQuery = query
+    this.props.history.replace('/search?query=' + encodeURIComponent(query))
   }
 
   render () {

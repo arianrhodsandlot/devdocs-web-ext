@@ -12,6 +12,8 @@ class App extends Component {
       content: ''
     }
 
+    this.pageRef = React.createRef()
+
     this.onContentClick = this.onContentClick.bind(this)
   }
 
@@ -21,7 +23,11 @@ class App extends Component {
 
   componentDidUpdate (prevProps) {
     if (this.props.location !== prevProps.location) {
-      this.getContent()
+      if (this.props.location.pathname === prevProps.location.pathname) {
+        this.scrollToHash()
+      } else {
+        this.getContent()
+      }
     }
   }
 
@@ -31,23 +37,40 @@ class App extends Component {
     const res = await fetch(contentUrl)
     const content = await res.text()
     if (this.state.contentUrl === contentUrl) {
-      this.setState({content, pending: false})
+      this.setState({content, pending: false}, () => {
+        this.scrollToHash()
+      })
+    }
+  }
+
+  scrollToHash () {
+    let entryHash = this.props.location.hash
+    if (!entryHash) return
+    if (entryHash.startsWith('#')) {
+      entryHash = entryHash.slice(1)
+    }
+    if (entryHash) {
+      const scrollTargetId = entryHash.startsWith('.') ? entryHash.slice(1) : entryHash
+      const scrollTarget = document.getElementById(scrollTargetId)
+      if (scrollTarget) {
+        this.pageRef.current.scrollTo(0, scrollTarget.offsetTop)
+      }
     }
   }
 
   onContentClick (e) {
-    window.h = this.props.history
     let {target} = e
     while (target.tagName !== 'A') {
       if (target === e.currentTarget) return
       target = target.parentElement
     }
     e.preventDefault()
-    if (target.href.startsWith('http://') || target.href.startsWith('https://')) {
-      browser.tabs.create({url: target.href})
+    const href = target.getAttribute('href')
+    if (href.startsWith('http://') || href.startsWith('https://')) {
+      browser.tabs.create({url: href})
     } else {
       const currentUrl = this.props.history.location.pathname
-      const targetUrl = url.resolve(currentUrl, target.getAttribute('href'))
+      const targetUrl = url.resolve(currentUrl, href)
       this.props.history.replace(targetUrl)
     }
   }
@@ -126,6 +149,7 @@ class App extends Component {
             className="_page"
             className={classnames(['_page', `_${this.getCategoryPageClass(category)}`])}
             onClick={this.onContentClick}
+            ref={this.pageRef}
             dangerouslySetInnerHTML={{__html: content}}>
           </div>
         </div>

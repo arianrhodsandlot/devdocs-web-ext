@@ -2,6 +2,7 @@ const path = require('path')
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const DashboardPlugin = require('webpack-dashboard/plugin')
 
 module.exports = {
   mode: process.env.NODE_ENV || 'development',
@@ -144,6 +145,7 @@ module.exports = {
     new ExtractTextPlugin({
       filename: '[name].css'
     }),
-    new webpack.ProgressPlugin()
+    new webpack.ProgressPlugin(),
+    new DashboardPlugin()
   ]
 }

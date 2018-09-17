@@ -13,20 +13,18 @@ async function getDocNames () {
 async function addMessageListener () {
   const docs = new Docs(await getDocNames())
 
-  async function searchEntry ({query}) {
-    const results = await docs.searchEntries(query)
-
-    return results.length ? {
-      status: 'success',
-      content: results
-    } : {
-      status: 'fail',
-      message: 'No matched results.'
+  async function searchEntry ({query, scope}) {
+    if (!query && !scope) return null
+    if (!scope) return await docs.searchEntries(query)
+    const doc = await docs.attemptToMatchOneDoc(scope)
+    if (!query) {
+      return doc.entries.slice(0, 50)
     }
+    return await docs.searchEntriesInDoc(query, doc)
   }
 
-  async function matchOneDoc ({query}) {
-    const doc = await docs.attemptToMatchOneDoc(query)
+  async function matchOneDoc ({scope}) {
+    const doc = await docs.attemptToMatchOneDoc(scope)
     return doc
   }
 
@@ -39,7 +37,8 @@ async function addMessageListener () {
   browser.runtime.onMessage.addListener(async function ({action, payload}) {
     switch (action) {
       case 'search-entry':
-        return await searchEntry(payload)
+        const entries = await searchEntry(payload)
+        return { status: 'success', content: entries }
       case 'match-one-doc':
         return await matchOneDoc(payload)
       default:

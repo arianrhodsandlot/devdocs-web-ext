@@ -7,19 +7,13 @@ window.browser = browser
 class Header extends Component {
   constructor (props) {
     super(props)
-
-    let query
-    if (props.location.pathname === '/search') {
-      query = querystring.parse(props.location.search.slice(1)).query.trim()
-    }
-    query = query || localStorage.lastQuery || ''
-
     this.state = {
-      query: query,
-      content: '',
-      redirect: '',
-      scope: null,
-      inputPaddingLeft: 0
+      doc: null,
+      inputPaddingLeft: 0,
+      ...this.getStateFromLocation()
+    }
+    if (this.state.scope) {
+      this.guessDocFromScope(this.state.scope)
     }
     this.inputRef = React.createRef()
     this.scopeRef = React.createRef()
@@ -27,61 +21,83 @@ class Header extends Component {
     this.handleChange = this.handleChange.bind(this)
   }
 
+  componentDidUpdate (prevProps, prevState) {
+    const {props, state} = this
+    if (props.location !== prevProps.location) {
+      this.setState(this.getStateFromLocation())
+    }
+    if (state.doc && state.doc !== prevState.doc) {
+      this.setState({inputPaddingLeft: this.scopeRef.current.offsetWidth + 10})
+    }
+  }
+
+  getStateFromLocation () {
+    const {props} = this
+    let query
+    let scope
+    if (props.location.pathname === '/search') {
+      const parsed = querystring.parse(props.location.search.slice(1))
+      query = parsed.query
+      scope = parsed.scope
+    }
+    query = (query || '').trim()
+    scope = (scope || '').trim()
+    return {query, scope}
+  }
+
   componentDidMount () {
     this.inputRef.current.select()
 
     key.filter = () => true
     key('tab', () => {
-      if (!this.state.scope) {
-        this.guessScope()
+      if (!this.state.doc) {
+        const scope = this.inputRef.current.value.trim()
+        this.guessDocFromScope(scope, () => {
+          this.inputRef.current.value = ''
+          this.props.history.replace('/search?query=' + encodeURIComponent(this.state.query) + '&scope=' + encodeURIComponent(this.state.scope))
+        })
       }
       return false
     })
     key('backspace', () => {
       if (!this.inputRef.current.value) {
-        this.removeScope()
+        this.clearDoc()
         return false
       }
     })
   }
 
-  async guessScope () {
-    const query = this.inputRef.current.value.trim()
-    if (!query) return
+  async guessDocFromScope (scope, cb) {
+    if (!scope) return
     const doc = await browser.runtime.sendMessage({
       action: 'match-one-doc',
-      payload: { query }
+      payload: { scope }
     })
     if (doc) {
-      this.addScope(doc)
-      this.inputRef.current.value = ''
+      this.setState({doc, scope, query: ''}, () => {
+        if (cb) cb()
+      })
     }
   }
 
-  addScope (scope) {
-    this.setState({scope}, () => {
-      this.setState({inputPaddingLeft: this.scopeRef.current.offsetWidth + 10})
-    })
+  clearDoc () {
+    this.setState({doc: null, scope: '', inputPaddingLeft: 0})
+    this.props.history.replace('/search?query=' + encodeURIComponent(this.state.query))
   }
 
-  removeScope () {
-    this.setState({scope: '', inputPaddingLeft: 0})
-  }
-
-  handleChange (event) {
-    const query = event.target.value.trim()
-    localStorage.lastQuery = query
-    this.props.history.replace('/search?query=' + encodeURIComponent(query))
+  handleChange () {
+    const query = this.inputRef.current.value.trim()
+    this.props.history.replace('/search?query=' + encodeURIComponent(query) + '&scope=' + encodeURIComponent(this.state.scope))
   }
 
   render () {
-    const {query, scope, inputPaddingLeft} = this.state
+    const {query, doc, inputPaddingLeft} = this.state
     return (
       <div className="_header">
         <form className="_search" autoComplete="off">
           <svg><use href="#icon-search"/></svg>
-          <input defaultValue={query} placeholder="Search..." className="input _search-input" spellCheck="false" onChange={this.handleChange} autoFocus ref={this.inputRef} style={scope ? {paddingLeft: inputPaddingLeft} : {}} />
-          {scope ? <div className="_search-tag" ref={this.scopeRef}>{scope.fullName}</div> : null}
+          <input defaultValue={query} placeholder="Search..." className="input _search-input" spellCheck="false" onChange={this.handleChange} autoFocus ref={this.inputRef} style={doc ? {paddingLeft: inputPaddingLeft} : {}} />
+          {doc ? <div className="_search-tag" ref={this.scopeRef}>{doc.fullName}</div> : null}
         </form>
 
         <svg className="_settings" xmlns="http://www.w3.org/2000/svg">

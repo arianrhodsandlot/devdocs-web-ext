@@ -66,6 +66,17 @@ class Docs {
       searcher.find(entries, 'text', query)
     })
   }
+  searchEntriesInDoc (query, doc) {
+    const entries = doc.entries
+    const searcher = new Searcher()
+
+    return new Promise((resolve) => {
+      searcher.on('results', (results) => {
+        resolve(results)
+      })
+      searcher.find(entries, 'text', query)
+    })
+  }
   attemptToMatchOneDoc (query) {
     const searcher = new Searcher({
       max_results: 1,
@@ -74,7 +85,6 @@ class Docs {
 
     return new Promise((resolve) => {
       searcher.on('results', (results) => {
-        console.log(this.docs, results)
         const doc = results.length ? results[0] : null
         resolve(doc)
       })

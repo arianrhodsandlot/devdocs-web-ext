@@ -103,8 +103,8 @@ class Search extends Component {
   }
 
   async search () {
-    const {query} = querystring.parse(this.props.location.search.slice(1))
-    if (!query) {
+    const {query, scope} = querystring.parse(this.props.location.search.slice(1))
+    if (!query && !scope) {
       this.props.history.replace('/')
       return
     }
@@ -117,16 +117,20 @@ class Search extends Component {
     try {
       response = await browser.runtime.sendMessage({
         action: 'search-entry',
-        payload: { query }
+        payload: { query, scope }
       })
     } catch (e) {
       failMessage = e.message
     }
-    if (response.status === 'success') {
-      entries = response.content
-    } else if (response.status === 'fail') {
-      failMessage = response.message
+
+    if (response) {
+      if (response.status === 'success') {
+        entries = response.content
+      } else if (response.status === 'fail') {
+        failMessage = response.message
+      }
     }
+
     this.setState({entries, focusPos, failMessage, searchLoading: false})
   }
 

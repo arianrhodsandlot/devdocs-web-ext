@@ -48,12 +48,12 @@ class Search extends Component {
     key.unbind('enter')
   }
 
-  getCategoryVersion (category) {
-    return category.includes('~') ? category.split('~')[1] : ''
+  getDocVersion (doc) {
+    return doc.includes('~') ? doc.split('~')[1] : ''
   }
 
-  getCategoryName (category) {
-    return category.split('~')[0]
+  getDocName (doc) {
+    return doc.split('~')[0]
   }
 
   focusNextEntry () {
@@ -83,7 +83,7 @@ class Search extends Component {
   getEntryUrl (entry) {
     const [entryPath, entryHash] = entry.path.split('#')
     const pathAndHash = entryHash ? `${entryPath}#${entryHash}` : `${entryPath}`
-    return `/${entry.category}/${pathAndHash}`
+    return `/${entry.doc.name}/${pathAndHash}`
   }
 
   enterFocusEntry () {
@@ -116,6 +116,7 @@ class Search extends Component {
     let response
     try {
       response = await browser.runtime.sendMessage({action: 'search', payload: {query}})
+      console.log(response)
     } catch (e) {
       failMessage = e.message
     }
@@ -149,13 +150,13 @@ class Search extends Component {
             <Link
               className={classnames(
                 '_list-item', '_list-hover', '_list-entry',
-                `_icon-${this.getCategoryName(entry.category)}`,
+                `_icon-${this.getDocName(entry.doc.name)}`,
                 {focus: focusPos === i ? 'focus' : ''})}
-              key={`${entry.category}/${entry.path}`}
+              key={`${entry.doc.name}/${entry.path}`}
               href={this.getEntryUrl(entry)}
               to={this.getEntryUrl(entry)}
               ref={this.getEntryRef(entry)}>
-              <div className="_list-count">{this.getCategoryVersion(entry.category)}</div>
+              <div className="_list-count">{this.getDocVersion(entry.doc.name)}</div>
               <div className="_list-text">{entry.name}</div>
             </Link>
           ))}

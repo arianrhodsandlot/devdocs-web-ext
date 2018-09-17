@@ -25,9 +25,9 @@ async function addMessageListener () {
     }
   }
 
-  async function searchDocName ({query}) {
+  async function matchOneDoc ({query}) {
     const doc = await docs.attemptToMatchOneDoc(query)
-    return doc ? doc.name : ''
+    return doc
   }
 
   browser.cookies.onChanged.addListener(({cookie: {domain, name}}) => {
@@ -40,8 +40,8 @@ async function addMessageListener () {
     switch (action) {
       case 'search-entry':
         return await searchEntry(payload)
-      case 'match-best-doc-name':
-        return await searchDocName(payload)
+      case 'match-one-doc':
+        return await matchOneDoc(payload)
       default:
         return null
     }

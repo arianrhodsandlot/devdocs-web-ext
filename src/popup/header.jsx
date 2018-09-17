@@ -18,7 +18,7 @@ class Header extends Component {
       query: query,
       content: '',
       redirect: '',
-      scope: '',
+      scope: null,
       inputPaddingLeft: 0
     }
     this.inputRef = React.createRef()
@@ -48,12 +48,12 @@ class Header extends Component {
   async guessScope () {
     const query = this.inputRef.current.value.trim()
     if (!query) return
-    const scope = await browser.runtime.sendMessage({
-      action: 'match-best-doc-name',
+    const doc = await browser.runtime.sendMessage({
+      action: 'match-one-doc',
       payload: { query }
     })
-    if (scope) {
-      this.addScope(scope.name)
+    if (doc) {
+      this.addScope(doc)
       this.inputRef.current.value = ''
     }
   }
@@ -81,7 +81,7 @@ class Header extends Component {
         <form className="_search" autoComplete="off">
           <svg><use href="#icon-search"/></svg>
           <input defaultValue={query} placeholder="Search..." className="input _search-input" spellCheck="false" onChange={this.handleChange} autoFocus ref={this.inputRef} style={scope ? {paddingLeft: inputPaddingLeft} : {}} />
-          {scope ? <div className="_search-tag" ref={this.scopeRef}>{scope}</div> : null}
+          {scope ? <div className="_search-tag" ref={this.scopeRef}>{scope.fullName}</div> : null}
         </form>
 
         <svg className="_settings" xmlns="http://www.w3.org/2000/svg">

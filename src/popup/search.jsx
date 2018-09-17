@@ -49,7 +49,7 @@ class Search extends Component {
   }
 
   getDocVersion (doc) {
-    return doc.includes('~') ? doc.split('~')[1] : ''
+    return doc.slug.includes('~') ? doc.slug.split('~')[1] : ''
   }
 
   getDocName (doc) {
@@ -83,7 +83,7 @@ class Search extends Component {
   getEntryUrl (entry) {
     const [entryPath, entryHash] = entry.path.split('#')
     const pathAndHash = entryHash ? `${entryPath}#${entryHash}` : `${entryPath}`
-    return `/${entry.doc.name}/${pathAndHash}`
+    return `/${entry.doc.slug}/${pathAndHash}`
   }
 
   enterFocusEntry () {
@@ -152,13 +152,12 @@ class Search extends Component {
             <Link
               className={classnames(
                 '_list-item', '_list-hover', '_list-entry',
-                `_icon-${this.getDocName(entry.doc.name)}`,
+                `_icon-${entry.doc.icon}`,
                 {focus: focusPos === i ? 'focus' : ''})}
-              key={`${entry.doc.name}/${entry.path}`}
-              href={this.getEntryUrl(entry)}
+              key={`${entry.doc.slug}-${entry.doc.name}/${entry.path}-${entry.name}`}
               to={this.getEntryUrl(entry)}
               ref={this.getEntryRef(entry)}>
-              <div className="_list-count">{this.getDocVersion(entry.doc.name)}</div>
+              <div className="_list-count">{this.getDocVersion(entry.doc)}</div>
               <div className="_list-text">{entry.name}</div>
             </Link>
           ))}

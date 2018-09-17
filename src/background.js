@@ -49,7 +49,18 @@ browser.cookies.onChanged.addListener(({cookie: {domain, name}}) => {
   updateSearchFn()
 })
 
-browser.runtime.onMessage.addListener(async function (query) {
+browser.runtime.onMessage.addListener(async function ({action, payload}) {
+  switch (action) {
+    case 'search':
+      return await searchEventListener(payload)
+    case 'search-category':
+      return await searchCategoryEventListener(payload)
+    default:
+      return null
+  }
+})
+
+async function searchEventListener ({query}) {
   if (!search) {
     try {
       await updateSearchFn()
@@ -72,7 +83,12 @@ browser.runtime.onMessage.addListener(async function (query) {
     status: 'fail',
     message: 'No matched results.'
   }
-})
+}
+
+async function searchCategoryEventListener ({query}) {
+  const categories = await getCategories()
+  return categories[0]
+}
 
 if (!localStorage.install_time || !localStorage.version) {
   browser.tabs.create({

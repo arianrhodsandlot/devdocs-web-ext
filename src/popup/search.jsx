@@ -115,7 +115,7 @@ class Search extends Component {
 
     let response
     try {
-      response = await browser.runtime.sendMessage(query)
+      response = await browser.runtime.sendMessage({action: 'search', payload: {query}})
     } catch (e) {
       failMessage = e.message
     }

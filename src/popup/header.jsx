@@ -2,7 +2,8 @@ import React, { Component } from 'react'
 import querystring from 'querystring'
 import { withRouter } from 'react-router'
 import key from 'keymaster'
-
+import browser from 'webextension-polyfill'
+window.browser = browser
 class Header extends Component {
   constructor (props) {
     super(props)
@@ -31,11 +32,9 @@ class Header extends Component {
 
     key.filter = () => true
     key('tab', () => {
-      if (this.state.scope) return
-      const scope = this.guessScope()
-      if (!scope) return
-      this.addScope(scope)
-      this.inputRef.current.value = ''
+      if (!this.state.scope) {
+        this.guessScope()
+      }
       return false
     })
     key('backspace', () => {
@@ -46,8 +45,17 @@ class Header extends Component {
     })
   }
 
-  guessScope () {
-    return this.inputRef.current.value
+  async guessScope () {
+    const query = this.inputRef.current.value.trim()
+    if (!query) return
+    const scope = await browser.runtime.sendMessage({
+      action: 'search-category',
+      payload: { query }
+    })
+    if (scope) {
+      this.addScope(scope)
+      this.inputRef.current.value = ''
+    }
   }
 
   addScope (scope) {

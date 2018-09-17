@@ -12,9 +12,8 @@ async function getDocNames () {
 
 async function addMessageListener () {
   const docs = new Docs(await getDocNames())
-  window.docs = docs
 
-  async function searchEventListener ({query}) {
+  async function searchEntry ({query}) {
     const results = await docs.searchEntries(query)
 
     return results.length ? {
@@ -26,9 +25,9 @@ async function addMessageListener () {
     }
   }
 
-  async function searchCategoryEventListener ({query}) {
-    const categories = await getDocNames()
-    return categories[0]
+  async function searchDocName ({query}) {
+    const doc = await docs.attemptToMatchOneDoc(query)
+    return doc ? doc.name : ''
   }
 
   browser.cookies.onChanged.addListener(({cookie: {domain, name}}) => {
@@ -39,10 +38,10 @@ async function addMessageListener () {
 
   browser.runtime.onMessage.addListener(async function ({action, payload}) {
     switch (action) {
-      case 'search':
-        return await searchEventListener(payload)
-      case 'search-category':
-        return await searchCategoryEventListener(payload)
+      case 'search-entry':
+        return await searchEntry(payload)
+      case 'match-best-doc-name':
+        return await searchDocName(payload)
       default:
         return null
     }

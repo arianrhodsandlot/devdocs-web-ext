@@ -17,7 +17,7 @@ class Docs {
     const response = await fetch(docUrl)
     const responseText = await response.text()
     let {entries, types} = JSON.parse(responseText)
-    const doc = {name: docName, type: 'mdn' }
+    const doc = { name: docName, type: 'mdn' }
     entries = entries.map((entry) => {
       return {
         ...entry,
@@ -31,14 +31,27 @@ class Docs {
   }
   searchEntries (query) {
     const entries = flatten(this.docs.map((doc) => doc.entries))
+    const searcher = new Searcher()
 
     return new Promise((resolve) => {
-      const searcher = new Searcher()
-      const attr = 'name'
       searcher.on('results', (results) => {
         resolve(results)
       })
-      searcher.find(entries, attr, query)
+      searcher.find(entries, 'name', query)
+    })
+  }
+  attemptToMatchOneDoc (query) {
+    const docs = this.docs.map((doc) => ({
+      name: doc.name,
+      type: doc.type
+    }))
+    const searcher = new Searcher()
+
+    return new Promise((resolve) => {
+      searcher.on('results', (results) => {
+        return results.length ? results[0] : null
+      })
+      searcher.find(docs, 'name', query)
     })
   }
 }

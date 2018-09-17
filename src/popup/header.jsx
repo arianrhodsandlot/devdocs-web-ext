@@ -49,11 +49,11 @@ class Header extends Component {
     const query = this.inputRef.current.value.trim()
     if (!query) return
     const scope = await browser.runtime.sendMessage({
-      action: 'search-category',
+      action: 'match-best-doc-name',
       payload: { query }
     })
     if (scope) {
-      this.addScope(scope)
+      this.addScope(scope.name)
       this.inputRef.current.value = ''
     }
   }

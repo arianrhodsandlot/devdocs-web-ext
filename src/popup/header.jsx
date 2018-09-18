@@ -3,14 +3,14 @@ import querystring from 'querystring'
 import { withRouter } from 'react-router'
 import key from 'keymaster'
 import browser from 'webextension-polyfill'
-window.browser = browser
+
 class Header extends Component {
   constructor (props) {
     super(props)
     this.state = {
       doc: null,
       inputPaddingLeft: 0,
-      ...this.getStateFromLocation()
+      ...this.getInputState()
     }
     if (this.state.scope) {
       this.guessDocFromScope(this.state.scope)
@@ -24,14 +24,14 @@ class Header extends Component {
   componentDidUpdate (prevProps, prevState) {
     const {props, state} = this
     if (props.location !== prevProps.location) {
-      this.setState(this.getStateFromLocation())
+      this.setState(this.getInputState())
     }
     if (state.doc && state.doc !== prevState.doc) {
       this.setState({inputPaddingLeft: this.scopeRef.current.offsetWidth + 10})
     }
   }
 
-  getStateFromLocation () {
+  getInputState () {
     const {props} = this
     let query
     let scope
@@ -40,8 +40,8 @@ class Header extends Component {
       query = parsed.query
       scope = parsed.scope
     }
-    query = (query || '').trim()
-    scope = (scope || '').trim()
+    query = (query || localStorage.query || '').trim()
+    scope = (scope || localStorage.scope || '').trim()
     return {query, scope}
   }
 
@@ -53,7 +53,9 @@ class Header extends Component {
       if (!this.state.doc) {
         const scope = this.inputRef.current.value.trim()
         this.guessDocFromScope(scope, () => {
-          this.inputRef.current.value = ''
+          localStorage.scope = scope
+          localStorage.query = ''
+          this.inputRef.current.value = localStorage.query
           this.props.history.replace('/search?query=' + encodeURIComponent(this.state.query) + '&scope=' + encodeURIComponent(this.state.scope))
         })
       }
@@ -81,12 +83,14 @@ class Header extends Component {
   }
 
   clearDoc () {
-    this.setState({doc: null, scope: '', inputPaddingLeft: 0})
+    localStorage.scope = ''
+    this.setState({doc: null, scope: localStorage.scope, inputPaddingLeft: 0})
     this.props.history.replace('/search?query=' + encodeURIComponent(this.state.query))
   }
 
   handleChange () {
     const query = this.inputRef.current.value.trim()
+    localStorage.query = query
     this.props.history.replace('/search?query=' + encodeURIComponent(query) + '&scope=' + encodeURIComponent(this.state.scope))
   }
 

@@ -45,10 +45,26 @@ module.exports = {
       }, {
         loader: 'imports-loader',
         options: {
-          app: `>${JSON.stringify({config: {max_results: 50}})}`,
+          app: `>{config: {max_results: 50}}`,
           $: 'jquery',
           Events: '../lib/events.coffee',
           util: '../lib/util.coffee'
+        }
+      }, {
+        loader: 'coffee-loader'
+      }]
+    }, {
+      test: /vendor\/devdocs\/assets\/javascripts\/models\/entry\.coffee/,
+      use: [{
+        loader: 'exports-loader',
+        options: {
+          'app.models.Entry': true
+        }
+      }, {
+        loader: 'imports-loader',
+        options: {
+          app: `>{models: {}, Model: function (o) {for(k in o) {this[k] = o[k]}}}`,
+          'app.Searcher': '../app/searcher.coffee'
         }
       }, {
         loader: 'coffee-loader'

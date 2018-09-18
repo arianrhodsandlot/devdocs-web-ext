@@ -7,7 +7,7 @@ import Content from './content.jsx'
 import history from './history'
 
 const App = () => (
-  <div className="_app">
+  <React.Fragment>
     <Router history={history}>
       <Header />
     </Router>
@@ -18,7 +18,7 @@ const App = () => (
         <Route path="*" component={Content} />
       </Switch>
     </Router>
-  </div>
+  </React.Fragment>
 )
 
 export default App

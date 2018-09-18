@@ -5,6 +5,7 @@ import extend from 'lodash/extend'
 import map from 'lodash/map'
 import includes from 'lodash/includes'
 import Searcher from '../../vendor/devdocs/assets/javascripts/app/searcher.coffee'
+import Entry from '../../vendor/devdocs/assets/javascripts/models/entry.coffee'
 
 class Docs {
   constructor (docNames) {
@@ -24,15 +25,20 @@ class Docs {
     }))
   }
   async extendDoc (doc) {
+    const docEntry = new Entry({...doc, ...{name: doc.fullName}})
+    if (docEntry.version) {
+      docEntry.addAlias(doc.name)
+    }
+
     const index = await this.getDocIndexByName(doc.slug)
     index.entries = map(index.entries, (entry) => {
       return {
-        ...entry,
-        text: [entry.name],
+        ...new Entry(entry),
         doc: {...doc}
       }
     })
-    extend(doc, index)
+
+    extend(doc, {...index, ...docEntry})
   }
   async getDocIndexByName (docName) {
     const docUrl = `http://docs.devdocs.io/${docName}/index.json`

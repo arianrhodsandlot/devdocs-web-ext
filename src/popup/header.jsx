@@ -29,6 +29,7 @@ class Header extends Component {
     if (state.doc && state.doc !== prevState.doc) {
       this.setState({inputPaddingLeft: this.scopeRef.current.offsetWidth + 10})
     }
+    this.inputRef.current.focus()
   }
 
   getInputState () {
@@ -64,6 +65,13 @@ class Header extends Component {
     key('backspace', () => {
       if (!this.inputRef.current.value) {
         this.clearDoc()
+        return false
+      }
+    })
+    key('/', () => {
+      if (document.activeElement !== this.inputRef.current) {
+        this.inputRef.current.focus()
+        this.inputRef.current.select()
         return false
       }
     })

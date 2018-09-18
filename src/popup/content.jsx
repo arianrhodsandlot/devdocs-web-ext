@@ -9,10 +9,13 @@ class App extends Component {
     this.state = {
       pending: false,
       contentUrl: '',
-      content: ''
+      content: '',
+      doc: null
     }
 
     this.pageRef = React.createRef()
+
+    this.updateDoc()
 
     this.onContentClick = this.onContentClick.bind(this)
   }
@@ -28,6 +31,18 @@ class App extends Component {
       } else {
         this.getContent()
       }
+    }
+  }
+
+  async updateDoc () {
+    let scope = this.props.location.pathname.split('/')[1].split('~')[0]
+    if (!scope) return
+    const doc = await browser.runtime.sendMessage({
+      action: 'match-one-doc',
+      payload: { scope }
+    })
+    if (doc) {
+      this.setState({doc})
     }
   }
 
@@ -75,54 +90,6 @@ class App extends Component {
     }
   }
 
-  getCategoryPageClass (category) {
-    const categoryName = category.split('~')[0]
-    switch (categoryName) {
-      case 'ansible':
-      case 'bottle':
-      case 'codeigniter':
-      case 'django':
-      case 'falcon':
-      case 'matplotlib':
-      case 'numpy':
-      case 'pandas':
-      case 'python':
-      case 'scikit_image':
-      case 'scikit_learn':
-      case 'statsmodels':
-      case 'twig':
-        return 'sphinx'
-      case 'babel':
-      case 'bluebird':
-      case 'eslint':
-      case 'homebrew':
-      case 'jsdoc':
-      case 'react':
-      case 'relay':
-        return 'simple'
-      case 'backbone':
-        return 'underscore'
-      case 'chef':
-      case 'cmake':
-      case 'godot':
-      case 'julia':
-      case 'opentsdb':
-        return 'sphinx_simple'
-      case 'cpp':
-        return 'c'
-      case 'padrino':
-        return 'rubydoc'
-      case 'phoenix':
-        return 'elixir'
-      case 'sass':
-        return 'yard'
-      case 'symfony':
-        return 'laravel'
-      default:
-        return categoryName
-    }
-  }
-
   render () {
     const {pending} = this.state
     if (pending) {
@@ -137,7 +104,7 @@ class App extends Component {
       )
     }
 
-    const {content} = this.state
+    const {content, doc} = this.state
     let category = this.props.location.pathname.split(/\/|~/g)
     if (category) {
       category = category[1] || ''
@@ -147,7 +114,7 @@ class App extends Component {
         <div className="_content" role="main">
           <div
             className="_page"
-            className={classnames(['_page', `_${this.getCategoryPageClass(category)}`])}
+            className={classnames(['_page', doc ? `_${doc.type}` : ''])}
             onClick={this.onContentClick}
             ref={this.pageRef}
             dangerouslySetInnerHTML={{__html: content}}>

@@ -149,22 +149,37 @@ class Search extends Component {
     }
 
     const {entries, focusPos} = this.state
+    const noResults = (
+      <React.Fragment>
+        <div className="_list-note">
+          No results.
+        </div>
+        <div className="_list-note">
+          Note: documentations must be <a href="https://devdocs.io/settings" className="_list-note-link">enabled</a> to appear in the search.
+        </div>
+      </React.Fragment>
+    )
+
+    const results = (
+      entries.map((entry, i) => (
+        <Link
+          className={classnames(
+            '_list-item', '_list-hover', '_list-entry',
+            `_icon-${entry.doc.icon}`,
+            {focus: focusPos === i ? 'focus' : ''})}
+          key={`${entry.doc.slug}-${entry.doc.name}/${entry.path}-${entry.name}`}
+          to={this.getEntryUrl(entry)}
+          ref={this.getEntryRef(entry)}>
+          <div className="_list-count">{this.getDocVersion(entry.doc)}</div>
+          <div className="_list-text">{entry.name}</div>
+        </Link>
+      ))
+    )
+
     return (
       <div className="_sidebar">
         <div className="_list">
-          {entries.map((entry, i) => (
-            <Link
-              className={classnames(
-                '_list-item', '_list-hover', '_list-entry',
-                `_icon-${entry.doc.icon}`,
-                {focus: focusPos === i ? 'focus' : ''})}
-              key={`${entry.doc.slug}-${entry.doc.name}/${entry.path}-${entry.name}`}
-              to={this.getEntryUrl(entry)}
-              ref={this.getEntryRef(entry)}>
-              <div className="_list-count">{this.getDocVersion(entry.doc)}</div>
-              <div className="_list-text">{entry.name}</div>
-            </Link>
-          ))}
+          {entries.length ? results : noResults}
         </div>
       </div>
     )

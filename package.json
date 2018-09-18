@@ -1,6 +1,6 @@
 {
   "name": "devdocs-web-ext",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "description": "Find documents in devdocs.io with a popup window from a Chrome Extension!",
   "main": "index.js",
   "dependencies": {

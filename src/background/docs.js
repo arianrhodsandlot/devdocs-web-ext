@@ -4,6 +4,7 @@ import filter from 'lodash/filter'
 import extend from 'lodash/extend'
 import map from 'lodash/map'
 import includes from 'lodash/includes'
+import ky from 'ky'
 import Searcher from '../../vendor/devdocs/assets/javascripts/app/searcher.coffee'
 import Entry from '../../vendor/devdocs/assets/javascripts/models/entry.coffee'
 
@@ -49,16 +50,12 @@ class Docs {
   }
   async getDocIndexByName (docName) {
     const docUrl = `http://docs.devdocs.io/${docName}/index.json`
-    const response = await fetch(docUrl)
-    const responseText = await response.text()
-    const index = JSON.parse(responseText)
+    const index = await ky(docUrl).json()
     return index
   }
   async getAllDocs () {
     const docsUrl = 'https://devdocs.io/docs/docs.json'
-    const response = await fetch(docsUrl)
-    const responseText = await response.text()
-    const docs = JSON.parse(responseText)
+    const docs = await ky(docsUrl).json()
     for (const doc of docs) {
       doc.fullName = doc.name + (doc.version ? ` ${doc.version}` : '')
       doc.slug_without_version = doc.slug.split('~')[0]

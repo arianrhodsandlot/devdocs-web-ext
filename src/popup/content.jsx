@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import browser from 'webextension-polyfill'
 import url from 'url'
 import classnames from 'classnames'
+import ky from 'ky'
 
 class App extends Component {
   constructor (props) {
@@ -52,8 +53,7 @@ class App extends Component {
   async getContent () {
     const contentUrl = `http://docs.devdocs.io${this.props.location.pathname}.html${this.props.location.search}`
     this.setState({contentUrl, pending: true})
-    const res = await fetch(contentUrl)
-    const content = await res.text()
+    const content = await ky(contentUrl).text()
     if (this.state.contentUrl === contentUrl) {
       this.setState({content, pending: false}, () => {
         this.scrollToHash()

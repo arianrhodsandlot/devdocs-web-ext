@@ -13,7 +13,10 @@ class Docs {
     this.docs = []
     this.reload()
   }
-  async reload () {
+  async reload (docNames) {
+    if (docNames) {
+      this.docNames = docNames
+    }
     const allDocs = await this.getAllDocs()
     const docs = filter(allDocs, (doc) => includes(this.docNames, doc.slug))
     await this.extendedDocs(docs)
@@ -98,8 +101,8 @@ class Docs {
     })
   }
 }
-Docs.prototype.debouncedReload = debounce(function () {
-  this.reload()
+Docs.prototype.debouncedReload = debounce(function (docNames) {
+  this.reload(docNames)
 }, 100)
 
 export default Docs

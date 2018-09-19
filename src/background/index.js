@@ -31,7 +31,7 @@ async function addMessageListener () {
   browser.cookies.onChanged.addListener(({cookie: {domain, name}}) => {
     if (!(['devdocs.io', '.devdocs.io'].includes(domain))) return
     if (name !== 'docs') return
-    docs.debouncedReload()
+    docs.debouncedReload(await getDocNames())
   })
 
   browser.runtime.onMessage.addListener(async function ({action, payload}) {

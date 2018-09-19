@@ -40,7 +40,9 @@ async function addMessageListener () {
   })
 
   browser.runtime.onMessage.addListener(async ({action, payload}) => {
-    if (!docs.ready) return null
+    if (!docs.ready) {
+      await docs.reload(await getDocNames())
+    }
 
     switch (action) {
       case 'search-entry':

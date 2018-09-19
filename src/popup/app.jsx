@@ -1,5 +1,5 @@
 import React from 'react'
-import { Router, Route, Switch } from "react-router-dom"
+import { Router, Route, Switch } from 'react-router-dom'
 import Header from './header.jsx'
 import Home from './home.jsx'
 import Search from './search.jsx'
@@ -13,9 +13,9 @@ const App = () => (
     </Router>
     <Router history={history}>
       <Switch>
-        <Route exact path="/" component={Home} />
-        <Route path="/search" component={Search} />
-        <Route path="*" component={Content} />
+        <Route exact path='/' component={Home} />
+        <Route path='/search' component={Search} />
+        <Route path='*' component={Content} />
       </Switch>
     </Router>
   </React.Fragment>

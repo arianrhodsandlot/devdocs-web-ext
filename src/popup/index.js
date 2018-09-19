@@ -12,12 +12,12 @@ const {width, height, theme} = localStorage
 
 let activeStyle
 switch (theme) {
-	case 'light':
-		activeStyle = document.querySelector('[data-href="devdocs-style.css"]')
-		break
-	case 'dark':
-		activeStyle = document.querySelector('[data-href="devdocs-dark-style.css"]')
-		break
+  case 'light':
+    activeStyle = document.querySelector('[data-href="devdocs-style.css"]')
+    break
+  case 'dark':
+    activeStyle = document.querySelector('[data-href="devdocs-dark-style.css"]')
+    break
 }
 activeStyle.href = activeStyle.dataset.href
 

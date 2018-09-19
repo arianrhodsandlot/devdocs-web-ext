@@ -97,10 +97,10 @@ class App extends Component {
     const {pending} = this.state
     if (pending) {
       return (
-        <div className="_container" role="document">
-          <div className="_content" role="main">
-            <div className="_page">
-              <div className="_content-loading"></div>
+        <div className='_container' role='document'>
+          <div className='_content' role='main'>
+            <div className='_page'>
+              <div className='_content-loading' />
             </div>
           </div>
         </div>
@@ -113,15 +113,14 @@ class App extends Component {
       category = category[1] || ''
     }
     return (
-      <div className="_container" role="document">
-        <div className="_content" role="main">
+      <div className='_container' role='document'>
+        <div className='_content' role='main'>
           <div
-            className="_page"
+            className='_page'
             className={classnames(['_page', doc ? `_${doc.type}` : ''])}
             onClick={this.onContentClick}
             ref={this.pageRef}
-            dangerouslySetInnerHTML={{__html: content}}>
-          </div>
+            dangerouslySetInnerHTML={{__html: content}} />
         </div>
       </div>
     )

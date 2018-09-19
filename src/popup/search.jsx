@@ -138,10 +138,10 @@ class Search extends Component {
     const {failMessage} = this.state
     if (failMessage) {
       return (
-        <div className="_container" role="document">
-          <div className="_content" role="main">
+        <div className='_container' role='document'>
+          <div className='_content' role='main'>
             <div>
-              <div className="_splash-title error">{failMessage}</div>
+              <div className='_splash-title error'>{failMessage}</div>
             </div>
           </div>
         </div>
@@ -151,18 +151,17 @@ class Search extends Component {
     const {entries, focusPos} = this.state
     const noResults = (
       <React.Fragment>
-        <div className="_list-note">
+        <div className='_list-note'>
           No results.
         </div>
-        <div className="_list-note">
-          Note: documentations must be <a href="https://devdocs.io/settings" className="_list-note-link">enabled</a> to appear in the search.
+        <div className='_list-note'>
+          Note: documentations must be <a href='https://devdocs.io/settings' className='_list-note-link'>enabled</a> to appear in the search.
         </div>
       </React.Fragment>
     )
 
     const results = (entries
-      ?
-      entries.map((entry, i) => (
+      ? entries.map((entry, i) => (
         <Link
           className={classnames(
             '_list-item', '_list-hover', '_list-entry',
@@ -171,17 +170,16 @@ class Search extends Component {
           key={`${entry.doc.slug}-${entry.doc.name}/${entry.path}-${entry.name}`}
           to={this.getEntryUrl(entry)}
           ref={this.getEntryRef(entry)}>
-          <div className="_list-count">{this.getDocVersion(entry.doc)}</div>
-          <div className="_list-text">{entry.name}</div>
+          <div className='_list-count'>{this.getDocVersion(entry.doc)}</div>
+          <div className='_list-text'>{entry.name}</div>
         </Link>
       ))
-      :
-      null
+      : null
     )
 
     return (
-      <div className="_sidebar">
-        <div className="_list">
+      <div className='_sidebar'>
+        <div className='_list'>
           {entries ? (entries.length ? results : noResults) : null}
         </div>
       </div>

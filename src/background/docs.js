@@ -1,9 +1,4 @@
-import debounce from 'lodash/debounce'
-import flatten from 'lodash/flatten'
-import filter from 'lodash/filter'
-import extend from 'lodash/extend'
-import map from 'lodash/map'
-import includes from 'lodash/includes'
+import _ from 'lodash'
 import ky from 'ky'
 import Searcher from '../../vendor/devdocs/assets/javascripts/app/searcher.coffee'
 import Entry from '../../vendor/devdocs/assets/javascripts/models/entry.coffee'
@@ -22,13 +17,13 @@ class Docs {
       this.docNames = docNames
     }
     this.allDocs = await this.getAllDocs()
-    const docs = filter(this.allDocs, (doc) => includes(this.docNames, doc.slug))
+    const docs = _.filter(this.allDocs, (doc) => _.includes(this.docNames, doc.slug))
     await this.extendedDocs(docs)
     this.docs = docs
     this.ready = true
   }
   extendedDocs (docs) {
-    return Promise.all(map(docs, (doc) => {
+    return Promise.all(_.map(docs, (doc) => {
       return this.extendDoc(doc)
     }))
   }
@@ -39,14 +34,14 @@ class Docs {
     }
 
     const index = await this.getDocIndexByName(doc.slug)
-    index.entries = map(index.entries, (entry) => {
+    index.entries = _.map(index.entries, (entry) => {
       return {
         ...new Entry(entry),
         doc: {...doc}
       }
     })
 
-    extend(doc, {...index, ...docEntry})
+    _.extend(doc, {...index, ...docEntry})
   }
   async getDocIndexByName (docName) {
     const docUrl = `http://docs.devdocs.io/${docName}/index.json`
@@ -66,7 +61,9 @@ class Docs {
     return docs
   }
   searchEntries (query) {
-    const entries = flatten(this.docs.map((doc) => doc.entries))
+    const groupedEntries = _.map(this.docs, (doc) => doc.entries)
+    const entries = _.flatten(groupedEntries)
+
     const searcher = new Searcher()
 
     return new Promise((resolve) => {
@@ -109,7 +106,7 @@ class Docs {
     return this.attemptToMatchOneDoc(query, this.allDocs)
   }
 }
-Docs.prototype.debouncedReload = debounce(function (docNames) {
+Docs.prototype.debouncedReload = _.debounce(function (docNames) {
   this.reload(docNames)
 }, 100)
 

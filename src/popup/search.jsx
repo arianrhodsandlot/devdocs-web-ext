@@ -10,7 +10,7 @@ class Search extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      entries: [],
+      entries: null,
       focusPos: 0,
       failMessage: ''
     }
@@ -160,7 +160,8 @@ class Search extends Component {
       </React.Fragment>
     )
 
-    const results = (
+    const results = (entries
+      ?
       entries.map((entry, i) => (
         <Link
           className={classnames(
@@ -174,12 +175,14 @@ class Search extends Component {
           <div className="_list-text">{entry.name}</div>
         </Link>
       ))
+      :
+      null
     )
 
     return (
       <div className="_sidebar">
         <div className="_list">
-          {entries.length ? results : noResults}
+          {entries ? (entries.length ? results : noResults) : null}
         </div>
       </div>
     )

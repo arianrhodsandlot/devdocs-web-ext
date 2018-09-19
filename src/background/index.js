@@ -67,7 +67,7 @@ if (!localStorage.install_time || !localStorage.version) {
 }
 
 Object.assign(localStorage, {
-  version: '0.1.9',
+  version: '0.1.10',
   install_time: Date.now(),
   theme: 'light',
   width: 600,

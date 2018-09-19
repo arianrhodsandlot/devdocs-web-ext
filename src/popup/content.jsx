@@ -21,7 +21,10 @@ class App extends Component {
   }
 
   componentDidMount () {
-    this.getContent()
+    // avoid iframes in the content blocking the popup page
+    setTimeout(() => {
+      this.getContent()
+    }, 1)
   }
 
   componentDidUpdate (prevProps) {

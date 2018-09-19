@@ -38,7 +38,7 @@ class App extends Component {
     let scope = this.props.location.pathname.split('/')[1].split('~')[0]
     if (!scope) return
     const doc = await browser.runtime.sendMessage({
-      action: 'match-one-doc',
+      action: 'get-content-doc',
       payload: { scope }
     })
     if (doc) {

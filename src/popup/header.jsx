@@ -80,7 +80,7 @@ class Header extends Component {
   async guessDocFromScope (scope, cb) {
     if (!scope) return
     const doc = await browser.runtime.sendMessage({
-      action: 'match-one-doc',
+      action: 'auto-compelete-enabled-doc',
       payload: { scope }
     })
     if (doc) {

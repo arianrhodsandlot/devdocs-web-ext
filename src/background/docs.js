@@ -11,16 +11,20 @@ class Docs {
   constructor (docNames) {
     this.docNames = docNames
     this.docs = []
+    this.allDocs = []
+    this.ready = false
     this.reload()
   }
   async reload (docNames) {
+    this.ready = false
     if (docNames) {
       this.docNames = docNames
     }
-    const allDocs = await this.getAllDocs()
-    const docs = filter(allDocs, (doc) => includes(this.docNames, doc.slug))
+    this.allDocs = await this.getAllDocs()
+    const docs = filter(this.allDocs, (doc) => includes(this.docNames, doc.slug))
     await this.extendedDocs(docs)
     this.docs = docs
+    this.ready = true
   }
   extendedDocs (docs) {
     return Promise.all(map(docs, (doc) => {
@@ -86,7 +90,8 @@ class Docs {
       searcher.find(entries, 'text', query)
     })
   }
-  attemptToMatchOneDoc (query) {
+  attemptToMatchOneDoc (query, docs) {
+    query = query.replace('_', ' ')
     const searcher = new Searcher({
       max_results: 1,
       fuzzy_min_length: 1
@@ -97,8 +102,14 @@ class Docs {
         const doc = results.length ? results[0] : null
         resolve(doc)
       })
-      searcher.find(this.docs, 'text', query)
+      searcher.find(docs, 'text', query)
     })
+  }
+  attemptToMatchOneDocInEnabledDocs (query) {
+    return this.attemptToMatchOneDoc(query, this.docs)
+  }
+  attemptToMatchOneDocInAllDocs (query) {
+    return this.attemptToMatchOneDoc(query, this.allDocs)
   }
 }
 Docs.prototype.debouncedReload = debounce(function (docNames) {

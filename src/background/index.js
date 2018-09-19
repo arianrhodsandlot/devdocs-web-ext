@@ -16,31 +16,40 @@ async function addMessageListener () {
   async function searchEntry ({query, scope}) {
     if (!query && !scope) return null
     if (!scope) return await docs.searchEntries(query)
-    const doc = await docs.attemptToMatchOneDoc(scope)
+    const doc = await docs.attemptToMatchOneDocInEnabledDocs(scope)
     if (!query) {
       return doc.entries.slice(0, 50)
     }
     return await docs.searchEntriesInDoc(query, doc)
   }
 
-  async function matchOneDoc ({scope}) {
-    const doc = await docs.attemptToMatchOneDoc(scope)
+  async function autoCompeleteEnabledDoc ({scope}) {
+    const doc = await docs.attemptToMatchOneDocInEnabledDocs(scope)
     return doc
   }
 
-  browser.cookies.onChanged.addListener(({cookie: {domain, name}}) => {
+  async function getContentDoc ({scope}) {
+    const doc = await docs.attemptToMatchOneDocInAllDocs(scope)
+    return doc
+  }
+
+  browser.cookies.onChanged.addListener(async ({cookie: {domain, name}}) => {
     if (!(['devdocs.io', '.devdocs.io'].includes(domain))) return
     if (name !== 'docs') return
     docs.debouncedReload(await getDocNames())
   })
 
-  browser.runtime.onMessage.addListener(async function ({action, payload}) {
+  browser.runtime.onMessage.addListener(async ({action, payload}) => {
+    if (!docs.ready) return null
+
     switch (action) {
       case 'search-entry':
         const entries = await searchEntry(payload)
         return { status: 'success', content: entries }
-      case 'match-one-doc':
-        return await matchOneDoc(payload)
+      case 'auto-compelete-enabled-doc':
+        return await autoCompeleteEnabledDoc(payload)
+      case 'get-content-doc':
+        return await getContentDoc(payload)
       default:
         return null
     }

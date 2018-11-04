@@ -25,7 +25,7 @@ class App extends Component {
   componentDidMount () {
     // avoid iframes in the content blocking the popup page
     setTimeout(() => {
-      this.getContent()
+      this.renderContent()
     }, 1)
     key.filter = () => true
     key('enter', () => {
@@ -52,7 +52,7 @@ class App extends Component {
       if (this.props.location.pathname === prevProps.location.pathname) {
         this.scrollToHash()
       } else {
-        this.getContent()
+        this.renderContent()
       }
     }
   }
@@ -69,15 +69,32 @@ class App extends Component {
     }
   }
 
-  async getContent () {
-    const contentUrl = `http://docs.devdocs.io${this.props.location.pathname}.html${this.props.location.search}`
-    this.setState({contentUrl, pending: true})
-    const content = await ky(contentUrl).text()
-    if (this.state.contentUrl === contentUrl) {
-      this.setState({content, pending: false}, () => {
-        this.scrollToHash()
-      })
+  async getDocContent (contentUrl) {
+    let content
+    if (localStorage.cachedDocContentUrl === contentUrl) {
+      content = localStorage.cachedDocContent
+    } else {
+      content = await ky(contentUrl).text()
     }
+
+    localStorage.cachedDocContentUrl = contentUrl
+    localStorage.cachedDocContent = content
+
+    return content
+  }
+
+  renderContent () {
+    const contentUrl = `http://docs.devdocs.io${this.props.location.pathname}.html${this.props.location.search}`
+
+    this.setState({contentUrl, pending: true}, async () => {
+      const content = await this.getDocContent(contentUrl)
+
+      if (this.state.contentUrl === contentUrl) {
+        this.setState({content, pending: false}, () => {
+          this.scrollToHash()
+        })
+      }
+    })
   }
 
   scrollToHash () {

@@ -10,21 +10,16 @@ if (process.env.NODE_ENV === 'production') {
 
 const {width, height, theme} = localStorage
 
-let activeStyle
-switch (theme) {
-  case 'light':
-    activeStyle = document.querySelector('[data-href="devdocs-style.css"]')
-    break
-  case 'dark':
-    activeStyle = document.querySelector('[data-href="devdocs-dark-style.css"]')
-    break
+if (theme === 'dark') {
+  document.documentElement.classList.remove('_theme-default')
+  document.documentElement.classList.add('_theme-dark')
 }
-activeStyle.href = activeStyle.dataset.href
 
 document.documentElement.style.width = `${width}px`
 document.documentElement.style.height = `${height}px`
 document.body.style.width = `${width}px`
 document.body.style.height = `${height}px`
+
 
 ReactDOM.render(
   <App />,

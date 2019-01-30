@@ -1,4 +1,3 @@
-import '@babel/polyfill'
 import browser from 'webextension-polyfill'
 import Raven from 'raven-js'
 import Docs from './docs'

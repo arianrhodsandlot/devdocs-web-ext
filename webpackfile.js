@@ -1,7 +1,7 @@
 const path = require('path')
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const MiniCssExtractPlugin = require("mini-css-extract-plugin")
 const LodashModuleReplacementPlugin = require('lodash-webpack-plugin')
 
 module.exports = {
@@ -33,11 +33,19 @@ module.exports = {
       test: /\.jsx?$/,
       exclude: /node_modules/,
       use: [{
+        loader: 'cache-loader'
+      }, {
+        loader: 'thread-loader'
+      }, {
         loader: 'babel-loader'
       }]
     }, {
       test: /vendor\/devdocs\/assets\/javascripts\/app\/searcher\.coffee/,
       use: [{
+        loader: 'cache-loader'
+      }, {
+        loader: 'thread-loader'
+      }, {
         loader: 'exports-loader',
         options: {
           'app.Searcher': true
@@ -56,6 +64,10 @@ module.exports = {
     }, {
       test: /vendor\/devdocs\/assets\/javascripts\/models\/entry\.coffee/,
       use: [{
+        loader: 'cache-loader'
+      }, {
+        loader: 'thread-loader'
+      }, {
         loader: 'exports-loader',
         options: {
           'app.models.Entry': true
@@ -72,6 +84,10 @@ module.exports = {
     }, {
       test: /vendor\/devdocs\/assets\/javascripts\/lib\/events\.coffee/,
       use: [{
+        loader: 'cache-loader'
+      }, {
+        loader: 'thread-loader'
+      }, {
         loader: 'exports-loader',
         options: {
           'this.Events': true
@@ -82,6 +98,10 @@ module.exports = {
     }, {
       test: /vendor\/devdocs\/assets\/javascripts\/lib\/util\.coffee/,
       use: [{
+        loader: 'cache-loader'
+      }, {
+        loader: 'thread-loader'
+      }, {
         loader: 'imports-loader',
         options: {
           $: 'jquery'
@@ -91,44 +111,40 @@ module.exports = {
       }]
     }, {
       test: /\.(css)$/,
-      use: ExtractTextPlugin.extract({
-        fallback: 'style-loader',
-        use: [{
-          loader: 'css-loader',
-          options: {
-            sourceMap: true
-          }
-        }]
-      })
+      use: [{
+        loader: MiniCssExtractPlugin.loader,
+      }, {
+        loader: 'css-loader',
+        options: {
+          sourceMap: true
+        }
+      }]
     }, {
       test: /\.(scss|sass)$/,
-      use: ExtractTextPlugin.extract({
-        fallback: 'style-loader',
-        use: [{
-          loader: 'css-loader',
-          options: {
-            sourceMap: true
-          }
-        }, {
-          loader: 'sass-loader',
-          options: {
-            sourceMap: true,
-            includePaths: [
-              path.parse(require.resolve('compass-mixins')).dir,
-              path.resolve(__dirname, 'vendor/devdocs/assets/stylesheets/')
-            ]
-          }
-        }]
-      })
-    }, {
-      test: /\.(svelte)$/,
-      exclude: /node_modules/,
       use: [{
-        loader: 'svelte-loader'
+        loader: MiniCssExtractPlugin.loader,
+      }, {
+        loader: 'css-loader',
+        options: {
+          sourceMap: true
+        }
+      }, {
+        loader: 'sass-loader',
+        options: {
+          sourceMap: true,
+          includePaths: [
+            path.parse(require.resolve('compass-mixins')).dir,
+            path.resolve(__dirname, 'vendor/devdocs/assets/stylesheets/')
+          ]
+        }
       }]
     }, {
       test: /\.(pug)$/,
       use: [{
+        loader: 'cache-loader'
+      }, {
+        loader: 'thread-loader'
+      }, {
         loader: 'pug-loader'
       }]
     }]
@@ -159,7 +175,7 @@ module.exports = {
       template: 'src/options/options.pug',
       chunks: ['options-style', 'vendors', 'options-js']
     }),
-    new ExtractTextPlugin({
+    new MiniCssExtractPlugin({
       filename: '[name].css'
     }),
     new webpack.ProgressPlugin()

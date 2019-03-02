@@ -40,7 +40,7 @@ module.exports = {
         loader: 'babel-loader'
       }]
     }, {
-      test: /vendor\/devdocs\/assets\/javascripts\/app\/searcher\.coffee/,
+      test: path.resolve(__dirname, 'vendor/devdocs/assets/javascripts/app/searcher.coffee'),
       use: [{
         loader: 'cache-loader'
       }, {
@@ -62,7 +62,7 @@ module.exports = {
         loader: 'coffee-loader'
       }]
     }, {
-      test: /vendor\/devdocs\/assets\/javascripts\/models\/entry\.coffee/,
+      test: path.resolve(__dirname, 'vendor/devdocs/assets/javascripts/models/entry.coffee'),
       use: [{
         loader: 'cache-loader'
       }, {
@@ -82,7 +82,7 @@ module.exports = {
         loader: 'coffee-loader'
       }]
     }, {
-      test: /vendor\/devdocs\/assets\/javascripts\/lib\/events\.coffee/,
+      test: path.resolve(__dirname, 'vendor/devdocs/assets/javascripts/lib/events.coffee'),
       use: [{
         loader: 'cache-loader'
       }, {
@@ -96,7 +96,7 @@ module.exports = {
         loader: 'coffee-loader'
       }]
     }, {
-      test: /vendor\/devdocs\/assets\/javascripts\/lib\/util\.coffee/,
+      test: path.resolve(__dirname, 'vendor/devdocs/assets/javascripts/lib/util.coffee'),
       use: [{
         loader: 'cache-loader'
       }, {

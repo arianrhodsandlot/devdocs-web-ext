@@ -59,12 +59,6 @@ async function addMessageListener () {
 
 addMessageListener()
 
-if (!localStorage.install_time || !localStorage.version) {
-  browser.tabs.create({
-    url: 'dist/options.html#welcome'
-  })
-}
-
 Object.assign(localStorage, {
   version: '0.1.10',
   install_time: Date.now(),

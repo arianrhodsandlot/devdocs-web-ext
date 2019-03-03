@@ -46,12 +46,12 @@ const App = () => (
 
     <Typography use="subtitle2" tag="h3">{i18n('optionsDocs')}</Typography>
     <Elevation className='elevation-with-padding'>
-      <Button icon="open_in_new" outlined dense href='xxx' tag='a'>{i18n('optionsSelectFrom')}</Button>
+      <Button icon="open_in_new" outlined dense href='https://devdocs.io/settings' target='_blank' tag='a'>{i18n('optionsSelectFrom')}</Button>
     </Elevation>
 
     <Typography use="subtitle2" tag="h3">{i18n('optionsShortcut')}</Typography>
     <Elevation className='elevation-with-padding'>
-      <Button icon="keyboard" outlined dense>{i18n('optionsConfigureShortcuts')}</Button>
+      <Button icon="keyboard" outlined dense href='chrome://extensions/shortcuts' target='_blank' tag='a'>{i18n('optionsConfigureShortcuts')}</Button>
     </Elevation>
 
     <Elevation className='footer'>
@@ -62,11 +62,20 @@ const App = () => (
       </Typography>
       <Typography use="caption" tag="div">{i18n('optionsAboutDesc')}</Typography>
       <Typography use="caption" tag="div">
-        <a href="a" style={{color: 'inherit'}}>{i18n('optionsRate')}</a>
+        <a href="https://chrome.google.com/webstore/detail/devdocs-web-ext/kdjoccdpjblcefijcfhnjoljodddedpj">
+          <i className="material-icons">star_half</i>
+          {i18n('optionsRate')}
+        </a>
         <span className='space'>·</span>
-        <a href="a" style={{color: 'inherit'}}>{i18n('optionsFeedback')}</a>
+        <a href="https://github.com/arianrhodsandlot/DevDocs-Web-Ext">
+          <i className="material-icons">code</i>
+          {i18n('optionsSource')}
+        </a>
         <span className='space'>·</span>
-        <a href="a" style={{color: 'inherit'}}>{i18n('optionsSource')}</a>
+        <a href="https://github.com/arianrhodsandlot">
+          <i className="material-icons">copyright</i>
+          arianrhodsandlot
+        </a>
       </Typography>
     </Elevation>
 

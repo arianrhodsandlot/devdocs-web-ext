@@ -23,7 +23,9 @@
     "default_title": "DevDocs Web Ext",
     "default_popup": "dist/popup.html"
   },
-  "options_page": "dist/options.html#apparence",
+  "options_ui": {
+    "page": "dist/options.html#apparence"
+  },
   "permissions": [
     "cookies",
     "activeTab",
@@ -36,5 +38,6 @@
         "default": "Alt+S"
       }
     }
-  }
+  },
+  "content_security_policy": "script-src 'self' https://unpkg.com; object-src 'self'"
 }

@@ -22,7 +22,7 @@ module.exports = {
   },
   module: {
     rules: [{
-      test: /\.(png|jpg|gif)$/,
+      test: /\.(png|jpg|gif|ttf|eot|woff|woff2)$/,
       use: [{
         loader: 'url-loader',
         options: {
@@ -133,6 +133,7 @@ module.exports = {
         options: {
           sourceMap: true,
           includePaths: [
+            'node_modules',
             path.parse(require.resolve('compass-mixins')).dir,
             path.resolve(__dirname, 'vendor/devdocs/assets/stylesheets/')
           ]

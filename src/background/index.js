@@ -60,7 +60,7 @@ async function addMessageListener () {
 addMessageListener()
 
 Object.assign(localStorage, {
-  version: '0.1.10',
+  version: VERSION,
   install_time: Date.now(),
   theme: 'light',
   width: 600,

@@ -58,7 +58,7 @@ const App = () => (
       <Typography use="caption" tag="h3">
         DevDocs Web Ext
         <span className='space'>-</span>
-        {i18n('optionsVersion')} 1.10.10
+        {i18n('optionsVersion')} {VERSION} ({GIT_VERSION})
       </Typography>
       <Typography use="caption" tag="div">{i18n('optionsAboutDesc')}</Typography>
       <Typography use="caption" tag="div">

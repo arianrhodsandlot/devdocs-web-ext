@@ -1,8 +1,10 @@
 const path = require('path')
+const childProcess = require('child_process')
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require("mini-css-extract-plugin")
 const LodashModuleReplacementPlugin = require('lodash-webpack-plugin')
+const packageJson = require('./package')
 
 module.exports = {
   mode: process.env.NODE_ENV || 'development',
@@ -178,6 +180,10 @@ module.exports = {
     }),
     new MiniCssExtractPlugin({
       filename: '[name].css'
+    }),
+    new webpack.DefinePlugin({
+      VERSION: JSON.stringify(packageJson.version),
+      GIT_VERSION: JSON.stringify(`${childProcess.execSync('git rev-parse HEAD')}`.slice(0, 6))
     }),
     new webpack.ProgressPlugin()
   ]

@@ -56,10 +56,10 @@
     "message": "高度"
   },
   "optionsSelectFrom": {
-    "message": "在<a href='http://devdocs.io'>devdocs.io</a>中选择："
+    "message": "在devdocs.io中选择"
   },
   "optionsAboutDesc": {
-    "message": "一个第三方<a href='http://devdocs.io'>DevDocs</a>的Google Chrome扩展。"
+    "message": "一个DevDocs的Google Chrome扩展。"
   },
   "optionsReport": {
     "message": "报告问题"
@@ -69,5 +69,20 @@
   },
   "optionsOpenSource": {
     "message": "DevDocs Web Ext是一个开源软件，其源代码托管于<a href=\"https://github.com/arianrhodsandlot/DevDocs-Web-Ext\">GitHub</a>上。"
+  },
+  "optionsShortcut": {
+    "message": "快捷键"
+  },
+  "optionsConfigureShortcuts": {
+    "message": "配置快捷键"
+  },
+  "optionsRate": {
+    "message": "评分"
+  },
+  "optionsFeedback": {
+    "message": "反馈"
+  },
+  "optionsSource": {
+    "message": "源代码"
   }
 }

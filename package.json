@@ -8,6 +8,7 @@
     "classnames": "^2.2.6",
     "compass-mixins": "^0.12.10",
     "cross-env": "^5.2.0",
+    "github-fork-ribbon-css": "^0.2.1",
     "history": "^4.7.2",
     "jquery": "^3.3.1",
     "keymaster": "^1.6.2",

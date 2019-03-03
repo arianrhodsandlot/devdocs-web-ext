@@ -56,10 +56,10 @@
     "message": "height"
   },
   "optionsSelectFrom": {
-    "message": "Select in <a href='http://devdocs.io'>devdocs.io</a>:"
+    "message": "Select in devdocs.io"
   },
   "optionsAboutDesc": {
-    "message": "A third party <a href='http://devdocs.io'>DevDocs</a> extension for Google Chrome."
+    "message": "A DevDocs extension for Google Chrome."
   },
   "optionsReport": {
     "message": "Report an issue"
@@ -69,5 +69,20 @@
   },
   "optionsOpenSource": {
     "message": "DevDocs Web Ext is an open-source software, hosted on <a href=\"https://github.com/arianrhodsandlot/DevDocs-Web-Ext\">GitHub</a>."
+  },
+  "optionsShortcut": {
+    "message": "Shortcut"
+  },
+  "optionsConfigureShortcuts": {
+    "message": "Configure Shortcuts"
+  },
+  "optionsRate": {
+    "message": "Rate"
+  },
+  "optionsFeedback": {
+    "message": "Feedback"
+  },
+  "optionsSource": {
+    "message": "Source"
   }
 }

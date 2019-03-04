@@ -10,6 +10,7 @@ const lazyPersist = debounce(function () {
 }, 100)
 
 const App = function () {
+  let [initialized, setInitialized] = useState(false)
   const [theme, setTheme] = useState()
   const [width, setWidth] = useState()
   const [height, setHeight] = useState()
@@ -26,19 +27,23 @@ const App = function () {
         setHeight(value)
         break
     }
-    lazyPersist({theme, width, height})
-  }
-
-  async function getInitialOptions () {
-    const {theme, width, height} = await storage.get()
-    setTheme(theme)
-    setWidth(width)
-    setHeight(height)
   }
 
   useEffect(() => {
-    getInitialOptions()
+    (async () => {
+      const {theme, width, height} = await storage.get()
+      setTheme(theme)
+      setWidth(width)
+      setHeight(height)
+      setInitialized(true)
+    })()
   }, [])
+
+  useEffect(() => {
+    if (initialized) {
+      lazyPersist({theme, width, height})
+    }
+  })
 
   return <form>
     <Typography use="subtitle2" tag="h2">{i18n('optionsWindowSize')}</Typography>
@@ -79,14 +84,14 @@ const App = function () {
         name='theme'
         value="light"
         checked={theme === 'light'}
-        onChange={() => {updateOption('theme', 'light')}}>
+        onChange={(e) => {updateOption('theme', e.target.value)}}>
         {i18n('optionsLight')}
       </Radio>
       <Radio
         name='theme'
         value="dark"
         checked={theme === 'dark'}
-        onChange={() => {updateOption('theme', 'dark')}}>
+        onChange={(e) => {updateOption('theme', e.target.value)}}>
         {i18n('optionsDark')}
       </Radio>
     </Elevation>

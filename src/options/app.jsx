@@ -1,13 +1,12 @@
 import browser from 'webextension-polyfill'
 import {debounce} from 'lodash'
 import React, {useState, useEffect} from 'react'
+import storage from '../common/storage'
 import i18n from './i18n'
 import {Slider, Typography, Radio, Button, Elevation} from 'rmwc/index.tsx'
 
-const storage = browser.storage.sync || browser.storage.local
-
-const lazyPersist = debounce(function (data) {
-  chrome.storage.sync.set(data)
+const lazyPersist = debounce(function () {
+  storage.set(...arguments)
 }, 100)
 
 const App = function () {

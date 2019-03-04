@@ -1,3 +1,4 @@
+import browser from 'webextension-polyfill'
 import React, {useState} from 'react'
 import i18n from './i18n'
 import {Slider, Typography, Radio, Button, Elevation} from 'rmwc/index.tsx'
@@ -79,7 +80,10 @@ const App = function () {
 
     <Typography use="subtitle2" tag="h3">{i18n('optionsShortcut')}</Typography>
     <Elevation className='elevation-with-padding'>
-      <Button icon="keyboard" outlined dense href='chrome://extensions/shortcuts' target='_blank' tag='a'>{i18n('optionsConfigureShortcuts')}</Button>
+      <Button icon="keyboard" outlined dense href='chrome://extensions/shortcuts' target='_blank' tag='a' onClick={(e) => {
+        e.preventDefault()
+        browser.tabs.create({url: e.currentTarget.href})
+      }}>{i18n('optionsConfigureShortcuts')}</Button>
     </Elevation>
 
     <Elevation className='footer'>

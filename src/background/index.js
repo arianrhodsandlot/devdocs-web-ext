@@ -59,13 +59,30 @@ async function addMessageListener () {
 
 addMessageListener()
 
-Object.assign(localStorage, {
-  version: VERSION,
-  install_time: Date.now(),
-  theme: 'light',
-  width: 600,
-  height: 600
-})
+async function initializeOptions () {
+  const defaultOptions = {
+    theme: 'light',
+    width: 600,
+    height: 600
+  }
+
+  const storage = browser.storage.sync || browser.storage.local
+  const options = {}
+  for (const option in defaultOptions) {
+    const {[option]: previousValue} = await storage.get(option)
+    const legacyValue = localStorage.getItem(option)
+    const value = previousValue || legacyValue
+    const defaultValue = defaultOptions[option]
+    if (value !== defaultValue) {
+      options[option] = value
+    }
+  }
+  console.log(options)
+  storage.set(options)
+  // localStorage.clear()
+}
+
+initializeOptions()
 
 if (process.env.NODE_ENV === 'production') {
   Raven.config('https://d2ddb64170f34a2ca621de47235480bc@sentry.io/1196839').install()

@@ -29,6 +29,7 @@
   "permissions": [
     "cookies",
     "activeTab",
+    "storage",
     "*://devdocs.io/",
     "*://docs.devdocs.io/"
   ],
@@ -38,6 +39,5 @@
         "default": "Alt+S"
       }
     }
-  },
-  "content_security_policy": "script-src 'self' https://unpkg.com; object-src 'self'"
+  }
 }

@@ -1,15 +1,36 @@
-import React from 'react'
+import React, {useState} from 'react'
 import i18n from './i18n'
-import {Slider, Typography, Radio, FormField, Button, Elevation} from 'rmwc/index.tsx'
+import {Slider, Typography, Radio, Button, Elevation} from 'rmwc/index.tsx'
 
-const App = () => (
-  <>
+const App = function () {
+  const [theme, setTheme] = useState(localStorage.theme)
+  const [width, setWidth] = useState(localStorage.width)
+  const [height, setHeight] = useState(localStorage.height)
+
+  function updateOption (option, value) {
+    switch (option) {
+      case 'theme':
+        setTheme(value)
+        break
+      case 'width':
+        setWidth(value)
+        break
+      case 'height':
+        setHeight(value)
+        break
+    }
+    localStorage.setItem(option, value)
+  }
+  return <form>
     <Typography use="subtitle2" tag="h2">{i18n('optionsWindowSize')}</Typography>
     <Elevation className='elevation-with-padding'>
       <Elevation>
         <Typography use="subtitle2" tag="h3">{i18n('optionsWidth')}</Typography>
         <Slider
           className='slider-size slider-width'
+          name='width'
+          value={width}
+          onInput={(e) => {updateOption('width', e.currentTarget.value)}}
           discrete
           displayMarkers
           min={300}
@@ -21,6 +42,9 @@ const App = () => (
       <Typography use="subtitle2" tag="h3">{i18n('optionsHeight')}</Typography>
       <Slider
         className='slider-size slider-height'
+        name='height'
+        value={height}
+        onInput={(e) => {updateOption('height', e.currentTarget.value)}}
         discrete
         displayMarkers
         min={300}
@@ -34,12 +58,16 @@ const App = () => (
     <Elevation>
       <Radio
         name='theme'
-        value="light">
+        value="light"
+        checked={theme === 'light'}
+        onChange={() => {updateOption('theme', 'light')}}>
         {i18n('optionsLight')}
       </Radio>
       <Radio
         name='theme'
-        value="dark">
+        value="dark"
+        checked={theme === 'dark'}
+        onChange={() => {updateOption('theme', 'dark')}}>
         {i18n('optionsDark')}
       </Radio>
     </Elevation>
@@ -80,7 +108,7 @@ const App = () => (
     </Elevation>
 
     <a className="github-fork-ribbon right-bottom fixed" href="https://github.com/arianrhodsandlot/DevDocs-Web-Ext" data-ribbon="Star me on GitHub" title="Star me on GitHub">Star me on GitHub</a>
-  </>
-)
+  </form>
+}
 
 export default App

@@ -43,7 +43,7 @@ const App = function () {
     if (initialized) {
       lazyPersist({theme, width, height})
     }
-  })
+  }, [theme, width, height])
 
   return <form className={`theme-${theme}`}>
     <Typography use="subtitle2" tag="h2">{i18n('optionsWindowSize')}</Typography>

@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import ReactDOM from 'react-dom'
 import querystring from 'querystring'
 import browser from 'webextension-polyfill'
@@ -6,106 +6,89 @@ import classnames from 'classnames'
 import key from 'keymaster'
 import { Link } from 'react-router-dom'
 
-class Search extends Component {
-  constructor (props) {
-    super(props)
-    this.state = {
-      entries: null,
-      focusPos: 0,
-      failMessage: ''
-    }
+export default function Search ({location, history}) {
+  const [entries, setEntries] = useState(null)
+  const [focusPos, setFocusPos] = useState(0)
+  const [failMessage, setFailMessage] = useState('')
+  const entryRefs = []
 
-    this.entryRefs = []
+  const keyHandlersRef = useRef()
+  keyHandlersRef.current = {focusNextEntry, focusPrevEntry, enterFocusEntry}
 
-    this.search(props)
-  }
-
-  componentDidUpdate (prevProps) {
-    if (this.props.location !== prevProps.location) {
-      this.search()
-    }
-  }
-
-  componentDidMount () {
+  useEffect(() => {
     key.filter = () => true
     key('down', () => {
-      this.focusNextEntry()
+      keyHandlersRef.current.focusNextEntry()
       return false
     })
     key('up', () => {
-      this.focusPrevEntry()
+      keyHandlersRef.current.focusPrevEntry()
       return false
     })
     key('enter', () => {
-      this.enterFocusEntry()
+      keyHandlersRef.current.enterFocusEntry()
       return false
     })
-  }
 
-  componentWillUnmount () {
-    key.unbind('down')
-    key.unbind('up')
-    key.unbind('enter')
-  }
+    return () => {
+      key.unbind('down')
+      key.unbind('up')
+      key.unbind('enter')
+    }
+  }, [])
 
-  getDocVersion (doc) {
+  useEffect(() => {
+    search()
+  }, [location])
+
+  useEffect(() => {
+    if (!entries) return
+    const ref = getEntryRef(entries[focusPos])
+    if (ref.current) {
+      const entryDomNode = ReactDOM.findDOMNode(ref.current)
+      entryDomNode.scrollIntoView({behavior: 'smooth'})
+    }
+  }, [focusPos])
+
+  function getDocVersion (doc) {
     return doc.slug.includes('~') ? doc.slug.split('~')[1] : ''
   }
 
-  getDocName (doc) {
-    return doc.split('~')[0]
-  }
-
-  focusNextEntry () {
-    const {focusPos, entries} = this.state
+  function focusNextEntry () {
     const maxFocusPos = entries.length - 1
-    this.setState({
-      focusPos: focusPos === maxFocusPos ? 0 : focusPos + 1
-    }, () => {
-      const ref = this.getEntryRef(this.state.entries[this.state.focusPos])
-      const entryDomNode = ReactDOM.findDOMNode(ref.current)
-      entryDomNode.scrollIntoView({behavior: 'smooth'})
-    })
+    setFocusPos(focusPos === maxFocusPos ? 0 : focusPos + 1)
   }
 
-  focusPrevEntry () {
-    const {focusPos, entries} = this.state
+  function focusPrevEntry () {
     const maxFocusPos = entries.length - 1
-    this.setState({
-      focusPos: focusPos === 0 ? maxFocusPos : focusPos - 1
-    }, () => {
-      const ref = this.getEntryRef(this.state.entries[this.state.focusPos])
-      const entryDomNode = ReactDOM.findDOMNode(ref.current)
-      entryDomNode.scrollIntoView({behavior: 'smooth'})
-    })
+    setFocusPos(focusPos === 0 ? maxFocusPos : focusPos - 1)
   }
 
-  getEntryUrl (entry) {
+  function getEntryUrl (entry) {
     const [entryPath, entryHash] = entry.path.split('#')
     const pathAndHash = entryHash ? `${entryPath}#${entryHash}` : `${entryPath}`
     return `/${entry.doc.slug}/${pathAndHash}`
   }
 
-  enterFocusEntry () {
-    const {focusPos, entries} = this.state
+  function enterFocusEntry () {
     const focusEntry = entries[focusPos]
-    this.props.history.replace(this.getEntryUrl(focusEntry))
+    history.replace(getEntryUrl(focusEntry))
   }
 
-  getEntryRef (entry) {
-    const index = this.state.entries.indexOf(entry)
-    let ref = this.entryRefs[index]
+  function getEntryRef (entry) {
+    const index = entries.indexOf(entry)
+    let ref = entryRefs[index]
     if (!ref) {
       ref = React.createRef()
-      this.entryRefs[index] = ref
+      entryRefs[index] = ref
     }
     return ref
   }
 
-  async search () {
-    const {query, scope} = querystring.parse(this.props.location.search.slice(1))
+  async function search () {
+    const {query, scope} = querystring.parse(location.search.slice(1))
     if (!query && !scope) {
-      this.props.history.replace('/')
+      history.replace('/')
       return
     }
 
@@ -131,60 +114,59 @@ class Search extends Component {
       }
     }
 
-    this.setState({entries, focusPos, failMessage, searchLoading: false})
+    setEntries(entries)
+    setFocusPos(focusPos)
+    setFailMessage(failMessage)
   }
 
-  render () {
-    const {failMessage} = this.state
-    if (failMessage) {
-      return (
-        <div className='_container' role='document'>
-          <div className='_content' role='main'>
-            <div>
-              <div className='_splash-title error'>{failMessage}</div>
-            </div>
-          </div>
-        </div>
-      )
-    }
-
-    const {entries, focusPos} = this.state
-    const noResults = (
-      <React.Fragment>
-        <div className='_list-note'>
-          No results.
-        </div>
-        <div className='_list-note'>
-          Note: documentations must be <a href='https://devdocs.io/settings' className='_list-note-link' onClick={ (e) => { browser.tabs.create({url: e.target.href}) } }>enabled</a> to appear in the search.
-        </div>
-      </React.Fragment>
-    )
-
-    const results = (entries
-      ? entries.map((entry, i) => (
-        <Link
-          className={classnames(
-            '_list-item', '_list-hover', '_list-entry',
-            `_icon-${entry.doc.icon}`,
-            {focus: focusPos === i ? 'focus' : ''})}
-          key={`${entry.doc.slug}-${entry.doc.name}/${entry.path}-${entry.name}`}
-          to={this.getEntryUrl(entry)}
-          ref={this.getEntryRef(entry)}>
-          <div className='_list-count'>{this.getDocVersion(entry.doc)}</div>
-          <div className='_list-text'>{entry.name}</div>
-        </Link>
-      ))
-      : null
-    )
-
+  if (failMessage) {
     return (
-      <div className='_sidebar'>
-        <div className='_list'>
-          {entries ? (entries.length ? results : noResults) : null}
+      <div className='_container' role='document'>
+        <div className='_content' role='main'>
+          <div>
+            <div className='_splash-title error'>{failMessage}</div>
+          </div>
         </div>
       </div>
     )
   }
-}
 
-export default Search
+  const noResults = (
+    <>
+      <div className='_list-note'>
+        No results.
+      </div>
+      <div className='_list-note'>
+        Note: documentations must be <a href='https://devdocs.io/settings' className='_list-note-link' target='_blank' onClick={(e) => {
+          e.preventDefault()
+          browser.tabs.create({url: e.currentTarget.href})
+        }}>enabled</a> to appear in the search.
+      </div>
+    </>
+  )
+
+  const results = (entries
+    ? entries.map((entry, i) => (
+      <Link
+        className={classnames(
+          '_list-item', '_list-hover', '_list-entry',
+          `_icon-${entry.doc.icon}`,
+          {focus: focusPos === i ? 'focus' : ''})}
+        key={`${entry.doc.slug}-${entry.doc.name}/${entry.path}-${entry.name}`}
+        to={getEntryUrl(entry)}
+        ref={getEntryRef(entry)}>
+        <div className='_list-count'>{getDocVersion(entry.doc)}</div>
+        <div className='_list-text'>{entry.name}</div>
+      </Link>
+    ))
+    : null
+  )
+
+  return (
+    <div className='_sidebar'>
+      <div className='_list'>
+        {entries ? (entries.length ? results : noResults) : null}
+      </div>
+    </div>
+  )
+}

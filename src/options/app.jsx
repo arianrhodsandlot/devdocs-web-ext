@@ -104,8 +104,7 @@ const App = function () {
     <Typography use="subtitle2" tag="h3">{i18n('optionsShortcut')}</Typography>
     <Elevation className='elevation-with-padding'>
       <Button icon="keyboard" outlined dense href='chrome://extensions/shortcuts' target='_blank' tag='a' onClick={(e) => {
-        e.preventDefault()
-        browser.tabs.create({url: e.detail.href})
+        browser.tabs.create({url: e.currentTarget.href})
       }}>{i18n('optionsConfigureShortcuts')}</Button>
     </Elevation>
 

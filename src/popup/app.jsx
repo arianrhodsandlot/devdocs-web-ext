@@ -6,8 +6,8 @@ import Search from './search.jsx'
 import Content from './content.jsx'
 import history from './history'
 
-const App = () => (
-  <React.Fragment>
+export default function App () {
+  return <>
     <Router history={history}>
       <Header />
     </Router>
@@ -18,7 +18,5 @@ const App = () => (
         <Route path='*' component={Content} />
       </Switch>
     </Router>
-  </React.Fragment>
-)
-
-export default App
+  </>
+}

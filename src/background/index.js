@@ -1,5 +1,6 @@
 import browser from 'webextension-polyfill'
 import Raven from 'raven-js'
+import { isProd } from '../common/env'
 import Docs from './docs'
 
 async function getDocNames () {
@@ -84,6 +85,8 @@ async function initializeOptions () {
 
 initializeOptions()
 
-if (process.env.NODE_ENV === 'production') {
+if (isProd) {
   Raven.config('https://d2ddb64170f34a2ca621de47235480bc@sentry.io/1196839').install()
+} else {
+  chrome.browserAction.setBadgeText({ text: '🚧' })
 }

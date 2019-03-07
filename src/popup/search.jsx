@@ -86,7 +86,7 @@ export default function Search ({location, history}) {
   }
 
   async function search () {
-    const {query, scope} = querystring.parse(location.search.slice(1))
+    const {query = '', scope = ''} = querystring.parse(location.search.slice(1))
     if (!query && !scope) {
       history.replace('/')
       return

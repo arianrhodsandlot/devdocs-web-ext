@@ -17,7 +17,10 @@ export default withRouter(function Header ({ location, history }) {
   useEffect(() => {
     inputRef.current.select()
     if (scope) {
-      attemptUpdateDoc(scope)
+      (async () => {
+        const completedDocName = await attemptCompeleteDocName(scope)
+        setDocName(completedDocName)
+      })()
     }
     key('/', () => {
       if (document.activeElement !== inputRef.current) {
@@ -59,9 +62,9 @@ export default withRouter(function Header ({ location, history }) {
   }
 
   function getInitialInputState () {
-    const scope = localStorage.getItem('scope')
-    const query = localStorage.getItem('query')
-    const docName = localStorage.getItem('docName')
+    const scope = localStorage.getItem('scope') || ''
+    const query = localStorage.getItem('query') || ''
+    const docName = localStorage.getItem('docName') || ''
     return { scope, query, docName}
   }
 
@@ -69,27 +72,28 @@ export default withRouter(function Header ({ location, history }) {
     history.replace('/')
   }
 
-  async function attemptUpdateDoc (docScope) {
+  async function attemptCompeleteDocName (docScope) {
     if (docScope === '') {
-      setDocName('')
-      return
+      return ''
     }
     const doc = await browser.runtime.sendMessage({
       action: 'auto-compelete-enabled-doc',
       payload: { scope: docScope }
     })
     if (doc) {
-      setDocName(doc.fullName)
+      return doc.fullName
     }
   }
 
   async function completeDoc () {
-    await attemptUpdateDoc(query)
-    const urlQuery = { scope: query }
-    history.replace(url.format({
-      pathname: '/search',
-      query: urlQuery
-    }))
+    const completedDocName = await attemptCompeleteDocName(query)
+    if (completedDocName) {
+      const urlQuery = { scope: query }
+      history.replace(url.format({
+        pathname: '/search',
+        query: urlQuery
+      }))
+    }
   }
 
   function handleChange (e) {

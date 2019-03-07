@@ -17,6 +17,7 @@ async function addMessageListener () {
     if (!query && !scope) return null
     if (!scope) return await docs.searchEntries(query)
     const doc = await docs.attemptToMatchOneDocInEnabledDocs(scope)
+    if (!doc) return []
     if (!query) {
       return doc.entries.slice(0, 50)
     }

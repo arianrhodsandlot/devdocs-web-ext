@@ -72,7 +72,7 @@ export default function Search ({location, history}) {
 
   function enterFocusEntry () {
     const focusEntry = entries[focusPos]
-    history.replace(getEntryUrl(focusEntry))
+    history.push(getEntryUrl(focusEntry))
   }
 
   function getEntryRef (entry) {

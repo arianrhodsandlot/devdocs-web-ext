@@ -1,37 +1,24 @@
+import url from 'url'
 import React, { useState, useEffect, useRef } from 'react'
 import querystring from 'querystring'
 import { withRouter } from 'react-router'
 import key from 'keymaster'
 import browser from 'webextension-polyfill'
 
-export default withRouter(function Header ({location, history}) {
-  const [doc, setDoc] = useState(null)
+export default withRouter(function Header ({ location, history }) {
   const [inputPaddingLeft, setInputPaddingLeft] = useState(0)
-  const inputState = getInputState()
-  const [scope, setScope] = useState(inputState.scope)
-  const [query, setQuery] = useState(inputState.query)
+  const initialInputState = getInitialInputState()
+  const [scope, setScope] = useState(initialInputState.scope)
+  const [query, setQuery] = useState(initialInputState.query)
+  const [docName, setDocName] = useState(initialInputState.docName)
   const inputRef = useRef()
   const scopeRef = useRef()
-  const keyHandlersRef = useRef()
-  keyHandlersRef.current = {guessDocFromScope}
 
   useEffect(() => {
     inputRef.current.select()
-    const clearQuery = false
-    guessDocFromScope(scope, clearQuery)
-    key('tab', () => {
-      if (doc) return false
-      const scope = inputRef.current.value.trim()
-      const clearQuery = true
-      keyHandlersRef.current.guessDocFromScope(scope, clearQuery)
-      return false
-    })
-    key('backspace', () => {
-      if (!inputRef.current.value) {
-        clearDoc()
-        return false
-      }
-    })
+    if (scope) {
+      attemptUpdateDoc(scope)
+    }
     key('/', () => {
       if (document.activeElement !== inputRef.current) {
         inputRef.current.focus()
@@ -44,61 +31,99 @@ export default withRouter(function Header ({location, history}) {
   useEffect(() => {
     if (scopeRef.current) setInputPaddingLeft(scopeRef.current.offsetWidth + 10)
     inputRef.current.focus()
-  }, [doc])
+  }, [docName])
 
   useEffect(() => {
-    const inputState = getInputState()
-    setScope(inputState.scope)
-    setQuery(inputState.query)
-    ;(async () => {
-      const doc = await browser.runtime.sendMessage({
-        action: 'auto-compelete-enabled-doc',
-        payload: { scope: inputState.scope }
-      })
-      setDoc(doc)
-    })()
+    localStorage.setItem('scope', scope)
+    localStorage.setItem('query', query)
+    localStorage.setItem('docName', docName)
+  }, [scope, query, docName])
+
+  useEffect(() => {
+    if (location.pathname === '/search' || location.pathname === '/') {
+      const inputState = getInputState()
+      setScope(inputState.scope)
+      setQuery(inputState.query)
+      if (!inputState.scope) {
+        setDocName('')
+      }
+    }
   }, [location])
 
   function getInputState () {
-    let query
-    let scope
-    if (location.pathname === '/search') {
-      const parsed = querystring.parse(location.search.slice(1))
-      query = parsed.query
-      scope = parsed.scope
+    const parsed = querystring.parse(location.search.slice(1))
+    return {
+      query: parsed.query || '',
+      scope: parsed.scope || ''
     }
-    query = (query || localStorage.query || '').trim()
-    scope = (scope || localStorage.scope || '').trim()
-    return {query, scope}
   }
 
-  async function guessDocFromScope (scope, clearQuery) {
-    if (!scope) return
-    const doc = await browser.runtime.sendMessage({
-      action: 'auto-compelete-enabled-doc',
-      payload: { scope }
-    })
-    if (doc) {
-      history.replace('/search?query=' + encodeURIComponent(clearQuery ? '' : query) + '&scope=' + encodeURIComponent(scope))
-    }
+  function getInitialInputState () {
+    const scope = localStorage.getItem('scope')
+    const query = localStorage.getItem('query')
+    const docName = localStorage.getItem('docName')
+    return { scope, query, docName}
   }
 
   function clearDoc () {
-    history.replace('/search')
+    history.replace('/')
+  }
+
+  async function attemptUpdateDoc (docScope) {
+    if (docScope === '') {
+      setDocName('')
+      return
+    }
+    const doc = await browser.runtime.sendMessage({
+      action: 'auto-compelete-enabled-doc',
+      payload: { scope: docScope }
+    })
+    if (doc) {
+      setDocName(doc.fullName)
+    }
+  }
+
+  async function completeDoc () {
+    await attemptUpdateDoc(query)
+    const urlQuery = { scope: query }
+    history.replace(url.format({
+      pathname: '/search',
+      query: urlQuery
+    }))
   }
 
   function handleChange (e) {
-    e.persist()
     const query = e.currentTarget.value
-    history.replace('/search?query=' + encodeURIComponent(query) + '&scope=' + encodeURIComponent(scope))
+    const urlQuery = {}
+    if (query) urlQuery.query = query
+    if (scope) urlQuery.scope = scope
+    history.replace(url.format({
+      pathname: '/search',
+      query: urlQuery
+    }))
+  }
+
+  function handleKeyDown (e) {
+    switch (e.key) {
+      case 'Tab':
+        e.preventDefault()
+        completeDoc()
+        break
+      case 'Backspace':
+        if (!query) {
+          e.preventDefault()
+          clearDoc()
+        }
+        break
+    }
   }
 
   return (
     <div className='_header'>
       <form className='_search' autoComplete='off'>
         <svg><use href='#icon-search' /></svg>
-        <input value={query} placeholder='Search...' className='input _search-input' spellCheck='false' onChange={handleChange} autoFocus ref={inputRef} style={doc ? {paddingLeft: inputPaddingLeft} : {}} />
-        {doc ? <div className='_search-tag' ref={scopeRef}>{doc.fullName}</div> : null}
+        <input value={query} placeholder='Search...' className='input _search-input' spellCheck='false' onChange={handleChange} autoFocus ref={inputRef} style={docName ? { paddingLeft: inputPaddingLeft } : {}} onKeyDown={handleKeyDown} />
+        {docName ? <div className='_search-tag' ref={scopeRef}>{docName}</div> : null}
       </form>
 
       <svg className='_settings' xmlns='http://www.w3.org/2000/svg'>

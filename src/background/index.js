@@ -1,6 +1,7 @@
 import browser from 'webextension-polyfill'
 import Raven from 'raven-js'
 import { isProd } from '../common/env'
+import storage from '../common/storage'
 import Docs from './docs'
 
 async function getDocNames () {
@@ -68,14 +69,16 @@ async function initializeOptions () {
     height: 600
   }
 
-  const storage = browser.storage.sync || browser.storage.local
   const options = {}
   for (const option in defaultOptions) {
     const {[option]: previousValue} = await storage.get(option)
     const legacyValue = localStorage.getItem(option)
     const value = previousValue || legacyValue
     const defaultValue = defaultOptions[option]
-    options[option] = value || defaultValue
+    if (value !== defaultValue) {
+      options[option] = value
+    }
+    localStorage.removeItem(option)
   }
   storage.set(options)
 }
@@ -85,5 +88,6 @@ initializeOptions()
 if (isProd) {
   Raven.config('https://d2ddb64170f34a2ca621de47235480bc@sentry.io/1196839').install()
 } else {
-  chrome.browserAction.setBadgeText({ text: '🚧' })
+  browser.browserAction.setBadgeBackgroundColor({ color: 'white' })
+  browser.browserAction.setBadgeText({ text: '🚧' })
 }

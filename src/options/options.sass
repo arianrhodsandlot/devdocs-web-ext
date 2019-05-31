@@ -1,8 +1,5 @@
 @import 'compass/reset'
 @import '~github-fork-ribbon-css/gh-fork-ribbon.css'
-
-$mdc-theme-primary: #1a73e8
-$mdc-theme-accent: #1a73e8
 @import '~@material/theme/mdc-theme'
 @import '~@material/form-field/mdc-form-field'
 @import '~@material/slider/mdc-slider'
@@ -15,9 +12,26 @@ $mdc-theme-accent: #1a73e8
 @import '~material-design-icons/iconfont/material-icons.css'
 
 #app
-  padding: 0 20px 20px 20px
   max-width: 500px
   margin: auto
+
+  > form
+    --mdc-theme-primary: #1a73e8
+    --mdc-theme-secondary: #1a73e8
+    --mdc-theme-accent: #1a73e8
+    padding: 0 20px 20px 20px
+    transition: background-color 0.1s, color 0.1s
+
+    &.theme-dark
+      --mdc-theme-primary: #8ab4f8
+      --mdc-theme-secondary: #8ab4f8
+      --mdc-theme-accent: #8ab4f8
+      background-color: #28292C
+      color: #e8eaed
+      .mdc-form-field
+        color: #e8eaed
+      .mdc-radio .mdc-radio__native-control:enabled:not(:checked)+.mdc-radio__background .mdc-radio__outer-circle
+        border-color: #e8eaed
 
 .slider-size
   margin-left: 10px
@@ -48,4 +62,4 @@ $mdc-theme-accent: #1a73e8
   transform: scale(.6)
   transform-origin: right bottom
   &:before
-    background-color: $mdc-theme-accent
+    background-color: var(--mdc-theme-primary)

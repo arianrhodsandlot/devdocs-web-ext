@@ -45,7 +45,7 @@ const App = function () {
     }
   })
 
-  return <form>
+  return <form className={`theme-${theme}`}>
     <Typography use="subtitle2" tag="h2">{i18n('optionsWindowSize')}</Typography>
     <Elevation className='elevation-with-padding'>
       <Elevation>

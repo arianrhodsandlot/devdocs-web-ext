@@ -1,6 +1,6 @@
-import createHistory from 'history/createHashHistory'
+import { createHashHistory } from 'history'
 
-const history = createHistory()
+const history = createHashHistory()
 history.listen((location, action) => {
   localStorage.lastPopupPath = `${location.pathname}${location.search}${location.hash}`
 })

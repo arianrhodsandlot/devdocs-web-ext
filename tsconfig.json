@@ -1,0 +1,39 @@
+{
+  "compilerOptions": {
+    "allowJs": false,
+    "alwaysStrict": true,
+    "baseUrl": ".",
+    "downlevelIteration": true,
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "inlineSourceMap": false,
+    "inlineSources": false,
+    "lib": [
+      "dom",
+      "es2015"
+    ],
+    "module": "esNext",
+    "moduleResolution": "node",
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitAny": false,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "pretty": true,
+    "removeComments": true,
+    "sourceMap": true,
+    "strict": true,
+    "target": "esnext",
+    "paths": {
+      "@/*": [
+        "*"
+      ]
+    },
+    "jsx": "react",
+    "resolveJsonModule": true
+  },
+  "typeRoots": [
+    "node_modules/@types"
+  ]
+}

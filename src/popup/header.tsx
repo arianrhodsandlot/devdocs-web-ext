@@ -126,7 +126,7 @@ export default withRouter(function Header ({ location, history }) {
     <div className='_header'>
       <form className='_search' autoComplete='off'>
         <svg><use href='#icon-search' /></svg>
-        <input value={query} placeholder='Search...' className='input _search-input' spellCheck='false' onChange={handleChange} autoFocus ref={inputRef} style={docName ? { paddingLeft: inputPaddingLeft } : {}} onKeyDown={handleKeyDown} />
+        <input value={query} placeholder='Search...' className='input _search-input' spellCheck={false} onChange={handleChange} autoFocus ref={inputRef} style={docName ? { paddingLeft: inputPaddingLeft } : {}} onKeyDown={handleKeyDown} />
         {docName ? <div className='_search-tag' ref={scopeRef}>{docName}</div> : null}
       </form>
 

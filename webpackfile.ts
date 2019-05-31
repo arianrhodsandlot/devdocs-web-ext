@@ -1,13 +1,13 @@
-const path = require('path')
-const childProcess = require('child_process')
-const webpack = require('webpack')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
-const MiniCssExtractPlugin = require("mini-css-extract-plugin")
-const LodashModuleReplacementPlugin = require('lodash-webpack-plugin')
-const packageJson = require('./package')
+import path from 'path'
+import childProcess from 'child_process'
+import webpack from 'webpack'
+import HtmlWebpackPlugin from 'html-webpack-plugin'
+import MiniCssExtractPlugin from "mini-css-extract-plugin"
+import LodashModuleReplacementPlugin from 'lodash-webpack-plugin'
+import packageJson from './package.json'
 
-module.exports = {
-  mode: process.env.NODE_ENV || 'development',
+const config: webpack.Configuration = {
+  mode: process.env.NODE_ENV as undefined || 'development',
   entry: {
     'devdocs-style': './src/popup/devdocs.sass',
     'devdocs-dark-style': './src/popup/devdocs-dark.sass',
@@ -40,6 +40,16 @@ module.exports = {
         loader: 'thread-loader'
       }, {
         loader: 'babel-loader'
+      }]
+    }, {
+      test: /\.tsx?$/,
+      exclude: /node_modules/,
+      use: [{
+        loader: 'cache-loader'
+      }, {
+        loader: 'thread-loader'
+      }, {
+        loader: 'ts-loader'
       }]
     }, {
       test: path.resolve(__dirname, 'vendor/devdocs/assets/javascripts/app/searcher.coffee'),
@@ -188,3 +198,5 @@ module.exports = {
     new webpack.ProgressPlugin()
   ]
 }
+
+export default config

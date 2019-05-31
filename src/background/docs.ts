@@ -4,14 +4,16 @@ import Searcher from '../../vendor/devdocs/assets/javascripts/app/searcher.coffe
 import Entry from '../../vendor/devdocs/assets/javascripts/models/entry.coffee'
 
 class Docs {
+  debouncedReload: any;
+  docNames = ''
+  docs = []
+  allDocs = []
+  ready = false
   constructor (docNames) {
     this.docNames = docNames
-    this.docs = []
-    this.allDocs = []
-    this.ready = false
     this.reload()
   }
-  async reload (docNames) {
+  async reload (docNames?: string | undefined) {
     this.ready = false
     if (docNames) {
       this.docNames = docNames

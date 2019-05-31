@@ -11,7 +11,7 @@ export default function App ({location, history}) {
   const [loading, setLoading] = useState(false)
   const [contentUrl, setContentUrl] = useState('')
   const [content, setContent] = useState('')
-  const [doc, setDoc] = useState(null)
+  const [doc, setDoc] = useState(null as null | { type: string })
   const pageRef = useRef()
   const prevPathRef = useRef()
   const prevPath = prevPathRef.current
@@ -116,7 +116,6 @@ export default function App ({location, history}) {
     <div className='_container' role='document'>
       <div className='_content' role='main'>
         <div
-          className='_page'
           className={classnames(['_page', doc ? `_${doc.type}` : ''])}
           onClick={onContentClick}
           ref={pageRef}

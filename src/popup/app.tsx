@@ -1,9 +1,9 @@
 import React from 'react'
 import { Router, Route, Switch } from 'react-router-dom'
-import Header from './header.jsx'
-import Home from './home.jsx'
-import Search from './search.jsx'
-import Content from './content.jsx'
+import Header from './header'
+import Home from './home'
+import Search from './search'
+import Content from './content'
 import history from './history'
 
 export default function App () {

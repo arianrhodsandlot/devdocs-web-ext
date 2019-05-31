@@ -75,9 +75,7 @@ async function initializeOptions () {
     const legacyValue = localStorage.getItem(option)
     const value = previousValue || legacyValue
     const defaultValue = defaultOptions[option]
-    if (value !== defaultValue) {
-      options[option] = value
-    }
+    options[option] = value || defaultValue
     localStorage.removeItem(option)
   }
   storage.set(options)

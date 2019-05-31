@@ -113,7 +113,7 @@ const App = function () {
       <Typography use="caption" tag="h3">
         DevDocs Web Ext
         <span className='space'>-</span>
-        {i18n('optionsVersion')} {VERSION} ({GIT_VERSION})
+        {i18n('optionsVersion')} {VERSION} (<a href={`https://github.com/arianrhodsandlot/DevDocs-Web-Ext/tree/${GIT_VERSION}`}>{GIT_VERSION}</a>)
       </Typography>
       <Typography use="caption" tag="div">{i18n('optionsAboutDesc')}</Typography>
       <Typography use="caption" tag="div">

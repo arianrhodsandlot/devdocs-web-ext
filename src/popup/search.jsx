@@ -155,7 +155,7 @@ class Search extends Component {
           No results.
         </div>
         <div className='_list-note'>
-          Note: documentations must be <a href='https://devdocs.io/settings' className='_list-note-link'>enabled</a> to appear in the search.
+          Note: documentations must be <a href='https://devdocs.io/settings' className='_list-note-link' onClick={ (e) => { browser.tabs.create({url: e.target.href}) } }>enabled</a> to appear in the search.
         </div>
       </React.Fragment>
     )

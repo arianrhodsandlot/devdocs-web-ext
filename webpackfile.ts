@@ -2,7 +2,7 @@ import path from 'path'
 import childProcess from 'child_process'
 import webpack from 'webpack'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
-import MiniCssExtractPlugin from "mini-css-extract-plugin"
+import MiniCssExtractPlugin from 'mini-css-extract-plugin'
 import LodashModuleReplacementPlugin from 'lodash-webpack-plugin'
 import packageJson from './package.json'
 
@@ -12,11 +12,11 @@ const config: webpack.Configuration = {
     'devdocs-style': './src/popup/devdocs.sass',
     'devdocs-dark-style': './src/popup/devdocs-dark.sass',
     'popup-style': './src/popup/popup.sass',
-    'popup-js': './src/popup',
+    'popup-js': './src/popup/index.tsx',
 
-    'background-js': './src/background',
+    'background-js': './src/background/index.ts',
 
-    'options-js': './src/options',
+    'options-js': './src/options/index.tsx',
     'options-style': './src/options/options.sass'
   },
   output: {
@@ -49,7 +49,10 @@ const config: webpack.Configuration = {
       }, {
         loader: 'thread-loader'
       }, {
-        loader: 'ts-loader'
+        loader: 'ts-loader',
+        options: {
+          happyPackMode: true
+        }
       }]
     }, {
       test: path.resolve(__dirname, 'vendor/devdocs/assets/javascripts/app/searcher.coffee'),
@@ -161,6 +164,9 @@ const config: webpack.Configuration = {
         loader: 'pug-loader'
       }]
     }]
+  },
+  resolve: {
+    extensions: ['.ts', '.tsx', '.js']
   },
   devtool: process.env.NODE_ENV === 'production' ? false : 'inline-cheap-source-map',
   optimization: {

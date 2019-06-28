@@ -2,7 +2,7 @@ import Raven from 'raven-js'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import storage from '../common/storage'
-import App from './App.js'
+import App from './app'
 import key from 'keymaster'
 
 if (process.env.NODE_ENV === 'production') {

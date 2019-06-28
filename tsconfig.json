@@ -12,7 +12,7 @@
       "dom",
       "es2015"
     ],
-    "module": "esNext",
+    "module": "commonjs",
     "moduleResolution": "node",
     "noFallthroughCasesInSwitch": true,
     "noImplicitAny": false,

@@ -1,7 +1,7 @@
 import Raven from 'raven-js'
 import React from 'react'
 import ReactDOM from 'react-dom'
-import App from './App.jsx'
+import App from './app'
 import i18n from './i18n'
 import {isProd} from '../common/env'
 

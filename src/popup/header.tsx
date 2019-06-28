@@ -5,35 +5,50 @@ import { withRouter } from 'react-router'
 import key from 'keymaster'
 import browser from 'webextension-polyfill'
 
+function getInitialInputState () {
+  const scope = localStorage.getItem('scope') || ''
+  const query = localStorage.getItem('query') || ''
+  const docName = localStorage.getItem('docName') || ''
+  return { scope, query, docName}
+}
+
 export default withRouter(function Header ({ location, history }) {
   const [inputPaddingLeft, setInputPaddingLeft] = useState(0)
   const initialInputState = getInitialInputState()
   const [scope, setScope] = useState(initialInputState.scope)
   const [query, setQuery] = useState(initialInputState.query)
   const [docName, setDocName] = useState(initialInputState.docName)
-  const inputRef = useRef()
-  const scopeRef = useRef()
+  const inputRef = useRef<HTMLInputElement>()
+  const scopeRef = useRef<HTMLInputElement>()
 
   useEffect(() => {
+    if (!inputRef.current) return
     inputRef.current.select()
-    if (scope) {
-      (async () => {
-        const completedDocName = await attemptCompeleteDocName(scope)
-        setDocName(completedDocName)
-      })()
-    }
+
     key('/', () => {
-      if (document.activeElement !== inputRef.current) {
-        inputRef.current.focus()
-        inputRef.current.select()
-        return false
-      }
+      if (!inputRef.current) return
+      if (document.activeElement === inputRef.current) return
+
+      inputRef.current.focus()
+      inputRef.current.select()
+      return false
     })
   }, [])
 
   useEffect(() => {
-    if (scopeRef.current) setInputPaddingLeft(scopeRef.current.offsetWidth + 10)
-    inputRef.current.focus()
+    (async () => {
+      const completedDocName = await attemptCompeleteDocName(scope)
+      setDocName(completedDocName)
+    })()
+  }, [scope])
+
+  useEffect(() => {
+    if (scopeRef.current) {
+      setInputPaddingLeft(scopeRef.current.offsetWidth + 10)
+    }
+    if (inputRef.current) {
+      inputRef.current.focus()
+    }
   }, [docName])
 
   useEffect(() => {
@@ -47,25 +62,15 @@ export default withRouter(function Header ({ location, history }) {
       const inputState = getInputState()
       setScope(inputState.scope)
       setQuery(inputState.query)
-      if (!inputState.scope) {
-        setDocName('')
-      }
     }
   }, [location])
 
   function getInputState () {
     const parsed = querystring.parse(location.search.slice(1))
     return {
-      query: parsed.query || '',
-      scope: parsed.scope || ''
+      query: parsed.query ? `${parsed.query}` : '',
+      scope: parsed.scope ? `${parsed.scope}` : ''
     }
-  }
-
-  function getInitialInputState () {
-    const scope = localStorage.getItem('scope') || ''
-    const query = localStorage.getItem('query') || ''
-    const docName = localStorage.getItem('docName') || ''
-    return { scope, query, docName}
   }
 
   function clearDoc () {
@@ -96,9 +101,12 @@ export default withRouter(function Header ({ location, history }) {
     }
   }
 
-  function handleChange (e) {
+  function handleChange (e: React.ChangeEvent<HTMLInputElement>) {
     const query = e.currentTarget.value
-    const urlQuery = {}
+    const urlQuery = {
+      query: '',
+      scope: ''
+    }
     if (query) urlQuery.query = query
     if (scope) urlQuery.scope = scope
     history.replace(url.format({
@@ -107,7 +115,7 @@ export default withRouter(function Header ({ location, history }) {
     }))
   }
 
-  function handleKeyDown (e) {
+  function handleKeyDown (e: React.KeyboardEvent<HTMLInputElement>) {
     switch (e.key) {
       case 'Tab':
         e.preventDefault()
@@ -126,7 +134,15 @@ export default withRouter(function Header ({ location, history }) {
     <div className='_header'>
       <form className='_search' autoComplete='off'>
         <svg><use href='#icon-search' /></svg>
-        <input value={query} placeholder='Search...' className='input _search-input' spellCheck={false} onChange={handleChange} autoFocus ref={inputRef} style={docName ? { paddingLeft: inputPaddingLeft } : {}} onKeyDown={handleKeyDown} />
+        <input
+          value={query}
+          placeholder='Search...'
+          className='input _search-input'
+          spellCheck={false}
+          onChange={handleChange}
+          autoFocus
+          ref={inputRef}
+          style={docName ? { paddingLeft: inputPaddingLeft } : {}} onKeyDown={handleKeyDown} />
         {docName ? <div className='_search-tag' ref={scopeRef}>{docName}</div> : null}
       </form>
 

@@ -2021,10 +2021,25 @@
   resolved "https://registry.npm.taobao.org/@types/classnames/download/@types/classnames-2.2.8.tgz#17139e1e1104203572caa4368f6796f6225b70b4"
   integrity sha1-FxOeHhEEIDVyyqQ2j2eW9iJbcLQ=
 
+"@types/firefox-webext-browser@^67.0.2":
+  version "67.0.2"
+  resolved "https://registry.npm.taobao.org/@types/firefox-webext-browser/download/@types/firefox-webext-browser-67.0.2.tgz#04625d3294fbca54bccf42dae43f636c5b6452a2"
+  integrity sha1-BGJdMpT7ylS8z0La5D9jbFtkUqI=
+
+"@types/history@*":
+  version "4.7.2"
+  resolved "https://registry.npm.taobao.org/@types/history/download/@types/history-4.7.2.tgz#0e670ea254d559241b6eeb3894f8754991e73220"
+  integrity sha1-DmcOolTVWSQbbus4lPh1SZHnMiA=
+
 "@types/keymaster@^1.6.28":
   version "1.6.28"
   resolved "https://registry.npm.taobao.org/@types/keymaster/download/@types/keymaster-1.6.28.tgz#093fc6fe49deff4ee17d36935a49230edb1c935f"
   integrity sha1-CT/G/kne/07hfTaTWkkjDtsck18=
+
+"@types/lodash@^4.14.135":
+  version "4.14.135"
+  resolved "https://registry.npm.taobao.org/@types/lodash/download/@types/lodash-4.14.135.tgz#d2607c35dd68f70c2b35ba020c667493dedd8447"
+  integrity sha1-0mB8Nd1o9wwrNboCDGZ0k97dhEc=
 
 "@types/node@*":
   version "12.0.4"
@@ -2046,6 +2061,14 @@
   resolved "https://registry.npm.taobao.org/@types/react-dom/download/@types/react-dom-16.8.4.tgz#7fb7ba368857c7aa0f4e4511c4710ca2c5a12a88"
   integrity sha1-f7e6NohXx6oPTkURxHEMosWhKog=
   dependencies:
+    "@types/react" "*"
+
+"@types/react-router@^5.0.2":
+  version "5.0.2"
+  resolved "https://registry.npm.taobao.org/@types/react-router/download/@types/react-router-5.0.2.tgz#619850cf28245d97bfa205f1fa7136451ba384bc"
+  integrity sha1-YZhQzygkXZe/ogXx+nE2RRujhLw=
+  dependencies:
+    "@types/history" "*"
     "@types/react" "*"
 
 "@types/react@*":

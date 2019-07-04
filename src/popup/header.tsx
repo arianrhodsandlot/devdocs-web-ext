@@ -98,6 +98,9 @@ export default withRouter(function Header ({ location, history }) {
         pathname: '/search',
         query: urlQuery
       }))
+      if (inputRef.current) {
+        inputRef.current.value = ''
+      }
     }
   }
 
@@ -135,7 +138,7 @@ export default withRouter(function Header ({ location, history }) {
       <form className='_search' autoComplete='off'>
         <svg><use href='#icon-search' /></svg>
         <input
-          value={query}
+          defaultValue={query}
           placeholder='Search...'
           className='input _search-input'
           spellCheck={false}

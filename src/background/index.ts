@@ -16,13 +16,17 @@ async function addMessageListener () {
 
   async function searchEntry ({ query, scope }) {
     if (!query && !scope) return null
-    if (!scope) return await docs.searchEntries(query)
+    if (!scope) {
+      const entries = await docs.searchEntries(query)
+      return entries
+    }
     const doc = await docs.attemptToMatchOneDocInEnabledDocs(scope)
     if (!doc) return []
     if (!query) {
       return doc.entries.slice(0, 50)
     }
-    return await docs.searchEntriesInDoc(query, doc)
+    const entries = await Docs.searchEntriesInDoc(query, doc)
+    return entries
   }
 
   async function autoCompeleteEnabledDoc ({ scope }) {
@@ -38,7 +42,8 @@ async function addMessageListener () {
   browser.cookies.onChanged.addListener(async ({ cookie: { domain, name } }) => {
     if (!(['devdocs.io', '.devdocs.io'].includes(domain))) return
     if (name !== 'docs') return
-    docs.debouncedReload(await getDocNames())
+    const docNames = await getDocNames()
+    docs.reload(docNames)
   })
 
   browser.runtime.onMessage.addListener(async ({ action, payload }) => {
@@ -46,17 +51,21 @@ async function addMessageListener () {
       await docs.reload(await getDocNames())
     }
 
+    let result: object | null = null
+
     switch (action) {
       case 'search-entry':
-        const entries = await searchEntry(payload)
-        return { status: 'success', content: entries }
+        result = { status: 'success', content: await searchEntry(payload) }
+        break
       case 'auto-compelete-enabled-doc':
-        return await autoCompeleteEnabledDoc(payload)
+        result = await autoCompeleteEnabledDoc(payload)
+        break
       case 'get-content-doc':
-        return await getContentDoc(payload)
-      default:
-        return null
+        result = await getContentDoc(payload)
+        break
     }
+
+    return result
   })
 }
 

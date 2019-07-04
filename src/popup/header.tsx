@@ -9,7 +9,7 @@ function getInitialInputState () {
   const scope = localStorage.getItem('scope') || ''
   const query = localStorage.getItem('query') || ''
   const docName = localStorage.getItem('docName') || ''
-  return { scope, query, docName}
+  return { scope, query, docName }
 }
 
 export default withRouter(function Header ({ location, history }) {

@@ -6,14 +6,13 @@ import classnames from 'classnames'
 import key from 'keymaster'
 import { Link } from 'react-router-dom'
 
-export default function Search ({location, history}) {
-  const [entries, setEntries] = useState(null)
+export default function Search ({ location, history }) {
+  const [entries, setEntries] = useState([])
   const [focusPos, setFocusPos] = useState(0)
   const [failMessage, setFailMessage] = useState('')
   const entryRefs = []
 
-  const keyHandlersRef = useRef()
-  keyHandlersRef.current = {focusNextEntry, focusPrevEntry, enterFocusEntry}
+  const keyHandlersRef = useRef({ focusNextEntry, focusPrevEntry, enterFocusEntry })
 
   useEffect(() => {
     key.filter = () => true
@@ -44,9 +43,9 @@ export default function Search ({location, history}) {
   useEffect(() => {
     if (!entries) return
     const ref = getEntryRef(entries[focusPos])
-    if (ref.current) {
+    if (ref && ref.current) {
       const entryDomNode = ReactDOM.findDOMNode(ref.current)
-      entryDomNode.scrollIntoView({behavior: 'smooth'})
+      entryDomNode.scrollIntoView({ behavior: 'smooth' })
     }
   }, [focusPos])
 
@@ -86,14 +85,14 @@ export default function Search ({location, history}) {
   }
 
   async function search () {
-    const {query = '', scope = ''} = querystring.parse(location.search.slice(1))
+    const { query = '', scope = '' } = querystring.parse(location.search.slice(1))
     if (!query && !scope) {
       history.replace('/')
       return
     }
 
     let entries = []
-    let focusPos = 0
+    const focusPos = 0
     let failMessage = ''
 
     let response
@@ -139,7 +138,7 @@ export default function Search ({location, history}) {
       <div className='_list-note'>
         Note: documentations must be <a href='https://devdocs.io/settings' className='_list-note-link' target='_blank' onClick={(e) => {
           e.preventDefault()
-          browser.tabs.create({url: e.currentTarget.href})
+          browser.tabs.create({ url: e.currentTarget.href })
         }}>enabled</a> to appear in the search.
       </div>
     </>
@@ -151,7 +150,7 @@ export default function Search ({location, history}) {
         className={classnames(
           '_list-item', '_list-hover', '_list-entry',
           `_icon-${entry.doc.icon}`,
-          {focus: focusPos === i ? 'focus' : ''})}
+          { focus: focusPos === i ? 'focus' : '' })}
         key={`${entry.doc.slug}-${entry.doc.name}/${entry.path}-${entry.name}`}
         to={getEntryUrl(entry)}
         ref={getEntryRef(entry)}>

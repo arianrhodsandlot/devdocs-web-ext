@@ -12,7 +12,7 @@ if (process.env.NODE_ENV === 'production') {
 key.filter = () => true
 
 async function main () {
-  const {width, height, theme} = await storage.get()
+  const { width, height, theme } = await storage.get()
 
   if (theme === 'dark') {
     document.documentElement.classList.remove('_theme-default')

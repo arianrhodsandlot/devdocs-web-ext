@@ -39,6 +39,8 @@
     "@types/react-dom": "^16.8.4",
     "@types/react-router": "^5.0.2",
     "@types/webpack": "^4.4.34",
+    "@typescript-eslint/eslint-plugin": "^1.11.0",
+    "@typescript-eslint/parser": "^1.11.0",
     "babel-core": "^6.26.3",
     "babel-loader": "^8.0.6",
     "babel-plugin-lodash": "^3.3.4",
@@ -48,6 +50,12 @@
     "coffeescript": "1.x",
     "core-js": "^3.1.4",
     "css-loader": "^3.0.0",
+    "eslint": "^6.0.1",
+    "eslint-config-standard": "^12.0.0",
+    "eslint-plugin-import": "^2.18.0",
+    "eslint-plugin-node": "^9.1.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.0",
     "exports-loader": "^0.7.0",
     "file-loader": "^4.0.0",
     "html-webpack-plugin": "^3.2.0",
@@ -102,5 +110,53 @@
       "@babel/plugin-transform-async-to-generator",
       "@babel/plugin-syntax-dynamic-import"
     ]
+  },
+  "eslintConfig": {
+    "env": {
+      "browser": true
+    },
+    "extends": [
+      "eslint:recommended",
+      "plugin:@typescript-eslint/eslint-recommended",
+      "plugin:@typescript-eslint/recommended",
+      "standard"
+    ],
+    "rules": {
+      "no-var": "error",
+      "prefer-const": "error",
+      "no-param-reassign": "error",
+      "no-undefined": "error",
+      "no-unused-expressions": "error",
+      "quote-props": [
+        "error",
+        "as-needed"
+      ],
+      "no-empty": [
+        "error",
+        {
+          "allowEmptyCatch": true
+        }
+      ],
+      "camelcase": "off",
+      "@typescript-eslint/explicit-function-return-type": "off",
+      "@typescript-eslint/explicit-member-accessibility": "off",
+      "@typescript-eslint/no-unused-vars": [
+        "error",
+        {
+          "caughtErrors": "none"
+        }
+      ],
+      "@typescript-eslint/indent": [
+        "error",
+        2
+      ],
+      "@typescript-eslint/camelcase": [
+        "error",
+        {
+          "properties": "never"
+        }
+      ],
+      "@typescript-eslint/no-non-null-assertion": "off"
+    }
   }
 }

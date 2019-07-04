@@ -6,7 +6,7 @@ import Docs from './docs'
 
 async function getDocNames () {
   const defaultCategories = ['css', 'dom', 'dom_events', 'html', 'http', 'javascript']
-  const cookie = await browser.cookies.get({url: 'http://devdocs.io', name: 'docs'})
+  const cookie = await browser.cookies.get({ url: 'http://devdocs.io', name: 'docs' })
   const categories = cookie && cookie.value ? cookie.value.split('/') : defaultCategories
   return categories
 }
@@ -14,7 +14,7 @@ async function getDocNames () {
 async function addMessageListener () {
   const docs = new Docs(await getDocNames())
 
-  async function searchEntry ({query, scope}) {
+  async function searchEntry ({ query, scope }) {
     if (!query && !scope) return null
     if (!scope) return await docs.searchEntries(query)
     const doc = await docs.attemptToMatchOneDocInEnabledDocs(scope)
@@ -25,23 +25,23 @@ async function addMessageListener () {
     return await docs.searchEntriesInDoc(query, doc)
   }
 
-  async function autoCompeleteEnabledDoc ({scope}) {
+  async function autoCompeleteEnabledDoc ({ scope }) {
     const doc = await docs.attemptToMatchOneDocInEnabledDocs(scope)
     return doc
   }
 
-  async function getContentDoc ({scope}) {
+  async function getContentDoc ({ scope }) {
     const doc = await docs.attemptToMatchOneDocInAllDocs(scope)
     return doc
   }
 
-  browser.cookies.onChanged.addListener(async ({cookie: {domain, name}}) => {
+  browser.cookies.onChanged.addListener(async ({ cookie: { domain, name } }) => {
     if (!(['devdocs.io', '.devdocs.io'].includes(domain))) return
     if (name !== 'docs') return
     docs.debouncedReload(await getDocNames())
   })
 
-  browser.runtime.onMessage.addListener(async ({action, payload}) => {
+  browser.runtime.onMessage.addListener(async ({ action, payload }) => {
     if (!docs.ready) {
       await docs.reload(await getDocNames())
     }
@@ -71,7 +71,7 @@ async function initializeOptions () {
 
   const options = {}
   for (const option in defaultOptions) {
-    const {[option]: previousValue} = await storage.get(option)
+    const { [option]: previousValue } = await storage.get(option)
     const legacyValue = localStorage.getItem(option)
     const value = previousValue || legacyValue
     const defaultValue = defaultOptions[option]

@@ -9,7 +9,7 @@ class Docs {
   docs = []
   allDocs = []
   ready = false
-  constructor (docNames) {
+  constructor (docNames: string) {
     this.docNames = docNames
     this.reload()
   }
@@ -30,20 +30,20 @@ class Docs {
     }))
   }
   async extendDoc (doc) {
-    const docEntry = new Entry({...doc, ...{name: doc.fullName}})
+    const docEntry = new Entry({ ...doc, ...{ name: doc.fullName } })
     if (docEntry.version) {
       docEntry.addAlias(doc.name)
     }
 
-    const index = await this.getDocIndexByName(doc.slug)
+    const index = await this.getDocIndexByName(doc.slug) as Index
     index.entries = _.map(index.entries, (entry) => {
       return {
         ...new Entry(entry),
-        doc: {...doc}
+        doc: { ...doc }
       }
     })
 
-    _.extend(doc, {...index, ...docEntry})
+    _.extend(doc, { ...index, ...docEntry })
   }
   async getDocIndexByName (docName) {
     const docUrl = `http://docs.devdocs.io/${docName}/index.json`
@@ -52,15 +52,14 @@ class Docs {
   }
   async getAllDocs () {
     const docsUrl = 'https://devdocs.io/docs/docs.json'
-    const docs = await ky(docsUrl).json()
-    for (const doc of docs) {
-      doc.fullName = doc.name + (doc.version ? ` ${doc.version}` : '')
-      doc.slug_without_version = doc.slug.split('~')[0]
-      doc.icon = doc.slug_without_version
-      doc.short_version = doc.version ? doc.version.split(' ')[0] : ''
-      doc.text = [doc.name, doc.slug]
-    }
-    return docs
+    const docs = await ky(docsUrl).json() as Doc[]
+    return docs.map((doc) => ({
+      fullName: doc.name + (doc.version ? ` ${doc.version}` : ''),
+      slug_without_version: doc.slug.split('~')[0],
+      icon: doc.slug.split('~')[0],
+      short_version: doc.version ? doc.version.split(' ')[0] : '',
+      text: [doc.name, doc.slug]
+    }))
   }
   searchEntries (query) {
     const groupedEntries = _.map(this.docs, (doc) => doc.entries)

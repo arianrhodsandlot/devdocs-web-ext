@@ -1,16 +1,16 @@
 import browser from 'webextension-polyfill'
-import {debounce} from 'lodash'
-import React, {useState, useEffect} from 'react'
+import { debounce } from 'lodash'
+import React, { useState, useEffect } from 'react'
 import storage from '../common/storage'
 import i18n from './i18n'
-import {Slider, Typography, Radio, Button, Elevation} from 'rmwc'
+import { Slider, Typography, Radio, Button, Elevation } from 'rmwc'
 
 const lazyPersist = debounce(function () {
   storage.set(...arguments)
 }, 100)
 
 const App = function () {
-  let [initialized, setInitialized] = useState(false)
+  const [initialized, setInitialized] = useState(false)
   const [theme, setTheme] = useState()
   const [width, setWidth] = useState()
   const [height, setHeight] = useState()
@@ -31,7 +31,7 @@ const App = function () {
 
   useEffect(() => {
     (async () => {
-      const {theme, width, height} = await storage.get()
+      const { theme, width, height } = await storage.get()
       setTheme(theme)
       setWidth(width)
       setHeight(height)
@@ -41,7 +41,7 @@ const App = function () {
 
   useEffect(() => {
     if (initialized) {
-      lazyPersist({theme, width, height})
+      lazyPersist({ theme, width, height })
     }
   }, [theme, width, height])
 
@@ -54,7 +54,7 @@ const App = function () {
           className='slider-size slider-width'
           name='width'
           value={width}
-          onInput={(e) => {updateOption('width', e.detail.value)}}
+          onInput={(e) => { updateOption('width', e.detail.value) }}
           discrete
           displayMarkers
           min={300}
@@ -68,7 +68,7 @@ const App = function () {
           className='slider-size slider-height'
           name='height'
           value={height}
-          onInput={(e) => {updateOption('height', e.detail.value)}}
+          onInput={(e) => { updateOption('height', e.detail.value) }}
           discrete
           displayMarkers
           min={300}
@@ -84,14 +84,14 @@ const App = function () {
         name='theme'
         value="light"
         checked={theme === 'light'}
-        onChange={(e) => {updateOption('theme', e.target.value)}}>
+        onChange={(e) => { updateOption('theme', e.target.value) }}>
         {i18n('optionsLight')}
       </Radio>
       <Radio
         name='theme'
         value="dark"
         checked={theme === 'dark'}
-        onChange={(e) => {updateOption('theme', e.target.value)}}>
+        onChange={(e) => { updateOption('theme', e.target.value) }}>
         {i18n('optionsDark')}
       </Radio>
     </Elevation>
@@ -105,7 +105,7 @@ const App = function () {
     <Elevation className='elevation-with-padding'>
       <Button icon="keyboard" outlined dense href='chrome://extensions/shortcuts' target='_blank' tag='a' onClick={(e) => {
         e.preventDefault()
-        browser.tabs.create({url: e.currentTarget.href})
+        browser.tabs.create({ url: e.currentTarget.href })
       }}>{i18n('optionsConfigureShortcuts')}</Button>
     </Elevation>
 

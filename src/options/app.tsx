@@ -5,29 +5,15 @@ import storage from '../common/storage'
 import i18n from './i18n'
 import { Slider, Typography, Radio, Button, Elevation } from 'rmwc'
 
-const lazyPersist = debounce(function () {
-  storage.set(...arguments)
+const lazyPersist = debounce(function (data) {
+  storage.set(data)
 }, 100)
 
 const App = function () {
   const [initialized, setInitialized] = useState(false)
-  const [theme, setTheme] = useState()
-  const [width, setWidth] = useState()
-  const [height, setHeight] = useState()
-
-  function updateOption (option, value) {
-    switch (option) {
-      case 'theme':
-        setTheme(value)
-        break
-      case 'width':
-        setWidth(value)
-        break
-      case 'height':
-        setHeight(value)
-        break
-    }
-  }
+  const [theme, setTheme] = useState('light')
+  const [width, setWidth] = useState(600)
+  const [height, setHeight] = useState(600)
 
   useEffect(() => {
     (async () => {
@@ -47,14 +33,14 @@ const App = function () {
 
   return <form className={`theme-${theme}`}>
     <Typography use="subtitle2" tag="h2">{i18n('optionsWindowSize')}</Typography>
-    <Elevation className='elevation-with-padding'>
-      <Elevation>
+    <Elevation z={0} className='elevation-with-padding'>
+      <Elevation z={0}>
         <Typography use="subtitle2" tag="h3">{i18n('optionsWidth')}</Typography>
         <Slider
           className='slider-size slider-width'
           name='width'
           value={width}
-          onInput={(e) => { updateOption('width', e.detail.value) }}
+          onInput={(e) => { setWidth(e.detail.value) }}
           discrete
           displayMarkers
           min={300}
@@ -62,13 +48,13 @@ const App = function () {
           step={50}
         />
       </Elevation>
-      <Elevation>
+      <Elevation z={0}>
         <Typography use="subtitle2" tag="h3">{i18n('optionsHeight')}</Typography>
         <Slider
           className='slider-size slider-height'
           name='height'
           value={height}
-          onInput={(e) => { updateOption('height', e.detail.value) }}
+          onInput={(e) => { setHeight(e.detail.value) }}
           discrete
           displayMarkers
           min={300}
@@ -79,37 +65,37 @@ const App = function () {
     </Elevation>
 
     <Typography use="subtitle2" tag="h3">{i18n('optionsTheme')}</Typography>
-    <Elevation>
+    <Elevation z={0}>
       <Radio
         name='theme'
         value="light"
         checked={theme === 'light'}
-        onChange={(e) => { updateOption('theme', e.target.value) }}>
+        onChange={(e) => { setTheme(e.currentTarget.value) }}>
         {i18n('optionsLight')}
       </Radio>
       <Radio
         name='theme'
         value="dark"
         checked={theme === 'dark'}
-        onChange={(e) => { updateOption('theme', e.target.value) }}>
+        onChange={(e) => { setTheme(e.currentTarget.value) }}>
         {i18n('optionsDark')}
       </Radio>
     </Elevation>
 
     <Typography use="subtitle2" tag="h3">{i18n('optionsDocs')}</Typography>
-    <Elevation className='elevation-with-padding'>
+    <Elevation z={0} className='elevation-with-padding'>
       <Button icon="open_in_new" outlined dense href='https://devdocs.io/settings' target='_blank' tag='a'>{i18n('optionsSelectFrom')}</Button>
     </Elevation>
 
     <Typography use="subtitle2" tag="h3">{i18n('optionsShortcut')}</Typography>
-    <Elevation className='elevation-with-padding'>
+    <Elevation z={0} className='elevation-with-padding'>
       <Button icon="keyboard" outlined dense href='chrome://extensions/shortcuts' target='_blank' tag='a' onClick={(e) => {
         e.preventDefault()
         browser.tabs.create({ url: e.currentTarget.href })
       }}>{i18n('optionsConfigureShortcuts')}</Button>
     </Elevation>
 
-    <Elevation className='footer'>
+    <Elevation z={0} className='footer'>
       <Typography use="caption" tag="h3">
         DevDocs Web Ext
         <span className='space'>-</span>

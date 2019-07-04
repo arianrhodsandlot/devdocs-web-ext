@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import browser from 'webextension-polyfill'
 import url from 'url'
 import classnames from 'classnames'
+import key from 'keymaster'
 import ky from 'ky'
 
 class App extends Component {
@@ -26,6 +27,23 @@ class App extends Component {
     setTimeout(() => {
       this.getContent()
     }, 1)
+    key.filter = () => true
+    key('space', () => {
+      document.querySelector("body > div > div._container > div > div").scrollBy(0, 150)
+      return false
+    })
+    key('shift+space', () => {
+      document.querySelector("body > div > div._container > div > div").scrollBy(0, -150)
+      return false
+    })
+  }
+
+  componentWillUnmount () {
+    key.unbind('down')
+    key.unbind('up')
+    key.unbind('enter')
+    key.unbind('space')
+    key.unbind('shift+space')
   }
 
   componentDidUpdate (prevProps) {

@@ -104,12 +104,12 @@ export default function Search ({ location, history }: { location: Location; his
     const focusPos = 0
     let failMessage = ''
 
-    let response: { status: 'success', content: Entry[] }
+    let response: { status: 'success'; content: Entry[] }
     try {
       response = await browser.runtime.sendMessage({
         action: 'search-entry',
         payload: { query, scope }
-      }) as { status: 'success', content: Entry[] }
+      }) as { status: 'success'; content: Entry[] }
       entries = response.content
     } catch (e) {
       failMessage = e.message

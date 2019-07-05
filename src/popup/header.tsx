@@ -13,7 +13,7 @@ function getInitialInputState () {
   return { scope, query, docName }
 }
 
-export default withRouter(function Header ({ location, history }: { location: Location; history: History }) { {
+export default withRouter(function Header ({ location, history }: { location: Location; history: History }) {
   const [inputPaddingLeft, setInputPaddingLeft] = useState(0)
   const initialInputState = getInitialInputState()
   const [scope, setScope] = useState(initialInputState.scope)
@@ -145,9 +145,9 @@ export default withRouter(function Header ({ location, history }: { location: Lo
           spellCheck={false}
           onChange={handleChange}
           autoFocus
-          ref={inputRef}
+          ref={inputRef as React.MutableRefObject<HTMLInputElement>}
           style={docName ? { paddingLeft: inputPaddingLeft } : {}} onKeyDown={handleKeyDown} />
-        {docName ? <div className='_search-tag' ref={scopeRef}>{docName}</div> : null}
+        {docName ? <div className='_search-tag' ref={scopeRef as React.MutableRefObject<HTMLDivElement>}>{docName}</div> : null}
       </form>
 
       <svg className='_settings' xmlns='http://www.w3.org/2000/svg'>

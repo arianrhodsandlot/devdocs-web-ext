@@ -39,13 +39,16 @@
     "@types/lodash-webpack-plugin": "^0.11.3",
     "@types/mini-css-extract-plugin": "^0.2.1",
     "@types/node": "^12.0.12",
+    "@types/puppeteer": "^1.12.4",
     "@types/react": "^16.8.23",
     "@types/react-dom": "^16.8.4",
     "@types/react-router": "^5.0.3",
     "@types/react-router-dom": "^4.3.4",
+    "@types/sinon-chrome": "^2.2.6",
     "@types/webpack": "^4.4.34",
     "@typescript-eslint/eslint-plugin": "^1.11.0",
     "@typescript-eslint/parser": "^1.11.0",
+    "ava": "^2.1.0",
     "babel-core": "^6.26.3",
     "babel-loader": "^8.0.6",
     "babel-plugin-lodash": "^3.3.4",
@@ -73,7 +76,9 @@
     "node-sass": "^4.12.0",
     "pug": "^2.0.4",
     "pug-loader": "^2.4.0",
+    "puppeteer": "^1.18.1",
     "sass-loader": "^7.1.0",
+    "sinon-chrome": "^3.0.1",
     "style-loader": "^0.23.1",
     "thread-loader": "^2.1.2",
     "ts-loader": "^6.0.4",
@@ -177,5 +182,14 @@
       "react-hooks/rules-of-hooks": "error",
       "react-hooks/exhaustive-deps": "off"
     }
+  },
+  "ava": {
+    "compileEnhancements": false,
+    "extensions": [
+      "ts"
+    ],
+    "require": [
+      "ts-node/register"
+    ]
   }
 }

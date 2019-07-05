@@ -127,7 +127,7 @@ const config: webpack.Configuration = {
     }, {
       test: /\.(css)$/,
       use: [{
-        loader: MiniCssExtractPlugin.loader,
+        loader: MiniCssExtractPlugin.loader
       }, {
         loader: 'css-loader',
         options: {
@@ -137,7 +137,7 @@ const config: webpack.Configuration = {
     }, {
       test: /\.(scss|sass)$/,
       use: [{
-        loader: MiniCssExtractPlugin.loader,
+        loader: MiniCssExtractPlugin.loader
       }, {
         loader: 'css-loader',
         options: {

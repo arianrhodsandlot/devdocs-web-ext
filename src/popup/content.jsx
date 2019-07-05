@@ -28,6 +28,9 @@ class App extends Component {
       this.getContent()
     }, 1)
     key.filter = () => true
+    key('enter', () => {
+      return false
+    })
     key('space', () => {
       this.pageRef.current.scrollBy({ top: 150, left: 0, behavior: 'smooth' })
       return false
@@ -39,6 +42,7 @@ class App extends Component {
   }
 
   componentWillUnmount () {
+    key.unbind('enter')
     key.unbind('space')
     key.unbind('shift+space')
   }

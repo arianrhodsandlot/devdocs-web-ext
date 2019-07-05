@@ -23,7 +23,25 @@ export default function Content ({ location, history }: { location: Location; hi
   const prevPath = prevPathRef.current
 
   useEffect(() => {
-    (async () => {
+    key('enter', () => {
+      return false
+    })
+
+    key('space', () => {
+      if (pageRef.current) {
+        pageRef.current.scrollBy({ top: 150, left: 0, behavior: 'smooth' })
+      }
+      return false
+    })
+
+    key('shift+space', () => {
+      if (pageRef.current) {
+        pageRef.current.scrollBy({ top: -150, left: 0, behavior: 'smooth' })
+      }
+      return false
+    })
+
+    ;(async () => {
       const scope = location.pathname.split('/')[1].split('~')[0]
       if (!scope) return
       const contentDoc = await browser.runtime.sendMessage({
@@ -34,6 +52,12 @@ export default function Content ({ location, history }: { location: Location; hi
         setDoc(contentDoc)
       }
     })()
+
+    return () => {
+      key.unbind('enter')
+      key.unbind('space')
+      key.unbind('shift+space')
+    }
   }, [location.pathname])
 
   useEffect(() => {

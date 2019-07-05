@@ -29,19 +29,16 @@ class App extends Component {
     }, 1)
     key.filter = () => true
     key('space', () => {
-      document.querySelector("body > div > div._container > div > div").scrollBy(0, 150)
+      this.pageRef.current.scrollBy({ top: 150, left: 0, behavior: 'smooth' })
       return false
     })
     key('shift+space', () => {
-      document.querySelector("body > div > div._container > div > div").scrollBy(0, -150)
+      this.pageRef.current.scrollBy({ top: -150, left: 0, behavior: 'smooth' })
       return false
     })
   }
 
   componentWillUnmount () {
-    key.unbind('down')
-    key.unbind('up')
-    key.unbind('enter')
     key.unbind('space')
     key.unbind('shift+space')
   }

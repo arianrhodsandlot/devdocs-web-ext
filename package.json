@@ -13,6 +13,7 @@
     "keymaster": "^1.6.2",
     "ky": "^0.11.1",
     "material-design-icons": "^3.0.1",
+    "prop-types": "^15.7.2",
     "raven-js": "^3.27.2",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
@@ -32,12 +33,16 @@
     "@babel/preset-react": "^7.0.0",
     "@types/classnames": "^2.2.9",
     "@types/firefox-webext-browser": "^67.0.2",
+    "@types/html-webpack-plugin": "^3.2.0",
     "@types/keymaster": "^1.6.28",
     "@types/lodash": "^4.14.135",
+    "@types/lodash-webpack-plugin": "^0.11.3",
+    "@types/mini-css-extract-plugin": "^0.2.1",
     "@types/node": "^12.0.12",
     "@types/react": "^16.8.23",
     "@types/react-dom": "^16.8.4",
     "@types/react-router": "^5.0.3",
+    "@types/react-router-dom": "^4.3.4",
     "@types/webpack": "^4.4.34",
     "@typescript-eslint/eslint-plugin": "^1.11.0",
     "@typescript-eslint/parser": "^1.11.0",
@@ -52,9 +57,12 @@
     "css-loader": "^3.0.0",
     "eslint": "^6.0.1",
     "eslint-config-standard": "^12.0.0",
+    "eslint-config-standard-react": "^7.0.2",
     "eslint-plugin-import": "^2.18.0",
     "eslint-plugin-node": "^9.1.0",
     "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-react": "^7.14.2",
+    "eslint-plugin-react-hooks": "^1.6.1",
     "eslint-plugin-standard": "^4.0.0",
     "exports-loader": "^0.7.0",
     "file-loader": "^4.0.0",
@@ -79,7 +87,7 @@
   "scripts": {
     "start": "cross-env NODE_ENV=development webpack -w",
     "build": "cross-env NODE_ENV=production webpack -p && web-ext build -s extension -a artifacts -o",
-    "test": "web-ext lint -s extension"
+    "test": "eslint src/**/*.tsx src/**/*.ts"
   },
   "repository": {
     "type": "git",
@@ -115,11 +123,19 @@
     "env": {
       "browser": true
     },
+    "globals": {
+      "VERSION": "readonly",
+      "GIT_VERSION": "readonly"
+    },
+    "plugins": [
+      "react-hooks"
+    ],
     "extends": [
       "eslint:recommended",
       "plugin:@typescript-eslint/eslint-recommended",
       "plugin:@typescript-eslint/recommended",
-      "standard"
+      "standard",
+      "standard-react"
     ],
     "rules": {
       "no-var": "error",
@@ -140,6 +156,7 @@
       "camelcase": "off",
       "@typescript-eslint/explicit-function-return-type": "off",
       "@typescript-eslint/explicit-member-accessibility": "off",
+      "@typescript-eslint/no-use-before-define": "off",
       "@typescript-eslint/no-unused-vars": [
         "error",
         {
@@ -156,7 +173,9 @@
           "properties": "never"
         }
       ],
-      "@typescript-eslint/no-non-null-assertion": "off"
+      "@typescript-eslint/no-non-null-assertion": "off",
+      "react-hooks/rules-of-hooks": "error",
+      "react-hooks/exhaustive-deps": "off"
     }
   }
 }

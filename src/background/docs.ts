@@ -5,7 +5,7 @@ import Entry from '../../vendor/devdocs/assets/javascripts/models/entry.coffee'
 
 class Docs {
   docNames: string[] = []
-  docs: (Doc & Index)[] = []
+  docs: ExtendedDoc[] = []
   allDocs: Doc[] = []
   ready = false
 

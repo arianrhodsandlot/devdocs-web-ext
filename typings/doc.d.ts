@@ -16,6 +16,7 @@ interface Entry {
   name: string;
   path: string;
   type: string;
+  doc: ExtendedDoc;
 }
 
 interface Type {
@@ -27,4 +28,12 @@ interface Type {
 interface Index {
   entries: Entry[];
   types: Type[];
+}
+
+interface ExtendedDoc extends Doc, Index {
+  fullName: string;
+  slug_without_version: string;
+  icon: string;
+  short_version: string;
+  text: string[];
 }

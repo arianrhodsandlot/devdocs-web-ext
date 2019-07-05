@@ -14,7 +14,7 @@ async function getDocNames () {
 async function addMessageListener () {
   const docs = new Docs(await getDocNames())
 
-  async function searchEntry ({ query, scope }) {
+  async function searchEntry ({ query, scope }: { query: string; scope: string }) {
     if (!query && !scope) return null
     if (!scope) {
       const entries = await docs.searchEntries(query)
@@ -29,12 +29,12 @@ async function addMessageListener () {
     return entries
   }
 
-  async function autoCompeleteEnabledDoc ({ scope }) {
+  async function autoCompeleteEnabledDoc ({ scope }: { scope: string }) {
     const doc = await docs.attemptToMatchOneDocInEnabledDocs(scope)
     return doc
   }
 
-  async function getContentDoc ({ scope }) {
+  async function getContentDoc ({ scope }: { scope: string }) {
     const doc = await docs.attemptToMatchOneDocInAllDocs(scope)
     return doc
   }
@@ -72,13 +72,13 @@ async function addMessageListener () {
 addMessageListener()
 
 async function initializeOptions () {
-  const defaultOptions = {
+  const defaultOptions: Record<string, string | number> = {
     theme: 'light',
     width: 600,
     height: 600
   }
 
-  const options = {}
+  const options: Record<string, string | number> = {}
   for (const option in defaultOptions) {
     const { [option]: previousValue } = await storage.get(option)
     const legacyValue = localStorage.getItem(option)

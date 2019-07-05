@@ -4,6 +4,7 @@ import querystring from 'querystring'
 import { withRouter } from 'react-router'
 import key from 'keymaster'
 import browser from 'webextension-polyfill'
+import { Location, History } from 'history'
 
 function getInitialInputState () {
   const scope = localStorage.getItem('scope') || ''
@@ -12,7 +13,7 @@ function getInitialInputState () {
   return { scope, query, docName }
 }
 
-export default withRouter(function Header ({ location, history }) {
+export default withRouter(function Header ({ location, history }: { location: Location; history: History }) { {
   const [inputPaddingLeft, setInputPaddingLeft] = useState(0)
   const initialInputState = getInitialInputState()
   const [scope, setScope] = useState(initialInputState.scope)
@@ -77,7 +78,7 @@ export default withRouter(function Header ({ location, history }) {
     history.replace('/')
   }
 
-  async function attemptCompeleteDocName (docScope) {
+  async function attemptCompeleteDocName (docScope: string) {
     if (docScope === '') {
       return ''
     }

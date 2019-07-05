@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect } from 'react'
+import PropTypes from 'prop-types'
 import ReactDOM from 'react-dom'
 import querystring from 'querystring'
 import browser from 'webextension-polyfill'
@@ -6,29 +7,30 @@ import classnames from 'classnames'
 import key from 'keymaster'
 import { Link } from 'react-router-dom'
 import Docs from '../background/docs'
+import { Location, History } from 'history'
 
-type Unpromisify<T> = T extends Promise<infer U> ? U : T
+Search.propTypes = {
+  location: PropTypes.object,
+  history: PropTypes.object
+}
 
-export default function Search ({ location, history }) {
+export default function Search ({ location, history }: { location: Location; history: History }) {
   const [entries, setEntries] = useState([] as Unpromisify<ReturnType<Docs['searchEntries']>>)
   const [focusPos, setFocusPos] = useState(0)
   const [failMessage, setFailMessage] = useState('')
-  const entryRefs = []
-
-  const keyHandlersRef = useRef({ focusNextEntry, focusPrevEntry, enterFocusEntry })
+  const entryRefs: React.RefObject<Link>[] = []
 
   useEffect(() => {
-    key.filter = () => true
     key('down', () => {
-      keyHandlersRef.current.focusNextEntry()
+      focusNextEntry()
       return false
     })
     key('up', () => {
-      keyHandlersRef.current.focusPrevEntry()
+      focusPrevEntry()
       return false
     })
     key('enter', () => {
-      keyHandlersRef.current.enterFocusEntry()
+      enterFocusEntry()
       return false
     })
 
@@ -37,7 +39,7 @@ export default function Search ({ location, history }) {
       key.unbind('up')
       key.unbind('enter')
     }
-  }, [])
+  }, [focusNextEntry, focusPrevEntry, enterFocusEntry])
 
   useEffect(() => {
     search()
@@ -48,11 +50,13 @@ export default function Search ({ location, history }) {
     const ref = getEntryRef(entries[focusPos])
     if (ref && ref.current) {
       const entryDomNode = ReactDOM.findDOMNode(ref.current)
-      entryDomNode.scrollIntoView({ behavior: 'smooth' })
+      if (entryDomNode instanceof HTMLAnchorElement) {
+        entryDomNode.scrollIntoView({ behavior: 'smooth' })
+      }
     }
   }, [focusPos])
 
-  function getDocVersion (doc) {
+  function getDocVersion (doc: Doc) {
     return doc.slug.includes('~') ? doc.slug.split('~')[1] : ''
   }
 
@@ -66,7 +70,7 @@ export default function Search ({ location, history }) {
     setFocusPos(focusPos === 0 ? maxFocusPos : focusPos - 1)
   }
 
-  function getEntryUrl (entry) {
+  function getEntryUrl (entry: Entry) {
     const [entryPath, entryHash] = entry.path.split('#')
     const pathAndHash = entryHash ? `${entryPath}#${entryHash}` : `${entryPath}`
     return `/${entry.doc.slug}/${pathAndHash}`
@@ -74,10 +78,12 @@ export default function Search ({ location, history }) {
 
   function enterFocusEntry () {
     const focusEntry = entries[focusPos]
-    history.push(getEntryUrl(focusEntry))
+    if (focusEntry) {
+      history.push(getEntryUrl(focusEntry))
+    }
   }
 
-  function getEntryRef (entry) {
+  function getEntryRef (entry: Entry) {
     const index = entries.indexOf(entry)
     let ref = entryRefs[index]
     if (!ref) {
@@ -94,26 +100,19 @@ export default function Search ({ location, history }) {
       return
     }
 
-    let entries = []
+    let entries: Entry[] = []
     const focusPos = 0
     let failMessage = ''
 
-    let response
+    let response: { status: 'success', content: Entry[] }
     try {
       response = await browser.runtime.sendMessage({
         action: 'search-entry',
         payload: { query, scope }
-      })
+      }) as { status: 'success', content: Entry[] }
+      entries = response.content
     } catch (e) {
       failMessage = e.message
-    }
-
-    if (response) {
-      if (response.status === 'success') {
-        entries = response.content
-      } else if (response.status === 'fail') {
-        failMessage = response.message
-      }
     }
 
     setEntries(entries)

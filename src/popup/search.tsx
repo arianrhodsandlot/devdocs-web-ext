@@ -5,9 +5,12 @@ import browser from 'webextension-polyfill'
 import classnames from 'classnames'
 import key from 'keymaster'
 import { Link } from 'react-router-dom'
+import Docs from '../background/docs'
+
+type Unpromisify<T> = T extends Promise<infer U> ? U : T
 
 export default function Search ({ location, history }) {
-  const [entries, setEntries] = useState([])
+  const [entries, setEntries] = useState([] as Unpromisify<ReturnType<Docs['searchEntries']>>)
   const [focusPos, setFocusPos] = useState(0)
   const [failMessage, setFailMessage] = useState('')
   const entryRefs = []

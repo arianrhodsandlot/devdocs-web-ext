@@ -12,7 +12,7 @@ export default function App ({ location, history }) {
   const [contentUrl, setContentUrl] = useState('')
   const [content, setContent] = useState('')
   const [doc, setDoc] = useState(null as null | { type: string })
-  const pageRef = useRef()
+  const pageRef = useRef<HTMLDivElement>()
   const prevPathRef = useRef()
   const prevPath = prevPathRef.current
 
@@ -66,7 +66,7 @@ export default function App ({ location, history }) {
 
   function scrollToHash () {
     let entryHash = location.hash
-    if (!entryHash) return
+    if (!entryHash || !pageRef.current) return
     if (entryHash.startsWith('#')) {
       entryHash = entryHash.slice(1)
     }

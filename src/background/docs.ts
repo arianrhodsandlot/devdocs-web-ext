@@ -9,7 +9,7 @@ class Docs {
   allDocs: Doc[] = []
   ready = false
 
-  static extendedDocs (docs: Doc[]) {
+  static extendDocs (docs: Doc[]) {
     return Promise.all(_.map(docs, (doc) => {
       return Docs.extendDoc(doc)
     }))
@@ -24,7 +24,13 @@ class Docs {
       short_version: doc.version ? doc.version.split(' ')[0] : '',
       text: [doc.name, doc.slug]
     }
-    const docEntry = new Entry({ ...extendedDoc, ...{ name: extendedDoc.fullName } }) as { version?: string; addAlias: Function }
+    const docEntry = new Entry({
+      ...extendedDoc,
+      ...{
+        name: extendedDoc.fullName
+      }
+    }) as { addAlias: Function } & typeof extendedDoc
+
     if (docEntry.version) {
       docEntry.addAlias(doc.name)
     }
@@ -33,14 +39,14 @@ class Docs {
     index.entries = _.map(index.entries, (entry) => {
       return {
         ...new Entry(entry),
-        doc: { ...doc }
+        doc: { ...extendedDoc }
       }
     })
 
     return { ...doc, ...index, ...docEntry }
   }
 
-  static async getDocIndexByName (docName) {
+  static async getDocIndexByName (docName: string) {
     const docUrl = `http://docs.devdocs.io/${docName}/index.json`
     const index = await ky(docUrl).json()
     return index
@@ -92,7 +98,7 @@ class Docs {
     }
     this.allDocs = await Docs.getAllDocs()
     const docs = _.filter(this.allDocs, (doc) => _.includes(this.docNames, doc.slug))
-    const extendedDocs = await Docs.extendedDocs(docs)
+    const extendedDocs = await Docs.extendDocs(docs)
     this.docs = extendedDocs
     this.ready = true
   }

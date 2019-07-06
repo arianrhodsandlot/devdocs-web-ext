@@ -92,7 +92,7 @@
   "scripts": {
     "start": "cross-env NODE_ENV=development webpack -w",
     "build": "cross-env NODE_ENV=production webpack -p && web-ext build -s extension -a artifacts -o",
-    "test": "eslint src/**/*.tsx src/**/*.ts"
+    "test": "cross-env BUILD_MODE=test webpack -p && eslint src/**/*.tsx src/**/*.ts && ava"
   },
   "repository": {
     "type": "git",
@@ -129,6 +129,7 @@
       "browser": true
     },
     "globals": {
+      "BUILD_MODE": "readonly",
       "VERSION": "readonly",
       "GIT_VERSION": "readonly"
     },

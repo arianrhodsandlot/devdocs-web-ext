@@ -198,6 +198,7 @@ const config: webpack.Configuration = {
       filename: '[name].css'
     }),
     new webpack.DefinePlugin({
+      BUILD_MODE: JSON.stringify(process.env.BUILD_MODE || ''),
       VERSION: JSON.stringify(packageJson.version),
       GIT_VERSION: JSON.stringify(`${childProcess.execSync('git rev-parse HEAD')}`.slice(0, 6))
     }),

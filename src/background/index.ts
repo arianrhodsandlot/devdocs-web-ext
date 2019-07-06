@@ -1,6 +1,6 @@
 import browser from 'webextension-polyfill'
 import Raven from 'raven-js'
-import { isProd } from '../common/env'
+import { isProd, isDev, isTest } from '../common/env'
 import storage from '../common/storage'
 import Docs from './docs'
 
@@ -94,7 +94,18 @@ initializeOptions()
 
 if (isProd) {
   Raven.config('https://d2ddb64170f34a2ca621de47235480bc@sentry.io/1196839').install()
-} else {
+}
+
+if (isDev) {
   browser.browserAction.setBadgeBackgroundColor({ color: 'white' })
   browser.browserAction.setBadgeText({ text: '🚧' })
+}
+
+if (isTest) {
+  browser.tabs.create({
+    url: 'dist/options.html'
+  })
+  browser.tabs.create({
+    url: 'dist/popup.html'
+  })
 }

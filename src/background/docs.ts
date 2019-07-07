@@ -82,7 +82,7 @@ class Docs {
         const doc = results.length ? results[0] : null
         resolve(doc)
       })
-      searcher.find(docs, 'text', query)
+      searcher.find(docs, 'slug', query)
     }) as Promise<T | null>
   }
 

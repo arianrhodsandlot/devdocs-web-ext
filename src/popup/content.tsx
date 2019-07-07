@@ -17,7 +17,7 @@ export default function Content ({ location, history }: { location: Location; hi
   const [loading, setLoading] = useState(false)
   const [contentUrl, setContentUrl] = useState('')
   const [content, setContent] = useState('')
-  const [doc, setDoc] = useState(null as null | { type: string })
+  const [doc, setDoc] = useState(null as null | Doc)
   const pageRef = useRef<HTMLDivElement>()
   const prevPathRef = useRef<string | undefined>()
   const prevPath = prevPathRef.current
@@ -47,7 +47,7 @@ export default function Content ({ location, history }: { location: Location; hi
       const contentDoc = await browser.runtime.sendMessage({
         action: 'get-content-doc',
         payload: { scope }
-      })
+      }) as Doc
       if (contentDoc) {
         setDoc(contentDoc)
       }

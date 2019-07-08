@@ -78,6 +78,7 @@
     "webpack-cli": "^3.3.5"
   },
   "scripts": {
+    "postinstall": "git submodule update --init --remote",
     "start": "cross-env NODE_ENV=development webpack -w",
     "build": "cross-env NODE_ENV=production webpack -p && web-ext build -s extension -a artifacts -o",
     "test": "eslint src/**/*.tsx src/**/*.ts && cross-env BUILD_MODE=test webpack -p && ava"

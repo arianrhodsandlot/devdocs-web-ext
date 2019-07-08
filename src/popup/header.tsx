@@ -135,7 +135,7 @@ export default withRouter(function Header ({ location, history }: { location: Lo
   }
 
   return (
-    <div className='_header'>
+    <div className='_header' style={{ maxWidth: document.body.style.width || '' }}>
       <form className='_search' autoComplete='off'>
         <svg><use href='#icon-search' /></svg>
         <input

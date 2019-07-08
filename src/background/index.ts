@@ -101,7 +101,7 @@ if (isDev) {
   browser.browserAction.setBadgeText({ text: '🚧' })
 }
 
-if (isTest) {
+if (isDev || isTest) {
   browser.tabs.create({
     url: 'dist/options.html'
   })

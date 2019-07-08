@@ -16,6 +16,7 @@
 Visit [Chrome Web Store](https://chrome.google.com/webstore/detail/quick-devdocs/kdjoccdpjblcefijcfhnjoljodddedpj) to install it.
 
 ## Development
+
 Here is a simple overview about how to set up development environment.
 ```sh
 git clone https://github.com/arianrhodsandlot/DevDocs-Web-Ext.git

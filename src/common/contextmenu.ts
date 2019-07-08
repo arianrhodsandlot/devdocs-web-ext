@@ -11,12 +11,13 @@ async function enableContextMenu () {
     title: i18n('contextMenuTemplate'),
     contexts: ['selection'],
     async onclick (e) {
-      if (!e.selectionText) return
-      const text = e.selectionText.slice(0, 20)
-      localStorage.setItem('scope', '')
-      localStorage.setItem('query', text)
-      localStorage.setItem('docName', '')
-      localStorage.setItem('lastPopupPath', `/search?query=${encodeURIComponent(text)}&scope=`)
+      const query = (e.selectionText || '').trim().slice(0, 20)
+      if (query) {
+        localStorage.setItem('scope', '')
+        localStorage.setItem('query', query)
+        localStorage.setItem('docName', '')
+        localStorage.setItem('lastPopupPath', `/search?query=${encodeURIComponent(query)}`)
+      }
       await browser.browserAction.openPopup()
     }
   })

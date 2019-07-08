@@ -24,7 +24,9 @@ test.serial.before(async t => {
   const targets = await browser.targets()
   const backgroundPage = await targets.find(target => target.type() === 'background_page')!.page()
   await backgroundPage.waitFor(5000)
-  const [, optionPage, popupPage] = await browser.pages()
+  const pages = await browser.pages()
+  const optionPage = pages.find(p => p.url().includes('/dist/options.html'))!
+  const popupPage = pages.find(p => p.url().includes('/dist/popup.html'))!
 
   const context: TestContext = {
     browser,

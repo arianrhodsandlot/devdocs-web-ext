@@ -8,6 +8,7 @@ import packageJson from './package.json'
 
 const config: webpack.Configuration = {
   mode: process.env.NODE_ENV as undefined || 'development',
+  stats: 'minimal',
   entry: {
     'devdocs-style': './src/popup/devdocs.sass',
     'devdocs-dark-style': './src/popup/devdocs-dark.sass',

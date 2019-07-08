@@ -6,8 +6,6 @@ jobs:
     steps:
       - checkout
 
-      - run: git submodule update --init --remote
-
       - restore_cache:
           keys:
             - v1-dependencies-{{ checksum "package.json" }}
@@ -19,4 +17,6 @@ jobs:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
 
-      - run: yarn test
+      - run:
+          command: yarn test
+          no_output_timeout: 1m

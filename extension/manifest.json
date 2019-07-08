@@ -30,6 +30,7 @@
     "cookies",
     "activeTab",
     "storage",
+    "contextMenus",
     "*://devdocs.io/",
     "*://docs.devdocs.io/"
   ],

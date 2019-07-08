@@ -2,6 +2,7 @@ import browser from 'webextension-polyfill'
 import Raven from 'raven-js'
 import { isProd, isDev, isTest } from '../common/env'
 import storage from '../common/storage'
+import i18n from '../options/i18n'
 import Docs from './docs'
 
 async function getDocNames () {
@@ -92,6 +93,21 @@ async function initializeOptions () {
 
 initializeOptions()
 
+browser.contextMenus.create({
+  id: 'devdocs-web-ext-context-menu',
+  title: i18n('contextMenuTemplate'),
+  contexts: ['selection'],
+  async onclick (e) {
+    if (!e.selectionText) return
+    const text = e.selectionText.slice(0, 20)
+    localStorage.setItem('scope', '')
+    localStorage.setItem('query', text)
+    localStorage.setItem('docName', '')
+    localStorage.setItem('lastPopupPath', `/search?query=${encodeURIComponent(text)}&scope=`)
+    await browser.browserAction.openPopup()
+  }
+})
+
 if (isProd) {
   Raven.config('https://d2ddb64170f34a2ca621de47235480bc@sentry.io/1196839').install()
 }
@@ -102,10 +118,12 @@ if (isDev) {
 }
 
 if (isDev || isTest) {
-  browser.tabs.create({
-    url: 'dist/options.html'
-  })
-  browser.tabs.create({
-    url: 'dist/popup.html'
-  })
+  (async () => {
+    browser.tabs.create({
+      url: 'dist/options.html'
+    })
+    browser.tabs.create({
+      url: 'dist/popup.html'
+    })
+  })()
 }

@@ -82,7 +82,7 @@
     "postinstall": "git submodule update --init --remote",
     "watch": "yarn build:dev -w",
     "build:dev": "cross-env NODE_ENV=development webpack",
-    "puppeteer": "ts-node -e \"import path from 'path'; import puppeteer from 'puppeteer'; const extensionPath = path.resolve(__dirname, 'extension'); puppeteer.launch({ defaultViewport: null, devtools: true, args: ['--disable-extensions-except=' + extensionPath, '--load-extension=' + extensionPath] })\"",
+    "puppeteer": "ts-node -e \"import path from 'path'; import puppeteer from 'puppeteer'; const extensionPath = path.resolve(__dirname, 'extension'); puppeteer.launch({ defaultViewport: null, devtools: true, args: ['--lang=bn-BD,bn', '--disable-extensions-except=' + extensionPath, '--load-extension=' + extensionPath] })\"",
     "start": "if [ ! -d extension/dist ]; then yarn build:dev; fi; concurrently 'yarn watch' 'yarn puppeteer'",
     "build": "cross-env NODE_ENV=production webpack -p && web-ext build -s extension -a artifacts -o",
     "test": "eslint src/**/*.tsx src/**/*.ts && cross-env BUILD_MODE=test webpack -p && ava"

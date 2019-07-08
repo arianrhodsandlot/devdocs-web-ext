@@ -4,7 +4,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import key from 'keymaster'
 import _ from 'lodash'
-import { isProd } from '../common/env'
+import { isProd, isContextMenuEnabled } from '../common/env'
 import storage from '../common/storage'
 import App from './app'
 import history from './history'
@@ -14,8 +14,11 @@ key.filter = () => true
 async function restoreHistory () {
   const { showContextMenu } = await storage.get()
 
-  if (!showContextMenu) {
-    const selection = await browser.tabs.executeScript({ code: 'getSelection().toString()' })
+  if (!isContextMenuEnabled || !showContextMenu) {
+    let selection
+    try {
+      selection = await browser.tabs.executeScript({ code: 'getSelection().toString()' })
+    } catch (e) {}
     const query: string = (_.get(selection, '0', '') || '').trim().slice(0, 20)
     if (query) {
       localStorage.setItem('scope', '')

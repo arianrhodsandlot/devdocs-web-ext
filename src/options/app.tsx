@@ -1,35 +1,39 @@
 import browser from 'webextension-polyfill'
 import { debounce } from 'lodash'
 import React, { useState, useEffect } from 'react'
+import { defaultOptions } from '../common/default-options'
 import storage from '../common/storage'
 import i18n from './i18n'
-import { Slider, Typography, Radio, Button, Elevation } from 'rmwc'
+import { Slider, Typography, Radio, Button, Elevation, Checkbox } from 'rmwc'
 
-const lazyPersist = debounce(function (data) {
-  storage.set(data)
+const lazyPersist = debounce(async function (data) {
+  await storage.set(data)
+  await browser.runtime.sendMessage({ action: 'storage-updated' })
 }, 100)
 
 const App = function () {
   const [initialized, setInitialized] = useState(false)
-  const [theme, setTheme] = useState('light')
-  const [width, setWidth] = useState(600)
-  const [height, setHeight] = useState(600)
+  const [theme, setTheme] = useState(defaultOptions.theme)
+  const [width, setWidth] = useState(defaultOptions.width)
+  const [height, setHeight] = useState(defaultOptions.height)
+  const [showContextMenu, setShowContextMenu] = useState(defaultOptions.showContextMenu)
 
   useEffect(() => {
     (async () => {
-      const { theme, width, height } = await storage.get()
+      const { theme, width, height, showContextMenu } = await storage.get()
       setTheme(theme)
       setWidth(width)
       setHeight(height)
+      setShowContextMenu(showContextMenu)
       setInitialized(true)
     })()
   }, [])
 
   useEffect(() => {
     if (initialized) {
-      lazyPersist({ theme, width, height })
+      lazyPersist({ theme, width, height, showContextMenu })
     }
-  }, [theme, width, height, initialized])
+  }, [theme, width, height, showContextMenu, initialized])
 
   return <form className={`theme-${theme}`}>
     <Typography use='subtitle2' tag='h2'>{i18n('optionsWindowSize')}</Typography>
@@ -80,6 +84,15 @@ const App = function () {
         onChange={(e) => { setTheme(e.currentTarget.value) }}>
         {i18n('optionsDark')}
       </Radio>
+    </Elevation>
+
+    <Typography use='subtitle2' tag='h3'>{i18n('optionsShowContextMenu')}</Typography>
+    <Elevation z={0}>
+      <Checkbox
+        name='showContextMenu'
+        label={showContextMenu ? i18n('optionsEnabled') : i18n('optionsDisabled')}
+        checked={showContextMenu}
+        onChange={(e) => { setShowContextMenu(e.currentTarget.checked) }} />
     </Elevation>
 
     <Typography use='subtitle2' tag='h3'>{i18n('optionsDocs')}</Typography>

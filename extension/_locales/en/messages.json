@@ -55,6 +55,15 @@
   "optionsHeight": {
     "message": "height"
   },
+  "optionsShowContextMenu": {
+    "message": "Context menu"
+  },
+  "optionsEnabled": {
+    "message": "Enabled"
+  },
+  "optionsDisabled": {
+    "message": "Disabled"
+  },
   "optionsSelectFrom": {
     "message": "Select in devdocs.io"
   },

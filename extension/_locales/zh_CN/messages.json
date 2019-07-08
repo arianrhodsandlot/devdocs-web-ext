@@ -55,6 +55,15 @@
   "optionsHeight": {
     "message": "高度"
   },
+  "optionsShowContextMenu": {
+    "message": "上下文菜单"
+  },
+  "optionsEnabled": {
+    "message": "已启用"
+  },
+  "optionsDisabled": {
+    "message": "已停用"
+  },
   "optionsSelectFrom": {
     "message": "在devdocs.io中选择"
   },

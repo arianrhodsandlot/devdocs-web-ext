@@ -2,7 +2,8 @@ import browser from 'webextension-polyfill'
 import Raven from 'raven-js'
 import { isProd, isDev, isTest } from '../common/env'
 import storage from '../common/storage'
-import i18n from '../options/i18n'
+import { setupContextMenu } from '../common/contextmenu'
+import { defaultOptions } from '../common/default-options'
 import Docs from './docs'
 
 async function getDocNames () {
@@ -64,6 +65,9 @@ async function addMessageListener () {
       case 'get-content-doc':
         result = await getContentDoc(payload)
         break
+      case 'storage-updated':
+        await setupContextMenu()
+        break
     }
 
     return result
@@ -73,40 +77,22 @@ async function addMessageListener () {
 addMessageListener()
 
 async function initializeOptions () {
-  const defaultOptions: Record<string, string | number> = {
-    theme: 'light',
-    width: 600,
-    height: 600
-  }
-
   const options: Record<string, string | number> = {}
   for (const option in defaultOptions) {
     const { [option]: previousValue } = await storage.get(option)
     const legacyValue = localStorage.getItem(option)
     const value = previousValue || legacyValue
-    const defaultValue = defaultOptions[option]
+    const defaultValue = (defaultOptions as Record<string, string | number | boolean>)[option]
     options[option] = value || defaultValue
     localStorage.removeItem(option)
   }
   storage.set(options)
 }
 
-initializeOptions()
-
-browser.contextMenus.create({
-  id: 'devdocs-web-ext-context-menu',
-  title: i18n('contextMenuTemplate'),
-  contexts: ['selection'],
-  async onclick (e) {
-    if (!e.selectionText) return
-    const text = e.selectionText.slice(0, 20)
-    localStorage.setItem('scope', '')
-    localStorage.setItem('query', text)
-    localStorage.setItem('docName', '')
-    localStorage.setItem('lastPopupPath', `/search?query=${encodeURIComponent(text)}&scope=`)
-    await browser.browserAction.openPopup()
-  }
-})
+(async () => {
+  await initializeOptions()
+  await setupContextMenu()
+})()
 
 if (isProd) {
   Raven.config('https://d2ddb64170f34a2ca621de47235480bc@sentry.io/1196839').install()

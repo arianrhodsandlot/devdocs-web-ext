@@ -6,5 +6,5 @@ export default function i18n (messageName: string) {
   if (!isProd && !message) {
     console.warn(`Message for ${messageName} is empty!`)
   }
-  return message
+  return message || messageName
 }

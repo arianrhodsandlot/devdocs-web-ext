@@ -15,7 +15,7 @@ Search.propTypes = {
 }
 
 export default function Search ({ location, history }: { location: Location; history: History }) {
-  const [entries, setEntries] = useState([] as Unpromisify<ReturnType<Docs['searchEntries']>>)
+  const [entries, setEntries] = useState(null as null | Unpromisify<ReturnType<Docs['searchEntries']>>)
   const [focusPos, setFocusPos] = useState(0)
   const [failMessage, setFailMessage] = useState('')
   const entryRefs: React.RefObject<Link>[] = []
@@ -61,11 +61,13 @@ export default function Search ({ location, history }: { location: Location; his
   }
 
   function focusNextEntry () {
+    if (!entries) return
     const maxFocusPos = entries.length - 1
     setFocusPos(focusPos === maxFocusPos ? 0 : focusPos + 1)
   }
 
   function focusPrevEntry () {
+    if (!entries) return
     const maxFocusPos = entries.length - 1
     setFocusPos(focusPos === 0 ? maxFocusPos : focusPos - 1)
   }
@@ -77,6 +79,7 @@ export default function Search ({ location, history }: { location: Location; his
   }
 
   function enterFocusEntry () {
+    if (!entries) return
     const focusEntry = entries[focusPos]
     if (focusEntry) {
       history.push(getEntryUrl(focusEntry))
@@ -84,6 +87,7 @@ export default function Search ({ location, history }: { location: Location; his
   }
 
   function getEntryRef (entry: Entry) {
+    if (!entries) return
     const index = entries.indexOf(entry)
     let ref = entryRefs[index]
     if (!ref) {

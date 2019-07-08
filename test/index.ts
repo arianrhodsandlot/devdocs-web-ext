@@ -13,6 +13,7 @@ test.serial.before(async t => {
   const extensionPath = path.resolve(__dirname, '../extension')
   const browser = await puppeteer.launch({
     headless: false,
+    defaultViewport: null,
     args: [
       `--disable-extensions-except=${extensionPath}`,
       `--load-extension=${extensionPath}`
@@ -37,9 +38,11 @@ test.serial.beforeEach(async t => {
   await popupPage.bringToFront()
   await popupPage.focus('input')
   await popupPage.click('input', { clickCount: 3 })
+  await popupPage.waitFor(100)
   await popupPage.keyboard.press('Backspace')
+  await popupPage.waitFor(100)
   await popupPage.keyboard.press('Backspace')
-  await popupPage.waitForSelector('._splash-title', { timeout: 100 })
+  await popupPage.waitForSelector('._splash-title')
 })
 
 test.serial('search and navigate in results', async t => {
@@ -81,6 +84,7 @@ test.serial('search and navigate in results', async t => {
 test.serial('search in a certain doc', async t => {
   const { popupPage } = t.context as TestContext
   await popupPage.keyboard.type('c')
+  await popupPage.waitFor(100)
   await popupPage.keyboard.press('Tab')
   await popupPage.waitForSelector('._search-tag')
   t.is(await popupPage.$eval('._search-tag', e => e.innerHTML), 'CSS')
@@ -145,7 +149,7 @@ test.serial('content', async t => {
   await popupPage.keyboard.type('a')
   await popupPage.waitForSelector('._list-item.focus')
   await popupPage.keyboard.press('Enter')
-  t.truthy(await popupPage.waitForSelector('._page._mdn', { timeout: 1000 }))
+  t.truthy(await popupPage.waitForSelector('._page._mdn'))
   t.falsy(await popupPage.$eval('._page', e => e.scrollTop))
 
   await popupPage.keyboard.press('Space')
@@ -160,13 +164,16 @@ test.serial('content', async t => {
 })
 
 test.serial('update docs', async t => {
-  const { browser, backgroundPage, optionPage, popupPage } = t.context as TestContext
+  const { browser, optionPage, popupPage } = t.context as TestContext
   await optionPage.bringToFront()
   await optionPage.click('.mdc-button')
-  await optionPage.waitFor(2000)
 
-  const pages = await browser.pages()
-  const devdocsPage = pages.find(p => p.url().includes('devdocs.io'))!
+  let devdocsPage
+  while (!devdocsPage) {
+    await optionPage.waitFor(100)
+    const pages = await browser.pages()
+    devdocsPage = pages.find(p => p.url().includes('devdocs.io'))!
+  }
   await devdocsPage.waitForNavigation({ waitUntil: 'networkidle2' })
   await devdocsPage.waitForSelector('._list-item._icon-angular')
   await devdocsPage.click('._list-item._icon-angular')
@@ -176,8 +183,6 @@ test.serial('update docs', async t => {
   await devdocsPage.click('[name=babel]')
   await devdocsPage.waitForSelector('._settings-btn-save')
   await devdocsPage.click('._settings-btn-save')
-
-  await backgroundPage.waitFor(1000)
 
   await popupPage.bringToFront()
   await popupPage.focus('input')
@@ -191,8 +196,9 @@ test.serial('update docs', async t => {
 
   await popupPage.click('input', { clickCount: 3 })
   await popupPage.keyboard.press('Backspace')
-  await popupPage.waitForSelector('._splash-title', { timeout: 100 })
+  await popupPage.waitForSelector('._splash-title')
   await popupPage.keyboard.type('b')
+  await popupPage.waitFor(100)
   await popupPage.keyboard.press('Tab')
   await popupPage.waitForSelector('._search-tag')
   t.is(await popupPage.$eval('._search-tag', e => e.innerHTML), 'Babel')

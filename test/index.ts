@@ -15,6 +15,8 @@ test.serial.before(async t => {
     headless: false,
     defaultViewport: null,
     args: [
+      '--no-sandbox',
+      '--disable-setuid-sandbox',
       `--disable-extensions-except=${extensionPath}`,
       `--load-extension=${extensionPath}`
     ]

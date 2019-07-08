@@ -9,6 +9,7 @@
     "cross-env": "^5.2.0",
     "github-fork-ribbon-css": "^0.2.3",
     "history": "^4.9.0",
+    "jquery": "^3.4.1",
     "keymaster": "^1.6.2",
     "ky": "^0.11.1",
     "material-design-icons": "^3.0.1",

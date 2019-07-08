@@ -1,10 +1,12 @@
 import browser from 'webextension-polyfill'
 import i18n from '../options/i18n'
 import storage from './storage'
+import { isContextMenuEnabled } from './env'
 
 let enabled = false
 
 async function enableContextMenu () {
+  if (!isContextMenuEnabled) return
   if (enabled) return
   browser.contextMenus.create({
     id: 'devdocs-web-ext-context-menu',

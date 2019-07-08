@@ -3,6 +3,7 @@ import { debounce } from 'lodash'
 import React, { useState, useEffect } from 'react'
 import { defaultOptions } from '../common/default-options'
 import storage from '../common/storage'
+import { isContextMenuEnabled } from '../common/env'
 import i18n from './i18n'
 import { Slider, Typography, Radio, Button, Elevation, Checkbox } from 'rmwc'
 
@@ -86,14 +87,16 @@ const App = function () {
       </Radio>
     </Elevation>
 
-    <Typography use='subtitle2' tag='h3'>{i18n('optionsShowContextMenu')}</Typography>
-    <Elevation z={0}>
-      <Checkbox
-        name='showContextMenu'
-        label={showContextMenu ? i18n('optionsEnabled') : i18n('optionsDisabled')}
-        checked={showContextMenu}
-        onChange={(e) => { setShowContextMenu(e.currentTarget.checked) }} />
-    </Elevation>
+    {isContextMenuEnabled ? <>
+      <Typography use='subtitle2' tag='h3'>{i18n('optionsShowContextMenu')}</Typography>
+      <Elevation z={0}>
+        <Checkbox
+          name='showContextMenu'
+          label={showContextMenu ? i18n('optionsEnabled') : i18n('optionsDisabled')}
+          checked={showContextMenu}
+          onChange={(e) => { setShowContextMenu(e.currentTarget.checked) }} />
+      </Elevation>
+    </> : null}
 
     <Typography use='subtitle2' tag='h3'>{i18n('optionsDocs')}</Typography>
     <Elevation z={0} className='elevation-with-padding'>

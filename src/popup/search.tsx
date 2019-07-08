@@ -51,7 +51,7 @@ export default function Search ({ location, history }: { location: Location; his
     if (ref && ref.current) {
       const entryDomNode = ReactDOM.findDOMNode(ref.current)
       if (entryDomNode instanceof HTMLAnchorElement) {
-        entryDomNode.scrollIntoView({ behavior: 'smooth' })
+        entryDomNode.scrollIntoView({ block: 'end', behavior: 'smooth' })
       }
     }
   }, [focusPos])

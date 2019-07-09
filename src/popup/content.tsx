@@ -108,7 +108,7 @@ export default function Content ({ location, history }: { location: Location; hi
   }
 
   function onContentClick (e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
-    let target: HTMLElement | null = e.currentTarget
+    let target = e.target as HTMLElement | null
     while (target && target.tagName !== 'A') {
       if (target === e.currentTarget) return
       target = target.parentElement

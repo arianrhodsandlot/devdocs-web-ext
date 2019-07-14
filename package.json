@@ -9,6 +9,7 @@
     "cross-env": "^5.2.0",
     "github-fork-ribbon-css": "^0.2.3",
     "history": "^4.9.0",
+    "is-dark": "^1.0.4",
     "jquery": "^3.4.1",
     "keymaster": "^1.6.2",
     "ky": "^0.11.1",
@@ -87,7 +88,7 @@
     "start": "ts-node -e \"import fs from 'fs'; import { execSync } from 'child_process'; if (!fs.lstatSync('extension/dist').isDirectory()) execSync('yarn build:dev'); execSync('yarn concurrently')\";",
     "test": "eslint src/**/*.tsx src/**/*.ts && cross-env BUILD_MODE=test webpack -p && ava",
     "watch": "yarn build:dev -w"
-},
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/arianrhodsandlot/DevDocs-Web-Ext.git"

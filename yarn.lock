@@ -6350,6 +6350,11 @@ is-ci@^2.0.0:
   dependencies:
     ci-info "^2.0.0"
 
+is-dark@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/is-dark/-/is-dark-1.0.4.tgz#a3201601cbb40571e5277d2499c87a3ed053bce8"
+  integrity sha512-semPa+CAEb70MXWbuGM8Iho7Y0kMJHV+xQ6xXvScUe2anlBLPXIwduK0FpCO6Lsg991vLC6NTkdb9Vv8fqhQoA==
+
 is-data-descriptor@^0.1.4:
   version "0.1.4"
   resolved "https://registry.yarnpkg.com/is-data-descriptor/-/is-data-descriptor-0.1.4.tgz#0b5ee648388e2c860282e793f1856fec3f301b56"

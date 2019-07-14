@@ -131,21 +131,39 @@ test.serial('update theme', async t => {
 
   const { optionPage, popupPage } = t.context as TestContext
 
-  t.false(await popupPage.$eval('html', (e) => e.classList.contains('_theme-dark')))
+  if (await optionPage.$eval('input[value=light]', isChecked)) {
+    t.false(await popupPage.$eval('html', (e) => e.classList.contains('_theme-dark')))
 
-  await optionPage.bringToFront()
-  t.true(await optionPage.$eval('input[value=light]', isChecked))
-  t.false(await optionPage.$eval('input[value=dark]', isChecked))
+    await optionPage.bringToFront()
+    t.true(await optionPage.$eval('input[value=light]', isChecked))
+    t.false(await optionPage.$eval('input[value=dark]', isChecked))
 
-  await optionPage.click('input[value=dark]')
-  await optionPage.waitFor(100)
-  await optionPage.reload({ waitUntil: 'networkidle2' })
-  t.false(await optionPage.$eval('input[value=light]', isChecked))
-  t.true(await optionPage.$eval('input[value=dark]', isChecked))
+    await optionPage.click('input[value=dark]')
+    await optionPage.waitFor(100)
+    await optionPage.reload({ waitUntil: 'networkidle2' })
+    t.false(await optionPage.$eval('input[value=light]', isChecked))
+    t.true(await optionPage.$eval('input[value=dark]', isChecked))
 
-  await popupPage.bringToFront()
-  await popupPage.reload({ waitUntil: 'networkidle2' })
-  t.true(await popupPage.$eval('html', (e) => e.classList.contains('_theme-dark')))
+    await popupPage.bringToFront()
+    await popupPage.reload({ waitUntil: 'networkidle2' })
+    t.true(await popupPage.$eval('html', (e) => e.classList.contains('_theme-dark')))
+  } else {
+    t.true(await popupPage.$eval('html', (e) => e.classList.contains('_theme-dark')))
+
+    await optionPage.bringToFront()
+    t.false(await optionPage.$eval('input[value=light]', isChecked))
+    t.true(await optionPage.$eval('input[value=dark]', isChecked))
+
+    await optionPage.click('input[value=dark]')
+    await optionPage.waitFor(100)
+    await optionPage.reload({ waitUntil: 'networkidle2' })
+    t.true(await optionPage.$eval('input[value=light]', isChecked))
+    t.false(await optionPage.$eval('input[value=dark]', isChecked))
+
+    await popupPage.bringToFront()
+    await popupPage.reload({ waitUntil: 'networkidle2' })
+    t.false(await popupPage.$eval('html', (e) => e.classList.contains('_theme-dark')))
+  }
 })
 
 test.serial('content', async t => {

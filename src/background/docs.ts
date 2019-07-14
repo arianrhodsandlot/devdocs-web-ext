@@ -5,8 +5,11 @@ import Entry from '../../vendor/devdocs/assets/javascripts/models/entry.coffee'
 
 class Docs {
   docNames: string[] = []
+
   docs: ExtendedDoc[] = []
+
   allDocs: Doc[] = []
+
   ready = false
 
   static extendDocs (docs: Doc[]) {

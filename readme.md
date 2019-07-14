@@ -1,6 +1,8 @@
 # DevDocs Web Ext
 
 [![CircleCI](https://img.shields.io/circleci/build/github/arianrhodsandlot/DevDocs-Web-Ext.svg)](https://circleci.com/gh/arianrhodsandlot/DevDocs-Web-Ext)
+![David](https://img.shields.io/david/arianrhodsandlot/DevDocs-Web-Ext.svg)
+
 [![Chrome Web Store](https://img.shields.io/chrome-web-store/v/kdjoccdpjblcefijcfhnjoljodddedpj.svg)](https://chrome.google.com/webstore/detail/devdocs-web-ext/kdjoccdpjblcefijcfhnjoljodddedpj)
  [![Chrome Web Store](https://img.shields.io/chrome-web-store/users/kdjoccdpjblcefijcfhnjoljodddedpj.svg)](https://chrome.google.com/webstore/detail/devdocs-web-ext/kdjoccdpjblcefijcfhnjoljodddedpj) [![Chrome Web Store](https://img.shields.io/chrome-web-store/stars/kdjoccdpjblcefijcfhnjoljodddedpj.svg)](https://chrome.google.com/webstore/detail/devdocs-web-ext/kdjoccdpjblcefijcfhnjoljodddedpj)
 
@@ -26,4 +28,4 @@ yarn start
 
 ## License
 
-MIT
+[MIT](license)

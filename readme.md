@@ -23,7 +23,7 @@ Here is a simple overview about how to set up development environment.
 ```sh
 git clone https://github.com/arianrhodsandlot/DevDocs-Web-Ext.git
 cd DevDocs-Web-Ext
-yarn
+yarn # This may take a long time. See https://github.com/yarnpkg/yarn/issues/5540
 yarn start
 ```
 

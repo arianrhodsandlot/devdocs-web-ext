@@ -1,7 +1,7 @@
+import url from 'url'
 import React, { useState, useEffect, useRef } from 'react'
 import PropTypes from 'prop-types'
 import browser from 'webextension-polyfill'
-import url from 'url'
 import classnames from 'classnames'
 import key from 'keymaster'
 import ky from 'ky'
@@ -23,27 +23,30 @@ export default function Content ({ location, history }: { location: Location; hi
   const prevPath = prevPathRef.current
 
   useEffect(() => {
-    key('enter', () => {
-      return false
-    })
+    key('enter', () => false)
 
     key('space', () => {
       if (pageRef.current) {
-        pageRef.current.scrollBy({ top: 150, left: 0, behavior: 'smooth' })
+        pageRef.current.scrollBy({ top: 150,
+          left: 0,
+          behavior: 'smooth' })
       }
       return false
     })
 
     key('shift+space', () => {
       if (pageRef.current) {
-        pageRef.current.scrollBy({ top: -150, left: 0, behavior: 'smooth' })
+        pageRef.current.scrollBy({ top: -150,
+          left: 0,
+          behavior: 'smooth' })
       }
       return false
-    })
-
-    ;(async () => {
+    });
+    (async () => {
       const scope = location.pathname.split('/')[1].split('~')[0]
-      if (!scope) return
+      if (!scope) {
+        return
+      }
       const contentDoc = await browser.runtime.sendMessage({
         action: 'get-content-doc',
         payload: { scope }
@@ -70,7 +73,9 @@ export default function Content ({ location, history }: { location: Location; hi
   }, [location.pathname, location.hash, location.search, prevPath])
 
   useEffect(() => {
-    if (!contentUrl) return
+    if (!contentUrl) {
+      return
+    }
 
     (async () => {
       let docContent = await lruGetItem(contentUrl)
@@ -87,20 +92,26 @@ export default function Content ({ location, history }: { location: Location; hi
   }, [contentUrl])
 
   useEffect(() => {
-    if (!content) return
-    if (!location.hash) return
+    if (!content) {
+      return
+    }
+    if (!location.hash) {
+      return
+    }
     scrollToHash()
   }, [content, doc, location.hash])
 
   function scrollToHash () {
     let entryHash = location.hash
-    if (!entryHash || !pageRef.current) return
+    if (!entryHash || !pageRef.current) {
+      return
+    }
     if (entryHash.startsWith('#')) {
       entryHash = entryHash.slice(1)
     }
     if (entryHash) {
       const scrollTargetId = entryHash.startsWith('.') ? entryHash.slice(1) : entryHash
-      const scrollTarget = document.getElementById(scrollTargetId)
+      const scrollTarget = document.querySelector(`div#${scrollTargetId}`)
       if (scrollTarget) {
         pageRef.current.scrollTo(0, scrollTarget.offsetTop)
       }
@@ -110,17 +121,22 @@ export default function Content ({ location, history }: { location: Location; hi
   function onContentClick (e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
     let target = e.target as HTMLElement | null
     while (target && target.tagName !== 'A') {
-      if (target === e.currentTarget) return
+      if (target === e.currentTarget) {
+        return
+      }
       target = target.parentElement
     }
     e.preventDefault()
-    if (!target) return
+    if (!target) {
+      return
+    }
     const href = target.getAttribute('href') || ''
     if (href.startsWith('http://') || href.startsWith('https://')) {
       browser.tabs.create({ url: href })
     } else {
       const currentUrl = history.location.pathname
-      const targetUrl = url.resolve(currentUrl, href) // eslint-disable-line
+      // eslint-disable-next-line node/no-deprecated-api
+      const targetUrl = url.resolve(currentUrl, href)
       history.replace(targetUrl)
     }
   }

@@ -1,7 +1,7 @@
 import path from 'path'
 import puppeteer from 'puppeteer'
 
-export async function getTestContext () {
+async function getTestContext () {
   const extensionPath = path.resolve(__dirname, '../../extension')
   const browser = await puppeteer.launch({
     headless: false,
@@ -14,11 +14,11 @@ export async function getTestContext () {
     ]
   })
   const targets = await browser.targets()
-  const backgroundPage = await targets.find(target => target.type() === 'background_page')!.page()
+  const backgroundPage = await targets.find((target) => target.type() === 'background_page')!.page()
   await backgroundPage.waitFor(5000)
   const pages = await browser.pages()
-  const optionPage = pages.find(p => p.url().includes('/dist/options.html'))!
-  const popupPage = pages.find(p => p.url().includes('/dist/popup.html'))!
+  const optionPage = pages.find((p) => p.url().includes('/dist/options.html'))!
+  const popupPage = pages.find((p) => p.url().includes('/dist/popup.html'))!
 
   const context = {
     browser,
@@ -32,3 +32,4 @@ export async function getTestContext () {
 type Unpromisify<T> = T extends Promise<infer U> ? U : T
 
 export type TestContext = Unpromisify<ReturnType<typeof getTestContext>>
+export { getTestContext }

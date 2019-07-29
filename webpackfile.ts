@@ -1,3 +1,4 @@
+/* eslint-disable no-sync */
 import path from 'path'
 import childProcess from 'child_process'
 import webpack from 'webpack'
@@ -25,7 +26,7 @@ const config: webpack.Configuration = {
   },
   module: {
     rules: [{
-      test: /\.(png|jpg|gif|ttf|eot|woff|woff2)$/,
+      test: /\.(png|jpg|gif|ttf|eot|woff|woff2)$/u,
       use: [{
         loader: 'url-loader',
         options: {
@@ -33,8 +34,8 @@ const config: webpack.Configuration = {
         }
       }]
     }, {
-      test: /\.tsx?$/,
-      exclude: /node_modules/,
+      test: /\.tsx?$/u,
+      exclude: /node_modules/u,
       use: [{
         loader: 'cache-loader'
       }, {
@@ -116,7 +117,7 @@ const config: webpack.Configuration = {
         loader: 'coffee-loader'
       }]
     }, {
-      test: /\.(css)$/,
+      test: /\.(css)$/u,
       use: [{
         loader: MiniCssExtractPlugin.loader
       }, {
@@ -126,7 +127,7 @@ const config: webpack.Configuration = {
         }
       }]
     }, {
-      test: /\.(scss|sass)$/,
+      test: /\.(scss|sass)$/u,
       use: [{
         loader: MiniCssExtractPlugin.loader
       }, {
@@ -146,7 +147,7 @@ const config: webpack.Configuration = {
         }
       }]
     }, {
-      test: /\.(pug)$/,
+      test: /\.(pug)$/u,
       use: [{
         loader: 'cache-loader'
       }, {
@@ -165,7 +166,7 @@ const config: webpack.Configuration = {
       minSize: 0,
       cacheGroups: {
         commons: {
-          test: /[\\/]node_modules[\\/]/,
+          test: /[\\/]node_modules[\\/]/u,
           name: 'vendors',
           chunks: 'all'
         }

@@ -13,5 +13,5 @@ document.title = i18n('optionsTitle')
 
 ReactDOM.render(
   <App />,
-  document.getElementById('app')
+  document.querySelector('#app')
 )

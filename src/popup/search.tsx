@@ -1,13 +1,13 @@
+import querystring from 'querystring'
 import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import ReactDOM from 'react-dom'
-import querystring from 'querystring'
 import browser from 'webextension-polyfill'
 import classnames from 'classnames'
 import key from 'keymaster'
 import { Link } from 'react-router-dom'
-import Docs from '../background/docs'
 import { Location, History } from 'history'
+import Docs from '../background/docs'
 
 Search.propTypes = {
   location: PropTypes.object,
@@ -46,12 +46,16 @@ export default function Search ({ location, history }: { location: Location; his
   }, [location])
 
   useEffect(() => {
-    if (!entries) return
+    if (!entries) {
+      return
+    }
     const ref = getEntryRef(entries[focusPos])
     if (ref && ref.current) {
+      // eslint-disable-next-line react/no-find-dom-node
       const entryDomNode = ReactDOM.findDOMNode(ref.current)
       if (entryDomNode instanceof HTMLAnchorElement) {
-        entryDomNode.scrollIntoView({ block: 'end', behavior: 'smooth' })
+        entryDomNode.scrollIntoView({ block: 'end',
+          behavior: 'smooth' })
       }
     }
   }, [focusPos])
@@ -61,13 +65,17 @@ export default function Search ({ location, history }: { location: Location; his
   }
 
   function focusNextEntry () {
-    if (!entries) return
+    if (!entries) {
+      return
+    }
     const maxFocusPos = entries.length - 1
     setFocusPos(focusPos === maxFocusPos ? 0 : focusPos + 1)
   }
 
   function focusPrevEntry () {
-    if (!entries) return
+    if (!entries) {
+      return
+    }
     const maxFocusPos = entries.length - 1
     setFocusPos(focusPos === 0 ? maxFocusPos : focusPos - 1)
   }
@@ -79,7 +87,9 @@ export default function Search ({ location, history }: { location: Location; his
   }
 
   function enterFocusEntry () {
-    if (!entries) return
+    if (!entries) {
+      return
+    }
     const focusEntry = entries[focusPos]
     if (focusEntry) {
       history.push(getEntryUrl(focusEntry))
@@ -87,7 +97,9 @@ export default function Search ({ location, history }: { location: Location; his
   }
 
   function getEntryRef (entry: Entry) {
-    if (!entries) return
+    if (!entries) {
+      return null
+    }
     const index = entries.indexOf(entry)
     let ref = entryRefs[index]
     if (!ref) {
@@ -112,11 +124,12 @@ export default function Search ({ location, history }: { location: Location; his
     try {
       response = await browser.runtime.sendMessage({
         action: 'search-entry',
-        payload: { query, scope }
+        payload: { query,
+          scope }
       }) as { status: 'success'; content: Entry[] }
       entries = response.content
-    } catch (e) {
-      failMessage = e.message
+    } catch (error) {
+      failMessage = error.message
     }
 
     setEntries(entries)
@@ -136,41 +149,38 @@ export default function Search ({ location, history }: { location: Location; his
     )
   }
 
-  const noResults = (
+  const noResults =
     <>
       <div className='_list-note'>
         No results.
       </div>
       <div className='_list-note'>
-        Note: documentations must be <a href='https://devdocs.io/settings' className='_list-note-link' target='_blank' onClick={(e) => {
+        Note: documentations must be <a href='https://devdocs.io/settings' className='_list-note-link' target='_blank' rel='noopener noreferrer' onClick={(e) => {
           e.preventDefault()
           browser.tabs.create({ url: e.currentTarget.href })
         }}>enabled</a> to appear in the search.
       </div>
     </>
-  )
 
-  const results = (entries
-    ? entries.map((entry, i) => (
-      <Link
-        className={classnames(
-          '_list-item', '_list-hover', '_list-entry',
-          `_icon-${entry.doc.icon}`,
-          { focus: focusPos === i ? 'focus' : '' })}
-        key={`${entry.doc.slug}-${entry.doc.name}/${entry.path}-${entry.name}`}
-        to={getEntryUrl(entry)}
-        ref={getEntryRef(entry)}>
-        <div className='_list-count'>{getDocVersion(entry.doc)}</div>
-        <div className='_list-text'>{entry.name}</div>
-      </Link>
-    ))
+  const results = entries
+    ? entries.map((entry, i) => <Link
+      className={classnames(
+        '_list-item', '_list-hover', '_list-entry',
+        `_icon-${entry.doc.icon}`,
+        { focus: focusPos === i ? 'focus' : '' }
+      )}
+      key={`${entry.doc.slug}-${entry.doc.name}/${entry.path}-${entry.name}`}
+      to={getEntryUrl(entry)}
+      ref={getEntryRef(entry)}>
+      <div className='_list-count'>{getDocVersion(entry.doc)}</div>
+      <div className='_list-text'>{entry.name}</div>
+    </Link>)
     : null
-  )
 
   return (
     <div className='_sidebar'>
       <div className='_list'>
-        {entries ? (entries.length ? results : noResults) : null}
+        {entries ? entries.length > 0 ? results : noResults : null}
       </div>
     </div>
   )

@@ -8,7 +8,8 @@ import Docs from './docs'
 
 async function getDocNames () {
   const defaultCategories = ['css', 'dom', 'dom_events', 'html', 'http', 'javascript']
-  const cookie = await browser.cookies.get({ url: 'http://devdocs.io', name: 'docs' })
+  const cookie = await browser.cookies.get({ url: 'http://devdocs.io',
+    name: 'docs' })
   const categories = cookie && cookie.value ? cookie.value.split('/') : defaultCategories
   return categories
 }
@@ -17,13 +18,17 @@ async function addMessageListener () {
   const docs = new Docs(await getDocNames())
 
   async function searchEntry ({ query, scope }: { query: string; scope: string }) {
-    if (!query && !scope) return null
+    if (!query && !scope) {
+      return null
+    }
     if (!scope) {
       const entries = await docs.searchEntries(query)
       return entries
     }
     const doc = await docs.attemptToMatchOneDocInEnabledDocs(scope)
-    if (!doc) return []
+    if (!doc) {
+      return []
+    }
     if (!query) {
       return doc.entries.slice(0, 50)
     }
@@ -42,8 +47,12 @@ async function addMessageListener () {
   }
 
   browser.cookies.onChanged.addListener(async ({ cookie: { domain, name } }) => {
-    if (!(['devdocs.io', '.devdocs.io'].includes(domain))) return
-    if (name !== 'docs') return
+    if (!['devdocs.io', '.devdocs.io'].includes(domain)) {
+      return
+    }
+    if (name !== 'docs') {
+      return
+    }
     const docNames = await getDocNames()
     docs.reload(docNames)
   })
@@ -57,7 +66,8 @@ async function addMessageListener () {
 
     switch (action) {
       case 'search-entry':
-        result = { status: 'success', content: await searchEntry(payload) }
+        result = { status: 'success',
+          content: await searchEntry(payload) }
         break
       case 'auto-compelete-enabled-doc':
         result = await autoCompeleteEnabledDoc(payload)
@@ -79,12 +89,15 @@ addMessageListener()
 async function initializeOptions () {
   const options: Record<string, string | number> = {}
   for (const option in defaultOptions) {
-    const { [option]: previousValue } = await storage.get(option)
-    const legacyValue = localStorage.getItem(option)
-    const value = previousValue || legacyValue
-    const defaultValue = (defaultOptions as Record<string, string | number | boolean>)[option]
-    options[option] = value || defaultValue
-    localStorage.removeItem(option)
+    if (Object.prototype.hasOwnProperty.call(defaultOptions, option)) {
+      // eslint-disable-next-line no-await-in-loop
+      const { [option]: previousValue } = await storage.get(option)
+      const legacyValue = localStorage.getItem(option)
+      const value = previousValue || legacyValue
+      const defaultValue = defaultOptions as Record<string, string | number | boolean>[option]
+      options[option] = value || defaultValue
+      localStorage.removeItem(option)
+    }
   }
   storage.set(options)
 }
@@ -104,12 +117,10 @@ if (isDev) {
 }
 
 if (isDev || isTest) {
-  (async () => {
-    browser.tabs.create({
-      url: 'dist/options.html'
-    })
-    browser.tabs.create({
-      url: 'dist/popup.html'
-    })
-  })()
+  browser.tabs.create({
+    url: 'dist/options.html'
+  })
+  browser.tabs.create({
+    url: 'dist/popup.html'
+  })
 }

@@ -1,18 +1,19 @@
+/* global VERSION, GIT_VERSION */
 import browser from 'webextension-polyfill'
 import { debounce } from 'lodash'
 import React, { useState, useEffect } from 'react'
+import { Slider, Typography, Radio, Button, Elevation, Checkbox } from 'rmwc'
 import { defaultOptions } from '../common/default-options'
 import storage from '../common/storage'
 import { isContextMenuEnabled } from '../common/env'
 import i18n from './i18n'
-import { Slider, Typography, Radio, Button, Elevation, Checkbox } from 'rmwc'
 
-const lazyPersist = debounce(async function (data) {
+const lazyPersist = debounce(async (data) => {
   await storage.set(data)
   await browser.runtime.sendMessage({ action: 'storage-updated' })
 }, 100)
 
-const App = function () {
+function App () {
   const [initialized, setInitialized] = useState(false)
   const [theme, setTheme] = useState(defaultOptions.theme)
   const [width, setWidth] = useState(defaultOptions.width)
@@ -32,7 +33,10 @@ const App = function () {
 
   useEffect(() => {
     if (initialized) {
-      lazyPersist({ theme, width, height, showContextMenu })
+      lazyPersist({ theme,
+        width,
+        height,
+        showContextMenu })
     }
   }, [theme, width, height, showContextMenu, initialized])
 
@@ -45,7 +49,9 @@ const App = function () {
           className='slider-size slider-width'
           name='width'
           value={width}
-          onInput={(e) => { setWidth(e.detail.value) }}
+          onInput={(e) => {
+            setWidth(e.detail.value)
+          }}
           discrete
           displayMarkers
           min={300}
@@ -59,7 +65,9 @@ const App = function () {
           className='slider-size slider-height'
           name='height'
           value={height}
-          onInput={(e) => { setHeight(e.detail.value) }}
+          onInput={(e) => {
+            setHeight(e.detail.value)
+          }}
           discrete
           displayMarkers
           min={300}
@@ -75,14 +83,18 @@ const App = function () {
         name='theme'
         value='light'
         checked={theme === 'light'}
-        onChange={(e) => { setTheme(e.currentTarget.value) }}>
+        onChange={(e) => {
+          setTheme(e.currentTarget.value)
+        }}>
         {i18n('optionsLight')}
       </Radio>
       <Radio
         name='theme'
         value='dark'
         checked={theme === 'dark'}
-        onChange={(e) => { setTheme(e.currentTarget.value) }}>
+        onChange={(e) => {
+          setTheme(e.currentTarget.value)
+        }}>
         {i18n('optionsDark')}
       </Radio>
     </Elevation>
@@ -94,7 +106,9 @@ const App = function () {
           name='showContextMenu'
           label={showContextMenu ? i18n('optionsEnabled') : i18n('optionsDisabled')}
           checked={showContextMenu}
-          onChange={(e) => { setShowContextMenu(e.currentTarget.checked) }} />
+          onChange={(e) => {
+            setShowContextMenu(e.currentTarget.checked)
+          }} />
       </Elevation>
     </> : null}
 

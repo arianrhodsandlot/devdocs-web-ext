@@ -14,11 +14,11 @@ key.filter = () => true
 async function restoreHistory () {
   const { showContextMenu } = await storage.get()
 
+  let selection
   if (!isContextMenuEnabled || !showContextMenu) {
-    let selection
     try {
       selection = await browser.tabs.executeScript({ code: 'getSelection().toString()' })
-    } catch (e) {}
+    } catch {}
     const query: string = (_.get(selection, '0', '') || '').trim().slice(0, 20)
     if (query) {
       localStorage.setItem('scope', '')

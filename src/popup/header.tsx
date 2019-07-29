@@ -1,6 +1,6 @@
 import url from 'url'
-import React, { useState, useEffect, useRef } from 'react'
 import querystring from 'querystring'
+import React, { useState, useEffect, useRef } from 'react'
 import { withRouter } from 'react-router'
 import key from 'keymaster'
 import browser from 'webextension-polyfill'
@@ -10,10 +10,12 @@ function getInitialInputState () {
   const scope = localStorage.getItem('scope') || ''
   const query = localStorage.getItem('query') || ''
   const docName = localStorage.getItem('docName') || ''
-  return { scope, query, docName }
+  return { scope,
+    query,
+    docName }
 }
 
-export default withRouter(function Header ({ location, history }: { location: Location; history: History }) {
+function Header ({ location, history }: { location: Location; history: History }) {
   const [inputPaddingLeft, setInputPaddingLeft] = useState(0)
   const initialInputState = getInitialInputState()
   const [scope, setScope] = useState(initialInputState.scope)
@@ -23,16 +25,22 @@ export default withRouter(function Header ({ location, history }: { location: Lo
   const scopeRef = useRef<HTMLInputElement>()
 
   useEffect(() => {
-    if (!inputRef.current) return
+    if (!inputRef.current) {
+      return
+    }
     inputRef.current.select()
 
-    key('/', () => {
-      if (!inputRef.current) return
-      if (document.activeElement === inputRef.current) return
+    key('/', (e) => {
+      if (!inputRef.current) {
+        return
+      }
+      if (document.activeElement === inputRef.current) {
+        return
+      }
 
       inputRef.current.focus()
       inputRef.current.select()
-      return false
+      e.preventDefault()
     })
   }, [])
 
@@ -89,6 +97,7 @@ export default withRouter(function Header ({ location, history }: { location: Lo
     if (doc) {
       return doc.fullName
     }
+    return ''
   }
 
   async function completeDoc () {
@@ -111,8 +120,12 @@ export default withRouter(function Header ({ location, history }: { location: Lo
       query: '',
       scope: ''
     }
-    if (query) urlQuery.query = query
-    if (scope) urlQuery.scope = scope
+    if (query) {
+      urlQuery.query = query
+    }
+    if (scope) {
+      urlQuery.scope = scope
+    }
     history.replace(url.format({
       pathname: '/search',
       query: urlQuery
@@ -157,4 +170,6 @@ export default withRouter(function Header ({ location, history }: { location: Lo
       </svg>
     </div>
   )
-})
+}
+
+export default withRouter(Header)

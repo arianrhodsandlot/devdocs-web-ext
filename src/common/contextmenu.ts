@@ -5,9 +5,13 @@ import { isContextMenuEnabled } from './env'
 
 let enabled = false
 
-async function enableContextMenu () {
-  if (!isContextMenuEnabled) return
-  if (enabled) return
+function enableContextMenu () {
+  if (!isContextMenuEnabled) {
+    return
+  }
+  if (enabled) {
+    return
+  }
   browser.contextMenus.create({
     id: 'devdocs-web-ext-context-menu',
     title: i18n('contextMenuTemplate'),
@@ -34,7 +38,7 @@ async function disableContextMenu () {
 export async function setupContextMenu () {
   const { showContextMenu } = await storage.get()
   if (showContextMenu) {
-    await enableContextMenu()
+    enableContextMenu()
   } else {
     await disableContextMenu()
   }

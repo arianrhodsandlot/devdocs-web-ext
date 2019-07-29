@@ -2,11 +2,11 @@ import test from 'ava'
 import { ElementHandle } from 'puppeteer'
 import { getTestContext, TestContext } from './helpers'
 
-test.serial.before(async t => {
+test.serial.before(async (t) => {
   t.context = await getTestContext()
 })
 
-test.serial.beforeEach(async t => {
+test.serial.beforeEach(async (t) => {
   const { popupPage } = t.context as TestContext
   await popupPage.bringToFront()
   await popupPage.focus('input')
@@ -18,11 +18,11 @@ test.serial.beforeEach(async t => {
   await popupPage.waitForSelector('._splash-title')
 })
 
-test.serial('search and navigate in results', async t => {
+test.serial('search and navigate in results', async (t) => {
   async function getClassNames (element: ElementHandle<Element>) {
     const jsHandle = await element.getProperty('className')
     const classNames: string = await jsHandle.jsonValue()
-    return classNames.split(/\s+/)
+    return classNames.split(/\s+/u)
   }
 
   const { popupPage } = t.context as TestContext
@@ -54,43 +54,43 @@ test.serial('search and navigate in results', async t => {
   t.true((await getClassNames(lastListItem)).includes('focus'))
 })
 
-test.serial('search in a certain doc', async t => {
+test.serial('search in a certain doc', async (t) => {
   const { popupPage } = t.context as TestContext
   await popupPage.keyboard.type('c')
   await popupPage.waitFor(100)
   await popupPage.keyboard.press('Tab')
   await popupPage.waitForSelector('._search-tag')
-  t.is(await popupPage.$eval('._search-tag', e => e.innerHTML), 'CSS')
+  t.is(await popupPage.$eval('._search-tag', (e) => e.innerHTML), 'CSS')
 
   await popupPage.keyboard.type('bxs')
   await popupPage.waitForSelector('._list-item')
-  const firstLiteItemText = await popupPage.$eval('._list-item', e => (e as HTMLDivElement).innerText)
+  const firstLiteItemText = await popupPage.$eval('._list-item', (e) => (e as HTMLDivElement).textContent)
   t.is(firstLiteItemText, 'box-shadow')
 })
 
-test.serial('content', async t => {
+test.serial('content', async (t) => {
   const { popupPage, browser } = t.context as TestContext
   await popupPage.keyboard.type('a')
   await popupPage.waitForSelector('._list-item.focus')
   await popupPage.keyboard.press('Enter')
   t.truthy(await popupPage.waitForSelector('._page._mdn'))
-  t.falsy(await popupPage.$eval('._page', e => e.scrollTop))
+  t.falsy(await popupPage.$eval('._page', (e) => e.scrollTop))
 
   await popupPage.keyboard.press('Space')
   await popupPage.waitFor(500)
-  t.truthy(await popupPage.$eval('._page', e => e.scrollTop))
+  t.truthy(await popupPage.$eval('._page', (e) => e.scrollTop))
 
   await popupPage.keyboard.down('Shift')
   await popupPage.keyboard.press('Space')
   await popupPage.keyboard.up('Shift')
   await popupPage.waitFor(500)
-  t.falsy(await popupPage.$eval('._page', e => e.scrollTop))
+  t.falsy(await popupPage.$eval('._page', (e) => e.scrollTop))
 
   const externalLink = 'https://developer.mozilla.org/en-US/docs/HTML/Content_categories'
   await popupPage.click(`a[href="${externalLink}"]`)
   await popupPage.waitFor(1000)
   const pages = await browser.pages()
-  const newPage = pages.find(p => p.url().includes('developer.mozilla.org'))!
+  const newPage = pages.find((p) => p.url().includes('developer.mozilla.org'))!
   t.truthy(newPage)
   await newPage.close()
 
@@ -98,7 +98,7 @@ test.serial('content', async t => {
   t.true(popupPage.url().endsWith('#/html/global_attributes'))
 })
 
-test.serial.after(async t => {
+test.serial.after(async (t) => {
   const { browser } = t.context as TestContext
   await browser.close()
 })

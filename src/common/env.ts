@@ -1,3 +1,4 @@
+/* global BUILD_MODE */
 import browser from 'webextension-polyfill'
 
 const isProd = process.env.NODE_ENV === 'production'

@@ -13,9 +13,7 @@ class Docs {
   ready = false
 
   static extendDocs (docs: Doc[]) {
-    return Promise.all(_.map(docs, (doc) => {
-      return Docs.extendDoc(doc)
-    }))
+    return Promise.all(_.map(docs, (doc) => Docs.extendDoc(doc)))
   }
 
   static async extendDoc (doc: Doc) {
@@ -39,14 +37,14 @@ class Docs {
     }
 
     const index = await Docs.getDocIndexByName(doc.slug) as Index
-    index.entries = _.map(index.entries, (entry) => {
-      return {
-        ...new Entry(entry),
-        doc: { ...extendedDoc }
-      }
-    })
+    index.entries = _.map(index.entries, (entry) => ({
+      ...new Entry(entry),
+      doc: { ...extendedDoc }
+    }))
 
-    return { ...doc, ...index, ...docEntry }
+    return { ...doc,
+      ...index,
+      ...docEntry }
   }
 
   static async getDocIndexByName (docName: string) {
@@ -62,7 +60,7 @@ class Docs {
   }
 
   static searchEntriesInDoc (query: string, doc: Doc & Index) {
-    const entries = doc.entries
+    const { entries } = doc
     const searcher = new Searcher()
 
     return new Promise((resolve) => {
@@ -82,7 +80,7 @@ class Docs {
 
     return new Promise((resolve) => {
       searcher.on('results', (results: T[]) => {
-        const doc = results.length ? results[0] : null
+        const doc = results.length > 0 ? results[0] : null
         resolve(doc)
       })
       searcher.find(docs, 'slug', query)

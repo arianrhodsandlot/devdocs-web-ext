@@ -1,11 +1,12 @@
+/* eslint-disable no-await-in-loop, ava/no-import-test-files */
 import test from 'ava'
 import { getTestContext, TestContext } from './helpers'
 
-test.serial.before(async t => {
+test.serial.before(async (t) => {
   t.context = await getTestContext()
 })
 
-test.serial('update size', async t => {
+test.serial('update size', async (t) => {
   const { optionPage, popupPage } = t.context as TestContext
   await optionPage.bringToFront()
   const thumbs = await optionPage.$$('.mdc-slider__thumb-container')
@@ -24,13 +25,13 @@ test.serial('update size', async t => {
   await popupPage.bringToFront()
   await popupPage.reload({ waitUntil: 'networkidle2' })
   const size = {
-    width: await popupPage.$eval('body', e => (e as HTMLBodyElement).offsetWidth),
-    height: await popupPage.$eval('body', e => (e as HTMLBodyElement).offsetHeight)
+    width: await popupPage.$eval('body', (e) => (e as HTMLBodyElement).offsetWidth),
+    height: await popupPage.$eval('body', (e) => (e as HTMLBodyElement).offsetHeight)
   }
   t.deepEqual(size, { width: 450, height: 450 })
 })
 
-test.serial('update theme', async t => {
+test.serial('update theme', async (t) => {
   function isChecked (e: Element) {
     return (e as HTMLInputElement).checked
   }
@@ -72,6 +73,6 @@ test.serial('update theme', async t => {
   }
 })
 
-test.serial.after(async t => {
-  (t.context as TestContext).browser.close()
+test.serial.after(async (t) => {
+  await (t.context as TestContext).browser.close()
 })

@@ -94,7 +94,7 @@ async function initializeOptions () {
       const { [option]: previousValue } = await storage.get(option)
       const legacyValue = localStorage.getItem(option)
       const value = previousValue || legacyValue
-      const defaultValue = defaultOptions as Record<string, string | number | boolean>[option]
+      const defaultValue = (defaultOptions as Record<string, string | number | boolean>)[option]
       options[option] = value || defaultValue
       localStorage.removeItem(option)
     }

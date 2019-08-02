@@ -77,7 +77,7 @@
     "build": "cross-env NODE_ENV=production webpack -p && web-ext build -s extension -a artifacts -o",
     "build:dev": "cross-env NODE_ENV=development webpack",
     "concurrently": "concurrently \"yarn watch\" \"yarn puppeteer\"",
-    "postinstall": "git submodule update --init --remote",
+    "postinstall": "git submodule init && git submodule update --recursive",
     "puppeteer": "ts-node -e \"import path from 'path'; import puppeteer from 'puppeteer'; const extensionPath = path.resolve(__dirname, 'extension'); puppeteer.launch({ defaultViewport: null, devtools: true, args: ['--lang=bn-BD,bn', '--disable-extensions-except=' + extensionPath, '--load-extension=' + extensionPath] })\"",
     "start": "ts-node -e \"import fs from 'fs'; import { execSync } from 'child_process'; if (!fs.lstatSync('extension/dist').isDirectory()) execSync('yarn build:dev'); execSync('yarn concurrently')\";",
     "lint": "eslint --ignore-pattern=vendor --ignore-path=.gitignore --ext=js,jsx,ts,tsx .",

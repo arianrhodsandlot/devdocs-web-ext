@@ -13,7 +13,7 @@
     "github-fork-ribbon-css": "^0.2.3",
     "history": "^4.9.0",
     "is-dark": "^1.0.4",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "keymaster": "^1.6.2",
     "ky": "^0.11.1",
     "lodash": "^4.17.14",

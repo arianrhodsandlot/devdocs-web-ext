@@ -48,7 +48,7 @@ class Docs {
   }
 
   static async getDocIndexByName (docName: string) {
-    const docUrl = `http://docs.devdocs.io/${docName}/index.json`
+    const docUrl = `https://documents.devdocs.io/${docName}/index.json`
     const index = await ky(docUrl).json()
     return index
   }

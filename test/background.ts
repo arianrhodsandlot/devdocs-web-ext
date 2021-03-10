@@ -23,7 +23,7 @@ test('update docs', async (t) => {
   await devdocsPage.waitForSelector('[name=angular]')
   await devdocsPage.click('[name=angular]')
   await devdocsPage.click('[name="angular~5"]')
-  await devdocsPage.click('[name=babel]')
+  await devdocsPage.click('[name=bash]')
   await devdocsPage.waitForSelector('._settings-btn-save')
   await devdocsPage.click('._settings-btn-save')
 
@@ -44,7 +44,7 @@ test('update docs', async (t) => {
   await popupPage.waitFor(100)
   await popupPage.keyboard.press('Tab')
   await popupPage.waitForSelector('._search-tag')
-  t.is(await popupPage.$eval('._search-tag', (e) => e.innerHTML), 'Babel')
+  t.is(await popupPage.$eval('._search-tag', (e) => e.innerHTML), 'Bash')
 })
 
 test.after(async (t) => {

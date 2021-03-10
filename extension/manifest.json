@@ -32,7 +32,8 @@
     "storage",
     "contextMenus",
     "*://devdocs.io/",
-    "*://docs.devdocs.io/"
+    "*://docs.devdocs.io/",
+    "*://documents.devdocs.io/"
   ],
   "commands": {
     "_execute_browser_action": {

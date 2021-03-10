@@ -69,7 +69,7 @@ test.serial('search in a certain doc', async (t) => {
 })
 
 test.serial('content', async (t) => {
-  const { popupPage, browser } = t.context as TestContext
+  const { popupPage } = t.context as TestContext
   await popupPage.keyboard.type('a')
   await popupPage.waitForSelector('._list-item.focus')
   await popupPage.keyboard.press('Enter')
@@ -85,17 +85,6 @@ test.serial('content', async (t) => {
   await popupPage.keyboard.up('Shift')
   await popupPage.waitFor(500)
   t.falsy(await popupPage.$eval('._page', (e) => e.scrollTop))
-
-  const externalLink = 'https://developer.mozilla.org/en-US/docs/HTML/Content_categories'
-  await popupPage.click(`a[href="${externalLink}"]`)
-  await popupPage.waitFor(1000)
-  const pages = await browser.pages()
-  const newPage = pages.find((p) => p.url().includes('developer.mozilla.org'))!
-  t.truthy(newPage)
-  await newPage.close()
-
-  await popupPage.click('a[href="../global_attributes"]')
-  t.true(popupPage.url().endsWith('#/html/global_attributes'))
 })
 
 test.serial.after(async (t) => {

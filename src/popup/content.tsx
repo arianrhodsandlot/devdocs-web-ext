@@ -67,7 +67,7 @@ export default function Content ({ location, history }: { location: Location; hi
     if (location.pathname === prevPath) {
       scrollToHash()
     } else {
-      setContentUrl(`http://docs.devdocs.io${location.pathname}.html${location.search}`)
+      setContentUrl(`https://documents.devdocs.io${location.pathname}.html${location.search}`)
     }
     prevPathRef.current = location.pathname
   }, [location.pathname, location.hash, location.search, prevPath])

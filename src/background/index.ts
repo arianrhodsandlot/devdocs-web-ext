@@ -8,8 +8,7 @@ import Docs from './docs'
 
 async function getDocNames () {
   const defaultCategories = ['css', 'dom', 'dom_events', 'html', 'http', 'javascript']
-  const cookie = await browser.cookies.get({ url: 'http://devdocs.io',
-    name: 'docs' })
+  const cookie = await browser.cookies.get({ url: 'https://devdocs.io', name: 'docs' }) || await browser.cookies.get({ url: 'http://devdocs.io', name: 'docs' })
   const categories = cookie && cookie.value ? cookie.value.split('/') : defaultCategories
   return categories
 }

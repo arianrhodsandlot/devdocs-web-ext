@@ -6,6 +6,7 @@ import key from 'keymaster'
 import _ from 'lodash'
 import { isProd, isContextMenuEnabled } from '../common/env'
 import storage from '../common/storage'
+import { defaultOptions } from '../common/default-options'
 import App from './app'
 import history from './history'
 
@@ -36,6 +37,21 @@ async function restoreHistory () {
 
 async function main () {
   await restoreHistory()
+
+  async function initializeOptions () {
+    const options: Record<string, string | number> = {}
+    for (const option in defaultOptions) {
+      if (Object.prototype.hasOwnProperty.call(defaultOptions, option)) {
+      // eslint-disable-next-line no-await-in-loop
+        const { [option]: previousValue } = await storage.get(option)
+        const value = previousValue
+        const defaultValue = (defaultOptions as Record<string, string | number | boolean>)[option]
+        options[option] = value || defaultValue
+      }
+    }
+    storage.set(options)
+  }
+  await initializeOptions()
 
   const { width, height, theme } = await storage.get()
 

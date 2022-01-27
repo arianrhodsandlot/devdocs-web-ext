@@ -22,7 +22,7 @@ const config: webpack.Configuration = {
     'options-style': './src/options/options.sass'
   },
   output: {
-    path: path.resolve('./extension/dist')
+    path: path.resolve('./extension/')
   },
   module: {
     rules: [{
@@ -161,30 +161,18 @@ const config: webpack.Configuration = {
     extensions: ['.ts', '.tsx', '.js']
   },
   devtool: process.env.NODE_ENV === 'production' ? false : 'inline-cheap-source-map',
-  optimization: {
-    splitChunks: {
-      minSize: 0,
-      cacheGroups: {
-        commons: {
-          test: /[\\/]node_modules[\\/]/u,
-          name: 'vendors',
-          chunks: 'all'
-        }
-      }
-    }
-  },
   plugins: [
     new LodashModuleReplacementPlugin(),
     new HtmlWebpackPlugin({
       filename: 'popup.html',
       template: 'src/popup/popup.pug',
       inject: false,
-      chunks: ['devdocs-style', 'devdocs-dark-style', 'popup-style', 'vendors', 'popup-js']
+      chunks: ['devdocs-style', 'devdocs-dark-style', 'popup-style', 'popup-js']
     }),
     new HtmlWebpackPlugin({
       filename: 'options.html',
       template: 'src/options/options.pug',
-      chunks: ['options-style', 'vendors', 'options-js']
+      chunks: ['options-style', 'options-js']
     }),
     new MiniCssExtractPlugin({
       filename: '[name].css'

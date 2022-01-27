@@ -2,7 +2,6 @@ import browser from 'webextension-polyfill'
 import Raven from 'raven-js'
 import { isProd, isDev, isTest } from '../common/env'
 import storage from '../common/storage'
-import { setupContextMenu } from '../common/contextmenu'
 import { defaultOptions } from '../common/default-options'
 import Docs from './docs'
 
@@ -91,11 +90,9 @@ async function initializeOptions () {
     if (Object.prototype.hasOwnProperty.call(defaultOptions, option)) {
       // eslint-disable-next-line no-await-in-loop
       const { [option]: previousValue } = await storage.get(option)
-      const legacyValue = localStorage.getItem(option)
-      const value = previousValue || legacyValue
+      const value = previousValue
       const defaultValue = (defaultOptions as Record<string, string | number | boolean>)[option]
       options[option] = value || defaultValue
-      localStorage.removeItem(option)
     }
   }
   storage.set(options)
@@ -103,7 +100,6 @@ async function initializeOptions () {
 
 (async () => {
   await initializeOptions()
-  await setupContextMenu()
 })()
 
 if (isProd) {
@@ -111,15 +107,15 @@ if (isProd) {
 }
 
 if (isDev) {
-  browser.browserAction.setBadgeBackgroundColor({ color: 'white' })
-  browser.browserAction.setBadgeText({ text: '🚧' })
+  browser.action.setBadgeBackgroundColor({ color: 'white' })
+  browser.action.setBadgeText({ text: '🚧' })
 }
 
 if (isDev || isTest) {
-  browser.tabs.create({
-    url: 'dist/options.html'
-  })
-  browser.tabs.create({
-    url: 'dist/popup.html'
-  })
+  // browser.tabs.create({
+  //   url: 'dist/options.html'
+  // })
+  // browser.tabs.create({
+  //   url: 'dist/popup.html'
+  // })
 }

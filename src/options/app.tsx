@@ -4,13 +4,12 @@ import { debounce } from 'lodash'
 import React, { useState, useEffect } from 'react'
 import { Slider, Typography, Radio, Button, Elevation, Checkbox } from 'rmwc'
 import { defaultOptions } from '../common/default-options'
-import storage from '../common/storage'
+import { storage } from '../common/storage'
 import { isContextMenuEnabled } from '../common/env'
 import i18n from './i18n'
 
 const lazyPersist = debounce(async (data) => {
   await storage.set(data)
-  await browser.runtime.sendMessage({ action: 'storage-updated' })
 }, 100)
 
 function App () {

@@ -17,8 +17,8 @@ async function getTestContext () {
   const backgroundPage = await targets.find((target) => target.type() === 'background_page')!.page()
   await backgroundPage.waitFor(5000)
   const pages = await browser.pages()
-  const optionPage = pages.find((p) => p.url().includes('/dist/options.html'))!
-  const popupPage = pages.find((p) => p.url().includes('/dist/popup.html'))!
+  const optionPage = pages.find((p) => p.url().includes('/options.html'))!
+  const popupPage = pages.find((p) => p.url().includes('/popup.html'))!
 
   const context = {
     browser,

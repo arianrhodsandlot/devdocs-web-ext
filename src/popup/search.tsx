@@ -7,7 +7,8 @@ import classnames from 'classnames'
 import key from 'keymaster'
 import { Link } from 'react-router-dom'
 import { Location, History } from 'history'
-import Docs from '../background/docs'
+import { Docs } from '../background/docs'
+import { sendMessage } from '../common/message'
 
 Search.propTypes = {
   location: PropTypes.object,
@@ -122,10 +123,9 @@ export default function Search ({ location, history }: { location: Location; his
 
     let response: { status: 'success'; content: Entry[] }
     try {
-      response = await browser.runtime.sendMessage({
+      response = await sendMessage({
         action: 'search-entry',
-        payload: { query,
-          scope }
+        payload: { query, scope }
       }) as { status: 'success'; content: Entry[] }
       entries = response.content
     } catch (error) {

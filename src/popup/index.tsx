@@ -1,11 +1,10 @@
-import Raven from 'raven-js'
 import browser from 'webextension-polyfill'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import key from 'keymaster'
 import _ from 'lodash'
-import { isProd, isContextMenuEnabled } from '../common/env'
-import storage from '../common/storage'
+import { isContextMenuEnabled } from '../common/env'
+import { storage } from '../common/storage'
 import { defaultOptions } from '../common/default-options'
 import App from './app'
 import history from './history'
@@ -72,7 +71,3 @@ async function main () {
 }
 
 main()
-
-if (isProd) {
-  Raven.config('https://d2ddb64170f34a2ca621de47235480bc@sentry.io/1196839').install()
-}

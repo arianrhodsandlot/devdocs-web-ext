@@ -37,10 +37,6 @@ const config: webpack.Configuration = {
       test: /\.tsx?$/u,
       exclude: /node_modules/u,
       use: [{
-        loader: 'cache-loader'
-      }, {
-        loader: 'thread-loader'
-      }, {
         loader: 'ts-loader',
         options: {
           happyPackMode: true
@@ -49,10 +45,6 @@ const config: webpack.Configuration = {
     }, {
       test: path.resolve(__dirname, 'vendor/devdocs/assets/javascripts/app/searcher.coffee'),
       use: [{
-        loader: 'cache-loader'
-      }, {
-        loader: 'thread-loader'
-      }, {
         loader: 'exports-loader',
         options: {
           'app.Searcher': true
@@ -71,10 +63,6 @@ const config: webpack.Configuration = {
     }, {
       test: path.resolve(__dirname, 'vendor/devdocs/assets/javascripts/models/entry.coffee'),
       use: [{
-        loader: 'cache-loader'
-      }, {
-        loader: 'thread-loader'
-      }, {
         loader: 'exports-loader',
         options: {
           'app.models.Entry': true
@@ -91,10 +79,6 @@ const config: webpack.Configuration = {
     }, {
       test: path.resolve(__dirname, 'vendor/devdocs/assets/javascripts/lib/events.coffee'),
       use: [{
-        loader: 'cache-loader'
-      }, {
-        loader: 'thread-loader'
-      }, {
         loader: 'exports-loader',
         options: {
           'this.Events': true
@@ -105,10 +89,6 @@ const config: webpack.Configuration = {
     }, {
       test: path.resolve(__dirname, 'vendor/devdocs/assets/javascripts/lib/util.coffee'),
       use: [{
-        loader: 'cache-loader'
-      }, {
-        loader: 'thread-loader'
-      }, {
         loader: 'imports-loader',
         options: {
           $: 'jquery'
@@ -149,10 +129,6 @@ const config: webpack.Configuration = {
     }, {
       test: /\.(pug)$/u,
       use: [{
-        loader: 'cache-loader'
-      }, {
-        loader: 'thread-loader'
-      }, {
         loader: 'pug-loader'
       }]
     }]

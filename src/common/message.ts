@@ -1,12 +1,14 @@
 import browser from 'webextension-polyfill'
+import { WrapedResponse } from '../../types/message'
+import { log } from '../common/log'
 
 interface Message {
   action: string;
   payload?: unknown;
 }
-export async function sendMessage (message: Message) {
-  console.log('[common/message] sending message:', message)
-  const result = await browser.runtime.sendMessage(message)
-  console.log('[common/message] result recived:', result)
+export async function sendMessage<TResult = unknown> (message: Message) {
+  log('[common/message] sending message:', message)
+  const result: WrapedResponse<TResult> = await browser.runtime.sendMessage(message)
+  log('[common/message] result recived:', result)
   return result
 }

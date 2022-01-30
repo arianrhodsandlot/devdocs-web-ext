@@ -1,12 +1,15 @@
 import browser from 'webextension-polyfill'
 import _ from 'lodash'
+import { log } from '../common/log'
 import { Docs } from './docs'
 
-const defaultCategories = ['css', 'dom', 'dom_events', 'html', 'http', 'javascript']
+const defaultDocNames = ['css', 'dom', 'dom_events', 'html', 'http', 'javascript']
+let docNames: string[] | null = null
 async function getDocNames () {
+  if (docNames) return docNames
   const cookie = await browser.cookies.get({ url: 'https://devdocs.io', name: 'docs' }) || await browser.cookies.get({ url: 'http://devdocs.io', name: 'docs' })
-  const categories = cookie && cookie.value ? cookie.value.split('/') : defaultCategories
-  return categories
+  docNames = cookie && cookie.value ? cookie.value.split('/') : defaultDocNames
+  return docNames
 }
 
 function isValidCache (cache: unknown) {
@@ -19,6 +22,8 @@ function isValidCache (cache: unknown) {
 }
 
 const docs = new Docs()
+type Cache = ReturnType<typeof docs.dump>
+const memoryCache: Record<string, Cache> = {}
 export async function updateDocs () {
   const docNames = await getDocNames()
   docs.docNames = docNames
@@ -27,23 +32,36 @@ export async function updateDocs () {
     await docs.sync()
     return
   }
-
   if (docs.status === 'ready') {
     const cacheKey = JSON.stringify(docNames)
-    const { [cacheKey]: cache } = await browser.storage.local.get(cacheKey)
+    let cache = memoryCache[cacheKey]
+
+    console.log('isValidCache(cache)', isValidCache(cache))
+    if (!isValidCache(cache)) {
+      const storage = await browser.storage.local.get(cacheKey)
+      cache = storage[cacheKey]
+    }
     if (isValidCache(cache)) {
-      console.log('[background/docs-utils] cache exists, cacheKey:', cacheKey, 'cache', cache)
+      log('[background/docs-utils] cache exists, cacheKey:', cacheKey, 'cache', cache)
       docs.load(cache)
     } else {
-      console.log('[background/docs-utils] cache not exists, cacheKey:', cacheKey)
+      log('[background/docs-utils] cache not exists, cacheKey:', cacheKey)
       await docs.sync()
     }
 
-    await browser.storage.local.set({ [cacheKey]: docs.dump() })
+    const newCache = docs.dump()
+    memoryCache[cacheKey] = newCache
+    _.defer(() => {
+      browser.storage.local.set({ [cacheKey]: newCache })
+    })
   }
 }
 
 export async function getDocs () {
   await updateDocs()
   return docs
+}
+
+export function updateDocNames (newDocNames: string[]) {
+  docNames = newDocNames
 }

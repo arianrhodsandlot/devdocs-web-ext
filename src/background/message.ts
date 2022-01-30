@@ -1,6 +1,7 @@
 import _ from 'lodash'
 import { Docs } from './docs'
 import { getDocs } from './docs-utils'
+import { WrapedResponse } from '@/types/message'
 
 async function searchEntry ({ query, scope }: { query: string; scope: string }) {
   if (!query && !scope) {
@@ -20,17 +21,6 @@ async function searchEntry ({ query, scope }: { query: string; scope: string }) 
   }
   const entries = await Docs.searchEntriesInDoc(query, doc)
   return entries
-}
-
-interface WrapedResponseContentRecord {
-  [key: string]: string | number | boolean | WrapedResponseContent | WrapedResponseContent[];
-}
-type WrapedResponseContent = WrapedResponseContentRecord | WrapedResponseContentRecord[]
-interface WrapedResponse<TContent = WrapedResponseContent> {
-  status: 'success' | 'error';
-  content: TContent;
-  error: unknown | null;
-  errorMessage: '';
 }
 
 function wrapResponse (rawResponse: unknown) {

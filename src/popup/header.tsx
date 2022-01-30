@@ -3,8 +3,8 @@ import querystring from 'querystring'
 import React, { useState, useEffect, useRef } from 'react'
 import { withRouter } from 'react-router'
 import key from 'keymaster'
-import browser from 'webextension-polyfill'
 import { Location, History } from 'history'
+import { sendMessage } from '../common/message'
 
 function getInitialInputState () {
   const scope = localStorage.getItem('scope') || ''
@@ -90,7 +90,8 @@ function Header ({ location, history }: { location: Location; history: History }
     if (docScope === '') {
       return ''
     }
-    const doc = await browser.runtime.sendMessage({
+
+    const { content: doc } = await sendMessage<ExtendedDoc>({
       action: 'auto-compelete-enabled-doc',
       payload: { scope: docScope }
     })

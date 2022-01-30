@@ -7,6 +7,7 @@ import key from 'keymaster'
 import ky from 'ky'
 import { Location, History } from 'history'
 import { lruGetItem, lruSetItem } from '../common/lru'
+import { sendMessage } from '../common/message'
 
 Content.propTypes = {
   location: PropTypes.object,
@@ -47,10 +48,10 @@ export default function Content ({ location, history }: { location: Location; hi
       if (!scope) {
         return
       }
-      const contentDoc = await browser.runtime.sendMessage({
+      const { content: contentDoc } = await sendMessage<Doc>({
         action: 'get-content-doc',
         payload: { scope }
-      }) as Doc
+      })
       if (contentDoc) {
         setDoc(contentDoc)
       }
@@ -111,7 +112,7 @@ export default function Content ({ location, history }: { location: Location; hi
     }
     if (entryHash) {
       const scrollTargetId = entryHash.startsWith('.') ? entryHash.slice(1) : entryHash
-      const scrollTarget = document.querySelector(`div#${scrollTargetId}`)
+      const scrollTarget = document.querySelector<HTMLDivElement>(`div#${scrollTargetId}`)
       if (scrollTarget) {
         pageRef.current.scrollTo(0, scrollTarget.offsetTop)
       }

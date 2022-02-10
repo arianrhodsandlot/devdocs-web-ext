@@ -58,7 +58,7 @@
     "imports-loader": "^0.8.0",
     "lodash-webpack-plugin": "^0.11.5",
     "mini-css-extract-plugin": "^0.7.0",
-    "node-sass": "^4.13.1",
+    "node-sass": "^7.0.0",
     "pug": "^3.0.1",
     "pug-loader": "^2.4.0",
     "puppeteer": "^1.18.1",

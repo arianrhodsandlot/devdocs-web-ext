@@ -1,22 +1,23 @@
-import React from 'react'
-import { Router, Route, Switch } from 'react-router-dom'
+import React, { useEffect } from 'react'
+import { Route, Routes, useLocation } from 'react-router-dom'
 import Header from './header'
 import Home from './home'
 import Search from './search'
 import Content from './content'
-import history from './history'
 
 export default function App () {
+  const location = useLocation()
+
+  useEffect(() => {
+    localStorage.lastPopupPath = `${location.pathname}${location.search}${location.hash}`
+  }, [location])
+
   return <>
-    <Router history={history}>
-      <Header />
-    </Router>
-    <Router history={history}>
-      <Switch>
-        <Route exact path='/' component={Home} />
-        <Route path='/search' component={Search} />
-        <Route path='*' component={Content} />
-      </Switch>
-    </Router>
+    <Header />
+    <Routes>
+      <Route path='/' element={<Home />} />
+      <Route path='/search' element={<Search />} />
+      <Route path='*' element={<Content />} />
+    </Routes>
   </>
 }

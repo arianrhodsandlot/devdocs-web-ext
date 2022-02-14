@@ -150,6 +150,7 @@ const config: webpack.Configuration = {
       template: 'src/options/options.pug',
       chunks: ['options-style', 'options-js']
     }),
+    // @ts-expect-error
     new MiniCssExtractPlugin({
       filename: '[name].css'
     }),

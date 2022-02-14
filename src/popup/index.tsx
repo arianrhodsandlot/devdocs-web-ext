@@ -1,42 +1,14 @@
-import browser from 'webextension-polyfill'
 import React from 'react'
 import ReactDOM from 'react-dom'
+import { HashRouter } from 'react-router-dom'
 import key from 'keymaster'
-import _ from 'lodash'
-import { isContextMenuEnabled } from '../common/env'
 import { storage } from '../common/storage'
 import { defaultOptions } from '../common/default-options'
 import App from './app'
-import history from './history'
 
 key.filter = () => true
 
-async function restoreHistory () {
-  const { showContextMenu } = await storage.get()
-
-  let selection
-  if (!isContextMenuEnabled || !showContextMenu) {
-    try {
-      selection = await browser.tabs.executeScript({ code: 'getSelection().toString()' })
-    } catch {}
-    const query: string = (_.get(selection, '0', '') || '').trim().slice(0, 20)
-    if (query) {
-      localStorage.setItem('scope', '')
-      localStorage.setItem('query', query)
-      localStorage.setItem('docName', '')
-      localStorage.setItem('lastPopupPath', `/search?query=${encodeURIComponent(query)}`)
-    }
-  }
-
-  const lastPopupPath = localStorage.getItem('lastPopupPath')
-  if (lastPopupPath) {
-    history.replace(lastPopupPath)
-  }
-}
-
 async function main () {
-  await restoreHistory()
-
   async function initializeOptions () {
     const options: Record<string, string | number> = {}
     for (const option in defaultOptions) {
@@ -65,7 +37,7 @@ async function main () {
   document.body.style.height = `${height}px`
 
   ReactDOM.render(
-    <App />,
+    <HashRouter><App /></HashRouter>,
     document.querySelector('._app')
   )
 }

@@ -106,7 +106,6 @@ export class Docs {
   }
 
   async sync () {
-    console.log('startSync')
     if (this.status === 'pending') {
       if (_.isEqual(this.docNames, this.syncingDocNames)) {
         await this.syncProcess

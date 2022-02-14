@@ -1,20 +1,14 @@
 import url from 'url'
 import React, { useState, useEffect, useRef } from 'react'
-import PropTypes from 'prop-types'
 import browser from 'webextension-polyfill'
 import classnames from 'classnames'
 import key from 'keymaster'
 import ky from 'ky'
-import { Location, History } from 'history'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { lruGetItem, lruSetItem } from '../common/lru'
 import { sendMessage } from '../common/message'
 
-Content.propTypes = {
-  location: PropTypes.object,
-  history: PropTypes.object
-}
-
-export default function Content ({ location, history }: { location: Location; history: History }) {
+export default function Content () {
   const [loading, setLoading] = useState(false)
   const [contentUrl, setContentUrl] = useState('')
   const [content, setContent] = useState('')
@@ -23,23 +17,30 @@ export default function Content ({ location, history }: { location: Location; hi
   const prevPathRef = useRef<string | undefined>()
   const prevPath = prevPathRef.current
 
+  const location = useLocation()
+  const navigate = useNavigate()
+
   useEffect(() => {
     key('enter', () => false)
 
     key('space', () => {
       if (pageRef.current) {
-        pageRef.current.scrollBy({ top: 150,
+        pageRef.current.scrollBy({
+          top: 150,
           left: 0,
-          behavior: 'smooth' })
+          behavior: 'smooth'
+        })
       }
       return false
     })
 
     key('shift+space', () => {
       if (pageRef.current) {
-        pageRef.current.scrollBy({ top: -150,
+        pageRef.current.scrollBy({
+          top: -150,
           left: 0,
-          behavior: 'smooth' })
+          behavior: 'smooth'
+        })
       }
       return false
     });
@@ -112,10 +113,12 @@ export default function Content ({ location, history }: { location: Location; hi
     }
     if (entryHash) {
       const scrollTargetId = entryHash.startsWith('.') ? entryHash.slice(1) : entryHash
-      const scrollTarget = document.querySelector<HTMLDivElement>(`div#${scrollTargetId}`)
-      if (scrollTarget) {
-        pageRef.current.scrollTo(0, scrollTarget.offsetTop)
-      }
+      try {
+        const scrollTarget = document.querySelector<HTMLDivElement>(`div#${scrollTargetId}`)
+        if (scrollTarget) {
+          pageRef.current.scrollTo(0, scrollTarget.offsetTop)
+        }
+      } catch {}
     }
   }
 
@@ -135,10 +138,10 @@ export default function Content ({ location, history }: { location: Location; hi
     if (href.startsWith('http://') || href.startsWith('https://')) {
       browser.tabs.create({ url: href })
     } else {
-      const currentUrl = history.location.pathname
+      const currentUrl = navigate.location.pathname
       // eslint-disable-next-line node/no-deprecated-api
       const targetUrl = url.resolve(currentUrl, href)
-      history.replace(targetUrl)
+      navigate(targetUrl, { replace: true })
     }
   }
 

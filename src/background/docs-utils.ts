@@ -4,11 +4,9 @@ import { log } from '../common/log'
 import { Docs } from './docs'
 
 const defaultDocNames = ['css', 'dom', 'dom_events', 'html', 'http', 'javascript']
-let docNames: string[] | null = null
 async function getDocNames () {
-  if (docNames) return docNames
   const cookie = await browser.cookies.get({ url: 'https://devdocs.io', name: 'docs' }) || await browser.cookies.get({ url: 'http://devdocs.io', name: 'docs' })
-  docNames = cookie && cookie.value ? cookie.value.split('/') : defaultDocNames
+  const docNames = cookie && cookie.value ? cookie.value.split('/') : defaultDocNames
   return docNames
 }
 
@@ -60,8 +58,4 @@ export async function updateDocs () {
 export async function getDocs () {
   await updateDocs()
   return docs
-}
-
-export function updateDocNames (newDocNames: string[]) {
-  docNames = newDocNames
 }

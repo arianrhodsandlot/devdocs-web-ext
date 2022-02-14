@@ -4,7 +4,7 @@ import { storage } from '../common/storage'
 import { defaultOptions } from '../common/default-options'
 import { log } from '../common/log'
 import { messageHandlers, errorHandler } from './message'
-import { updateDocs, updateDocNames } from './docs-utils'
+import { updateDocs } from './docs-utils'
 
 async function initializeOptions () {
   const options: Record<string, string | number> = {}
@@ -24,7 +24,6 @@ function initializeListeners () {
   browser.cookies.onChanged.addListener(({ cookie }) => {
     if (!['devdocs.io', '.devdocs.io'].includes(cookie.domain)) return
     if (cookie.name !== 'docs') return
-    updateDocNames(cookie.value)
     updateDocs()
   })
 
@@ -53,7 +52,7 @@ function main () {
     browser.action.setBadgeText({ text: '🚧' })
   }
 
-  const shouldOpenTabsForTest = isDev || isTest
+  const shouldOpenTabsForTest = isTest
   if (shouldOpenTabsForTest) {
     browser.tabs.create({ url: 'options.html' })
     browser.tabs.create({ url: 'popup.html' })

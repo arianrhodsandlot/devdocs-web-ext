@@ -1,28 +1,20 @@
 import url from 'url'
 import querystring from 'querystring'
 import React, { useState, useEffect, useRef } from 'react'
-import { withRouter } from 'react-router'
+import { useLocation, useNavigate } from 'react-router-dom'
 import key from 'keymaster'
-import { Location, History } from 'history'
 import { sendMessage } from '../common/message'
 
-function getInitialInputState () {
-  const scope = localStorage.getItem('scope') || ''
-  const query = localStorage.getItem('query') || ''
-  const docName = localStorage.getItem('docName') || ''
-  return { scope,
-    query,
-    docName }
-}
-
-function Header ({ location, history }: { location: Location; history: History }) {
+function Header () {
   const [inputPaddingLeft, setInputPaddingLeft] = useState(0)
-  const initialInputState = getInitialInputState()
-  const [scope, setScope] = useState(initialInputState.scope)
-  const [query, setQuery] = useState(initialInputState.query)
-  const [docName, setDocName] = useState(initialInputState.docName)
+  const [scope, setScope] = useState('')
+  const [query, setQuery] = useState('')
+  const [docName, setDocName] = useState('')
   const inputRef = useRef<HTMLInputElement>()
   const scopeRef = useRef<HTMLInputElement>()
+
+  const location = useLocation()
+  const navigate = useNavigate()
 
   useEffect(() => {
     if (!inputRef.current) {
@@ -45,6 +37,20 @@ function Header ({ location, history }: { location: Location; history: History }
   }, [])
 
   useEffect(() => {
+    const lastPopupPath = localStorage.getItem('lastPopupPath')
+    if (lastPopupPath) {
+      navigate(lastPopupPath, { replace: true })
+    }
+    setTimeout(() => {
+      if (!inputRef.current) {
+        return
+      }
+      inputRef.current.focus()
+      inputRef.current.select()
+    })
+  }, [])
+
+  useEffect(() => {
     (async () => {
       const completedDocName = await attemptCompeleteDocName(scope)
       setDocName(completedDocName)
@@ -59,12 +65,6 @@ function Header ({ location, history }: { location: Location; history: History }
       inputRef.current.focus()
     }
   }, [docName])
-
-  useEffect(() => {
-    localStorage.setItem('scope', scope)
-    localStorage.setItem('query', query)
-    localStorage.setItem('docName', docName)
-  }, [scope, query, docName])
 
   useEffect(() => {
     if (location.pathname === '/search' || location.pathname === '/') {
@@ -83,7 +83,10 @@ function Header ({ location, history }: { location: Location; history: History }
   }
 
   function clearDoc () {
-    history.replace('/')
+    setScope('')
+    setQuery('')
+    setDocName('')
+    navigate('/', { replace: true })
   }
 
   async function attemptCompeleteDocName (docScope: string) {
@@ -105,10 +108,10 @@ function Header ({ location, history }: { location: Location; history: History }
     const completedDocName = await attemptCompeleteDocName(query)
     if (completedDocName) {
       const urlQuery = { scope: query }
-      history.replace(url.format({
+      navigate(url.format({
         pathname: '/search',
         query: urlQuery
-      }))
+      }), { replace: true })
       if (inputRef.current) {
         inputRef.current.value = ''
       }
@@ -127,13 +130,14 @@ function Header ({ location, history }: { location: Location; history: History }
     if (scope) {
       urlQuery.scope = scope
     }
-    history.replace(url.format({
+    navigate(url.format({
       pathname: '/search',
       query: urlQuery
-    }))
+    }), { replace: true })
   }
 
   function handleKeyDown (e: React.KeyboardEvent<HTMLInputElement>) {
+    const query = e.currentTarget.value
     switch (e.key) {
       case 'Tab':
         e.preventDefault()
@@ -157,7 +161,7 @@ function Header ({ location, history }: { location: Location; history: History }
           placeholder='Search...'
           className='input _search-input'
           spellCheck={false}
-          onChange={handleChange}
+          onInput={handleChange}
           autoFocus
           ref={inputRef as React.MutableRefObject<HTMLInputElement>}
           style={docName ? { paddingLeft: inputPaddingLeft } : {}} onKeyDown={handleKeyDown} />
@@ -173,4 +177,4 @@ function Header ({ location, history }: { location: Location; history: History }
   )
 }
 
-export default withRouter(Header)
+export default Header

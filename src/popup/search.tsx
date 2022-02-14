@@ -1,25 +1,22 @@
 import querystring from 'querystring'
 import React, { useState, useEffect } from 'react'
-import PropTypes from 'prop-types'
 import ReactDOM from 'react-dom'
 import browser from 'webextension-polyfill'
 import classnames from 'classnames'
 import key from 'keymaster'
-import { Link } from 'react-router-dom'
-import { Location, History } from 'history'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { Docs } from '../background/docs'
 import { sendMessage } from '../common/message'
+import { WrapedResponse } from '../../types/message'
 
-Search.propTypes = {
-  location: PropTypes.object,
-  history: PropTypes.object
-}
-
-export default function Search ({ location, history }: { location: Location; history: History }) {
+export default function Search () {
   const [entries, setEntries] = useState(null as null | Unpromisify<ReturnType<Docs['searchEntries']>>)
   const [focusPos, setFocusPos] = useState(0)
   const [failMessage, setFailMessage] = useState('')
-  const entryRefs: React.RefObject<Link>[] = []
+  const entryRefs: React.RefObject<any>[] = []
+
+  const location = useLocation()
+  const navigate = useNavigate()
 
   useEffect(() => {
     key('down', () => {
@@ -55,8 +52,10 @@ export default function Search ({ location, history }: { location: Location; his
       // eslint-disable-next-line react/no-find-dom-node
       const entryDomNode = ReactDOM.findDOMNode(ref.current)
       if (entryDomNode instanceof HTMLAnchorElement) {
-        entryDomNode.scrollIntoView({ block: 'end',
-          behavior: 'smooth' })
+        entryDomNode.scrollIntoView({
+          block: 'end',
+          behavior: 'smooth'
+        })
       }
     }
   }, [focusPos])
@@ -93,7 +92,7 @@ export default function Search ({ location, history }: { location: Location; his
     }
     const focusEntry = entries[focusPos]
     if (focusEntry) {
-      history.push(getEntryUrl(focusEntry))
+      navigate(getEntryUrl(focusEntry))
     }
   }
 
@@ -113,7 +112,7 @@ export default function Search ({ location, history }: { location: Location; his
   async function search () {
     const { query = '', scope = '' } = querystring.parse(location.search.slice(1))
     if (!query && !scope) {
-      history.replace('/')
+      navigate('/', { replace: true })
       return
     }
 
@@ -121,12 +120,12 @@ export default function Search ({ location, history }: { location: Location; his
     const focusPos = 0
     let failMessage = ''
 
-    let response: { status: 'success'; content: Entry[] }
+    let response: WrapedResponse<Entry[]>
     try {
-      response = await sendMessage({
+      response = await sendMessage<Entry[]>({
         action: 'search-entry',
         payload: { query, scope }
-      }) as { status: 'success'; content: Entry[] }
+      })
       entries = response.content
     } catch (error) {
       failMessage = error.message
@@ -180,7 +179,7 @@ export default function Search ({ location, history }: { location: Location; his
   return (
     <div className='_sidebar'>
       <div className='_list'>
-        {entries ? entries.length > 0 ? results : noResults : null}
+        {entries ? (entries.length > 0 ? results : noResults) : null}
       </div>
     </div>
   )

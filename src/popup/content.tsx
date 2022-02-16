@@ -113,12 +113,10 @@ export default function Content () {
     }
     if (entryHash) {
       const scrollTargetId = entryHash.startsWith('.') ? entryHash.slice(1) : entryHash
-      try {
-        const scrollTarget = document.querySelector<HTMLDivElement>(`div#${scrollTargetId}`)
-        if (scrollTarget) {
-          pageRef.current.scrollTo(0, scrollTarget.offsetTop)
-        }
-      } catch {}
+      const scrollTarget = document.querySelector<HTMLElement>(`#${scrollTargetId}`)
+      if (scrollTarget) {
+        pageRef.current.scrollTo(0, scrollTarget.offsetTop)
+      }
     }
   }
 
@@ -138,7 +136,7 @@ export default function Content () {
     if (href.startsWith('http://') || href.startsWith('https://')) {
       browser.tabs.create({ url: href })
     } else {
-      const currentUrl = navigate.location.pathname
+      const currentUrl = location.pathname
       // eslint-disable-next-line node/no-deprecated-api
       const targetUrl = url.resolve(currentUrl, href)
       navigate(targetUrl, { replace: true })

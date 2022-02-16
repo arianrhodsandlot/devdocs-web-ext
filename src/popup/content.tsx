@@ -8,6 +8,14 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { lruGetItem, lruSetItem } from '../common/lru'
 import { sendMessage } from '../common/message'
 
+function cssEscape (selector) {
+  try {
+    return CSS.escape(selector)
+  } catch {
+    return selector.replace(/([#,./:[\]])/gu, '\\$1')
+  }
+}
+
 export default function Content () {
   const [loading, setLoading] = useState(false)
   const [contentUrl, setContentUrl] = useState('')
@@ -127,7 +135,7 @@ export default function Content () {
     }
     if (entryHash) {
       const scrollTargetId = entryHash.startsWith('.') ? entryHash.slice(1) : entryHash
-      const scrollTarget = document.querySelector<HTMLElement>(`#${scrollTargetId}`)
+      const scrollTarget = document.querySelector<HTMLElement>(`#${cssEscape(scrollTargetId)}`)
       if (scrollTarget) {
         pageRef.current.scrollTo(0, scrollTarget.offsetTop)
       }

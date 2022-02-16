@@ -12,7 +12,6 @@ const config: webpack.Configuration = {
   stats: 'minimal',
   entry: {
     'devdocs-style': './src/popup/devdocs.sass',
-    'devdocs-dark-style': './src/popup/devdocs-dark.sass',
     'popup-style': './src/popup/popup.sass',
     'popup-js': './src/popup/index.tsx',
 
@@ -143,7 +142,7 @@ const config: webpack.Configuration = {
       filename: 'popup.html',
       template: 'src/popup/popup.pug',
       inject: false,
-      chunks: ['devdocs-style', 'devdocs-dark-style', 'popup-style', 'popup-js']
+      chunks: ['devdocs-style', 'popup-style', 'popup-js']
     }),
     new HtmlWebpackPlugin({
       filename: 'options.html',

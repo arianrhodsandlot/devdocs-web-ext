@@ -97,6 +97,20 @@ export default function Content () {
     if (!content) {
       return
     }
+    const preEls = document.querySelectorAll('pre[data-language]')
+    if (!preEls) return
+    preEls.forEach((el) => {
+      if (!el) return
+      const language = el.getAttribute('data-language')
+      el.classList.add(`language-${language}`);
+      (window as any).Prism.highlightElement(el)
+    })
+  }, [content])
+
+  useEffect(() => {
+    if (!content) {
+      return
+    }
     if (!location.hash) {
       return
     }

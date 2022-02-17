@@ -32,10 +32,12 @@ function App () {
 
   useEffect(() => {
     if (initialized) {
-      lazyPersist({ theme,
+      lazyPersist({
+        theme,
         width,
         height,
-        showContextMenu })
+        showContextMenu
+      })
     }
   }, [theme, width, height, showContextMenu, initialized])
 

@@ -51,7 +51,7 @@ const config: webpack.Configuration = {
       }, {
         loader: 'imports-loader',
         options: {
-          app: `>{config: {max_results: 50}}`,
+          app: '>{config: {max_results: 50}}',
           $: 'jquery',
           Events: '../lib/events.coffee',
           util: '../lib/util.coffee'
@@ -69,7 +69,7 @@ const config: webpack.Configuration = {
       }, {
         loader: 'imports-loader',
         options: {
-          app: `>{models: {}, Model: function (o) {for(k in o) {this[k] = o[k]}}}`,
+          app: '>{models: {}, Model: function (o) {for(k in o) {this[k] = o[k]}}}',
           'app.Searcher': '../app/searcher.coffee'
         }
       }, {
@@ -149,10 +149,9 @@ const config: webpack.Configuration = {
       template: 'src/options/options.pug',
       chunks: ['options-style', 'options-js']
     }),
-    // @ts-expect-error
     new MiniCssExtractPlugin({
       filename: '[name].css'
-    }),
+    }) as any,
     new webpack.DefinePlugin({
       BUILD_MODE: JSON.stringify(process.env.BUILD_MODE || ''),
       VERSION: JSON.stringify(packageJson.version),

@@ -31,11 +31,11 @@ test.serial('update size', async (t) => {
   t.deepEqual(size, { width: 450, height: 450 })
 })
 
-test.serial('update theme', async (t) => {
-  function isChecked (e: Element) {
-    return (e as HTMLInputElement).checked
-  }
+function isChecked (e: Element) {
+  return (e as HTMLInputElement).checked
+}
 
+test.serial('update theme', async (t) => {
   const { optionPage, popupPage } = t.context as TestContext
 
   if (await optionPage.$eval('input[value=light]', isChecked)) {

@@ -92,15 +92,11 @@
     "extends": "argreion"
   },
   "ava": {
-    "compileEnhancements": false,
     "extensions": [
       "ts"
     ],
     "require": [
       "ts-node/register"
-    ],
-    "helpers": [
-      "**/helpers/**/*"
     ]
   }
 }

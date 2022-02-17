@@ -2,6 +2,7 @@ import _ from 'lodash'
 import ky from 'ky'
 import Searcher from '../../vendor/devdocs/assets/javascripts/app/searcher.coffee'
 import Entry from '../../vendor/devdocs/assets/javascripts/models/entry.coffee'
+import { log } from '../common/log'
 
 export class Docs {
   docNames: string[] = []
@@ -34,7 +35,7 @@ export class Docs {
       ...{
         name: extendedDoc.fullName
       }
-    }) as { addAlias: Function } & typeof extendedDoc
+    }) as { addAlias: (alias: string) => undefined } & typeof extendedDoc
 
     if (docEntry.version) {
       docEntry.addAlias(doc.name)
@@ -46,9 +47,11 @@ export class Docs {
       doc: { ...extendedDoc }
     }))
 
-    return { ...doc,
+    return {
+      ...doc,
       ...index,
-      ...docEntry }
+      ...docEntry
+    }
   }
 
   private static async getDocIndexByName (docName: string) {
@@ -123,6 +126,7 @@ export class Docs {
     this.syncingDocNames = [...this.docNames]
     const { syncingDocNames } = this
 
+    log('[background/docs] start fetching docs from server')
     const allDocs = await Docs.getAllDocs()
     if (_.isEqual(syncingDocNames, this.docNames)) {
       this.allDocs = allDocs
@@ -130,6 +134,8 @@ export class Docs {
 
     const docs = _.filter(this.allDocs, (doc) => _.includes(syncingDocNames, doc.slug))
     const extendedDocs = await Docs.extendDocs(docs)
+    log('[background/docs] finish fetching docs from server')
+
     if (_.isEqual(syncingDocNames, this.docNames)) {
       this.docs = extendedDocs
       this.status = 'ready'

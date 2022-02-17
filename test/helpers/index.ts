@@ -13,18 +13,14 @@ async function getTestContext () {
       `--load-extension=${extensionPath}`
     ]
   })
-  const targets = await browser.targets()
-  const backgroundPage = await targets.find((target) => target.type() === 'background_page')!.page()
-  await backgroundPage.waitFor(5000)
-  const pages = await browser.pages()
-  const optionPage = pages.find((p) => p.url().includes('/options.html'))!
-  const popupPage = pages.find((p) => p.url().includes('/popup.html'))!
+  const optionTarget = await browser.waitForTarget((target) => target.url().includes('/options.html'))!
+  const popupTarget = await browser.waitForTarget((target) => target.url().includes('/popup.html'))!
+  const optionPage = (await optionTarget.page())!
+  const popupPage = (await popupTarget.page())!
+  await Promise.all([optionPage.waitForNetworkIdle(), popupPage.waitForNetworkIdle()])
 
   const context = {
-    browser,
-    backgroundPage,
-    optionPage,
-    popupPage
+    browser, optionPage, popupPage
   }
   return context
 }

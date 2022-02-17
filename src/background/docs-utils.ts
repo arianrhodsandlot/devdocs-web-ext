@@ -34,7 +34,6 @@ export async function updateDocs () {
     const cacheKey = JSON.stringify(docNames)
     let cache = memoryCache[cacheKey]
 
-    console.log('isValidCache(cache)', isValidCache(cache))
     if (!isValidCache(cache)) {
       const storage = await browser.storage.local.get(cacheKey)
       cache = storage[cacheKey]

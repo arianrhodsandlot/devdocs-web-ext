@@ -6,17 +6,20 @@ test.before(async (t) => {
   t.context = await getTestContext()
 })
 
+test.after(async (t) => {
+  const { browser } = t.context as TestContext
+  await browser.close()
+})
+
 test('update docs', async (t) => {
   const { browser, optionPage, popupPage } = t.context as TestContext
   await optionPage.bringToFront()
   await optionPage.click('.mdc-button')
 
-  let devdocsPage
-  while (!devdocsPage) {
-    await optionPage.waitFor(100)
-    const pages = await browser.pages()
-    devdocsPage = pages.find((p) => p.url().includes('devdocs.io'))!
-  }
+  const devdocsTarget = await browser.waitForTarget((target) => target.url().includes('devdocs.io'))
+  if (!devdocsTarget) throw new Error('no devdocsTarget found')
+  const devdocsPage = await devdocsTarget.page()
+  if (!devdocsPage) throw new Error('cannot get devdocsPage from devdocsTarget')
   await devdocsPage.waitForNavigation({ waitUntil: 'networkidle2' })
   await devdocsPage.waitForSelector('._list-item._icon-angular')
   await devdocsPage.click('._list-item._icon-angular')
@@ -45,9 +48,4 @@ test('update docs', async (t) => {
   await popupPage.keyboard.press('Tab')
   await popupPage.waitForSelector('._search-tag')
   t.is(await popupPage.$eval('._search-tag', (e) => e.innerHTML), 'Bash')
-})
-
-test.after(async (t) => {
-  const { browser } = t.context as TestContext
-  await browser.close()
 })

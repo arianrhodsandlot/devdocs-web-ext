@@ -18,13 +18,13 @@ test.serial.beforeEach(async (t) => {
   await popupPage.waitForSelector('._splash-title')
 })
 
-test.serial('search and navigate in results', async (t) => {
-  async function getClassNames (element: ElementHandle<Element>) {
-    const jsHandle = await element.getProperty('className')
-    const classNames: string = await jsHandle.jsonValue()
-    return classNames.split(/\s+/u)
-  }
+async function getClassNames (element: ElementHandle<Element>) {
+  const jsHandle = await element.getProperty('className')
+  const classNames: string = await jsHandle.jsonValue()
+  return classNames.split(/\s+/u)
+}
 
+test.serial('search and navigate in results', async (t) => {
   const { popupPage } = t.context as TestContext
   await popupPage.keyboard.type('a')
   await popupPage.waitForSelector('._list-item')
@@ -63,6 +63,7 @@ test.serial('search in a certain doc', async (t) => {
   t.is(await popupPage.$eval('._search-tag', (e) => e.innerHTML), 'CSS')
 
   await popupPage.keyboard.type('bxs')
+  await popupPage.waitFor(1000)
   await popupPage.waitForSelector('._list-item')
   const firstLiteItemText = await popupPage.$eval('._list-item', (e) => (e as HTMLDivElement).textContent)
   t.is(firstLiteItemText, 'box-shadow')

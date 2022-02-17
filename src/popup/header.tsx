@@ -5,6 +5,21 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import key from 'keymaster'
 import { sendMessage } from '../common/message'
 
+async function attemptCompeleteDocName (docScope: string) {
+  if (docScope === '') {
+    return ''
+  }
+
+  const { content: doc } = await sendMessage<ExtendedDoc>({
+    action: 'auto-compelete-enabled-doc',
+    payload: { scope: docScope }
+  })
+  if (doc) {
+    return doc.fullName
+  }
+  return ''
+}
+
 function Header () {
   const [inputPaddingLeft, setInputPaddingLeft] = useState(0)
   const [scope, setScope] = useState('')
@@ -87,21 +102,6 @@ function Header () {
     setQuery('')
     setDocName('')
     navigate('/', { replace: true })
-  }
-
-  async function attemptCompeleteDocName (docScope: string) {
-    if (docScope === '') {
-      return ''
-    }
-
-    const { content: doc } = await sendMessage<ExtendedDoc>({
-      action: 'auto-compelete-enabled-doc',
-      payload: { scope: docScope }
-    })
-    if (doc) {
-      return doc.fullName
-    }
-    return ''
   }
 
   async function completeDoc () {

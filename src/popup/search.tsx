@@ -9,6 +9,16 @@ import { Docs } from '../background/docs'
 import { sendMessage } from '../common/message'
 import { WrapedResponse } from '../../types/message'
 
+function getDocVersion (doc: Doc) {
+  return doc.slug.includes('~') ? doc.slug.split('~')[1] : ''
+}
+
+function getEntryUrl (entry: Entry) {
+  const [entryPath, entryHash] = entry.path.split('#')
+  const pathAndHash = entryHash ? `${entryPath}#${entryHash}` : `${entryPath}`
+  return `/${entry.doc.slug}/${pathAndHash}`
+}
+
 export default function Search () {
   const [entries, setEntries] = useState(null as null | Unpromisify<ReturnType<Docs['searchEntries']>>)
   const [focusPos, setFocusPos] = useState(0)
@@ -60,10 +70,6 @@ export default function Search () {
     }
   }, [focusPos])
 
-  function getDocVersion (doc: Doc) {
-    return doc.slug.includes('~') ? doc.slug.split('~')[1] : ''
-  }
-
   function focusNextEntry () {
     if (!entries) {
       return
@@ -78,12 +84,6 @@ export default function Search () {
     }
     const maxFocusPos = entries.length - 1
     setFocusPos(focusPos === 0 ? maxFocusPos : focusPos - 1)
-  }
-
-  function getEntryUrl (entry: Entry) {
-    const [entryPath, entryHash] = entry.path.split('#')
-    const pathAndHash = entryHash ? `${entryPath}#${entryHash}` : `${entryPath}`
-    return `/${entry.doc.slug}/${pathAndHash}`
   }
 
   function enterFocusEntry () {

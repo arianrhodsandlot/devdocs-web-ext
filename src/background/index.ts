@@ -41,21 +41,24 @@ function initializeListeners () {
     log('[background] sending response:', response)
     return response
   })
+
+  browser.runtime.onInstalled.addListener(async () => {
+    await updateDocs()
+
+    const shouldOpenTabsForTest = isTest || isDev
+    if (shouldOpenTabsForTest) {
+      browser.tabs.create({ url: 'options.html' })
+      browser.tabs.create({ url: 'popup.html' })
+    }
+  })
 }
 
 function main () {
   initializeOptions()
   initializeListeners()
-
   if (isDev) {
     browser.action.setBadgeBackgroundColor({ color: 'white' })
     browser.action.setBadgeText({ text: '🚧' })
-  }
-
-  const shouldOpenTabsForTest = isTest
-  if (shouldOpenTabsForTest) {
-    browser.tabs.create({ url: 'options.html' })
-    browser.tabs.create({ url: 'popup.html' })
   }
 }
 

@@ -118,11 +118,13 @@ const config: webpack.Configuration = {
         loader: 'sass-loader',
         options: {
           sourceMap: true,
-          includePaths: [
-            'node_modules',
-            path.parse(require.resolve('compass-mixins')).dir,
-            path.resolve(__dirname, 'vendor/devdocs/assets/stylesheets/')
-          ]
+          sassOptions: {
+            includePaths: [
+              'node_modules',
+              path.parse(require.resolve('compass-mixins')).dir,
+              path.resolve(__dirname, 'vendor/devdocs/assets/stylesheets/')
+            ]
+          }
         }
       }]
     }, {

@@ -14,7 +14,7 @@ export function lruSetItem (key: string, value: string) {
   return new Promise<void>((resolve, reject) => {
     lru.setItem(key, value, {
       json: false,
-      cacheControl: `max-age=${30/* day */ * 24/* hour */ * 60/* min */ * 60/* sec */}`
+      cacheControl: `max-age=${30/* day */ * 24/* hour */ * 60/* min */ * 60}`
     }, (error: unknown) => {
       if (error) {
         reject(error)

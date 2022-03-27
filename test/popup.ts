@@ -63,7 +63,6 @@ test.serial('search in a certain doc', async (t) => {
   t.is(await popupPage.$eval('._search-tag', (e) => e.innerHTML), 'CSS')
 
   await popupPage.keyboard.type('bxs')
-  await popupPage.waitFor(1000)
   await popupPage.waitForSelector('._list-item')
   const firstLiteItemText = await popupPage.$eval('._list-item', (e) => (e as HTMLDivElement).textContent)
   t.is(firstLiteItemText, 'box-shadow')

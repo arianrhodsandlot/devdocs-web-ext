@@ -8,7 +8,7 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { lruGetItem, lruSetItem } from '../common/lru'
 import { sendMessage } from '../common/message'
 
-function cssEscape (selector) {
+function cssEscape (selector: string) {
   try {
     return CSS.escape(selector)
   } catch {

@@ -48,9 +48,6 @@ export async function updateDocs () {
 
     const newCache = docs.dump()
     memoryCache[cacheKey] = newCache
-    _.defer(() => {
-      browser.storage.local.set({ [cacheKey]: newCache })
-    })
   }
 }
 

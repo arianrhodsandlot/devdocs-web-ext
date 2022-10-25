@@ -1,0 +1,100 @@
+{
+  "appName": {
+    "message": "DevDocs Web Ext"
+  },
+  "appDescription": {
+    "message": "Trouvez de la documentation depuis devdocs.io grâce à une popup depuis une extension Chrome!"
+  },
+
+  "readmeTitle": {
+    "message": "Merci d'avoir installé DevDocs Web Ext!"
+  },
+  "readmeP1": {
+    "message": "Cette extension permet d'afficher une popup pour rechercher de la documentation dans <a href='http://devdocs.io'>DevDocs</a>, plutôt que d'ouvrir un nouvel onglet."
+  },
+  "readmeP2": {
+    "message": "Le raccourci clavier par défaut pour afficher la popup est <kbd>Alt</kbd>+<kbd>S</kbd>. Si vous souhaitez le changer, allez en bas de la page des extensions Chrome (Menu -> Plus d'outils -> Extensions)."
+  },
+  "readmeP3": {
+    "message": "Les documentations activées par défaut sont CSS, DOM, Événements DOM, HTML, HTTP, et JavaScript."
+  },
+  "readmeP4": {
+    "message": "Pour ajouter d'autres documentations (comme Node, Python ou Angular.js) allez sur <a href='#docs'>l'onglet Documentations</a> ou <a href='http://devdocs.io'>devdocs.io</a> pour les sélectionner."
+  },
+
+  "optionsTitle": {
+    "message": "Options"
+  },
+  "optionsApparence": {
+    "message": "Apparence"
+  },
+  "optionsDocs": {
+    "message": "Documentations"
+  },
+  "optionsWelcom": {
+    "message": "Bienvenue"
+  },
+  "optionsAbout": {
+    "message": "À propos"
+  },
+  "optionsTheme": {
+    "message": "Thème"
+  },
+  "optionsLight": {
+    "message": "clair"
+  },
+  "optionsDark": {
+    "message": "sombre"
+  },
+  "optionsWindowSize": {
+    "message": "Taille de la fenêtre"
+  },
+  "optionsWidth": {
+    "message": "largeur"
+  },
+  "optionsHeight": {
+    "message": "hauteur"
+  },
+  "optionsShowContextMenu": {
+    "message": "Menu contextuel"
+  },
+  "optionsEnabled": {
+    "message": "Activé"
+  },
+  "optionsDisabled": {
+    "message": "Désactivé"
+  },
+  "optionsSelectFrom": {
+    "message": "Choisir sur devdocs.io"
+  },
+  "optionsAboutDesc": {
+    "message": "Une extension DevDocs pour Google Chrome."
+  },
+  "optionsReport": {
+    "message": "Signaler un bug"
+  },
+  "optionsVersion": {
+    "message": "version: "
+  },
+  "optionsOpenSource": {
+    "message": "DevDocs Web Ext est un logiciel open-source, hébergé sur <a href=\"https://github.com/arianrhodsandlot/DevDocs-Web-Ext\">GitHub</a>."
+  },
+  "optionsShortcut": {
+    "message": "Raccourci"
+  },
+  "optionsConfigureShortcuts": {
+    "message": "Configurer les raccourcis"
+  },
+  "optionsRate": {
+    "message": "Noter"
+  },
+  "optionsFeedback": {
+    "message": "Commentaires"
+  },
+  "optionsSource": {
+    "message": "Source"
+  },
+  "contextMenuTemplate": {
+    "message": "Recherche DevDocs Web Ext pour \"%s\""
+  }
+}

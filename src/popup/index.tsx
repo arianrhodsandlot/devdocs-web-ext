@@ -1,20 +1,19 @@
+import key from 'keymaster'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { HashRouter } from 'react-router-dom'
-import key from 'keymaster'
 import '../../vendor/devdocs/assets/javascripts/vendor/prism'
-import { storage } from '../common/storage'
 import { defaultOptions } from '../common/default-options'
+import { storage } from '../common/storage'
 import App from './app'
 
 key.filter = () => true
 
-async function main () {
-  async function initializeOptions () {
+async function main() {
+  async function initializeOptions() {
     const options: Record<string, string | number> = {}
     for (const option in defaultOptions) {
       if (Object.prototype.hasOwnProperty.call(defaultOptions, option)) {
-      // eslint-disable-next-line no-await-in-loop
         const { [option]: previousValue } = await storage.get(option)
         const value = previousValue
         const defaultValue = (defaultOptions as Record<string, string | number | boolean>)[option]
@@ -38,7 +37,9 @@ async function main () {
   document.body.style.height = `${height}px`
 
   ReactDOM.render(
-    <HashRouter><App /></HashRouter>,
+    <HashRouter>
+      <App />
+    </HashRouter>,
     document.querySelector('._app')
   )
 }

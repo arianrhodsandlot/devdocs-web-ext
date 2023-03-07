@@ -1,16 +1,17 @@
-import browser from 'webextension-polyfill'
 import _ from 'lodash'
+import browser from 'webextension-polyfill'
 import { log } from '../common/log'
 import { Docs } from './docs'
 
 const defaultDocNames = ['css', 'dom', 'dom_events', 'html', 'http', 'javascript']
-async function getDocNames () {
-  const cookie = await browser.cookies.get({ url: 'https://devdocs.io', name: 'docs' }) || await browser.cookies.get({ url: 'http://devdocs.io', name: 'docs' })
-  const docNames = cookie && cookie.value ? cookie.value.split('/') : defaultDocNames
-  return docNames
+async function getDocNames() {
+  const cookie =
+    (await browser.cookies.get({ url: 'https://devdocs.io', name: 'docs' })) ||
+    (await browser.cookies.get({ url: 'http://devdocs.io', name: 'docs' }))
+  return cookie && cookie.value ? cookie.value.split('/') : defaultDocNames
 }
 
-function isValidCache (cache: unknown) {
+function isValidCache(cache: unknown) {
   for (const key of ['allDocs', 'docNames', 'docs']) {
     if (_.size(_.get(cache, key)) === 0) {
       return false
@@ -22,7 +23,7 @@ function isValidCache (cache: unknown) {
 const docs = new Docs()
 type Cache = ReturnType<typeof docs.dump>
 const memoryCache: Record<string, Cache> = {}
-export async function updateDocs () {
+export async function updateDocs() {
   const docNames = await getDocNames()
   docs.docNames = docNames
 
@@ -51,7 +52,7 @@ export async function updateDocs () {
   }
 }
 
-export async function getDocs () {
+export async function getDocs() {
   await updateDocs()
   return docs
 }

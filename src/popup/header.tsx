@@ -1,18 +1,18 @@
-import url from 'url'
-import querystring from 'querystring'
-import React, { useState, useEffect, useRef } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
+import querystring from 'node:querystring'
+import url from 'node:url'
 import key from 'keymaster'
+import React, { useEffect, useRef, useState } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { sendMessage } from '../common/message'
 
-async function attemptCompeleteDocName (docScope: string) {
+async function attemptCompeleteDocName(docScope: string) {
   if (docScope === '') {
     return ''
   }
 
   const { content: doc } = await sendMessage<ExtendedDoc>({
     action: 'auto-compelete-enabled-doc',
-    payload: { scope: docScope }
+    payload: { scope: docScope },
   })
   if (doc) {
     return doc.fullName
@@ -20,7 +20,7 @@ async function attemptCompeleteDocName (docScope: string) {
   return ''
 }
 
-function Header () {
+function Header() {
   const [inputPaddingLeft, setInputPaddingLeft] = useState(0)
   const [scope, setScope] = useState('')
   const [query, setQuery] = useState('')
@@ -66,7 +66,7 @@ function Header () {
   }, [])
 
   useEffect(() => {
-    (async () => {
+    ;(async () => {
       const completedDocName = await attemptCompeleteDocName(scope)
       setDocName(completedDocName)
     })()
@@ -89,40 +89,43 @@ function Header () {
     }
   }, [location])
 
-  function getInputState () {
+  function getInputState() {
     const parsed = querystring.parse(location.search.slice(1))
     return {
       query: parsed.query ? `${parsed.query}` : '',
-      scope: parsed.scope ? `${parsed.scope}` : ''
+      scope: parsed.scope ? `${parsed.scope}` : '',
     }
   }
 
-  function clearDoc () {
+  function clearDoc() {
     setScope('')
     setQuery('')
     setDocName('')
     navigate('/', { replace: true })
   }
 
-  async function completeDoc () {
+  async function completeDoc() {
     const completedDocName = await attemptCompeleteDocName(query)
     if (completedDocName) {
       const urlQuery = { scope: query }
-      navigate(url.format({
-        pathname: '/search',
-        query: urlQuery
-      }), { replace: true })
+      navigate(
+        url.format({
+          pathname: '/search',
+          query: urlQuery,
+        }),
+        { replace: true }
+      )
       if (inputRef.current) {
         inputRef.current.value = ''
       }
     }
   }
 
-  function handleChange (e: React.ChangeEvent<HTMLInputElement>) {
+  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     const query = e.currentTarget.value
     const urlQuery = {
       query: '',
-      scope: ''
+      scope: '',
     }
     if (query) {
       urlQuery.query = query
@@ -130,13 +133,16 @@ function Header () {
     if (scope) {
       urlQuery.scope = scope
     }
-    navigate(url.format({
-      pathname: '/search',
-      query: urlQuery
-    }), { replace: true })
+    navigate(
+      url.format({
+        pathname: '/search',
+        query: urlQuery,
+      }),
+      { replace: true }
+    )
   }
 
-  function handleKeyDown (e: React.KeyboardEvent<HTMLInputElement>) {
+  function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
     const query = e.currentTarget.value
     switch (e.key) {
       case 'Tab':
@@ -155,7 +161,9 @@ function Header () {
   return (
     <div className='_header' style={{ maxWidth: document.body.style.width || '' }}>
       <form className='_search' autoComplete='off'>
-        <svg><use href='#icon-search' /></svg>
+        <svg>
+          <use href='#icon-search' />
+        </svg>
         <input
           defaultValue={query}
           placeholder='Search...'
@@ -164,13 +172,21 @@ function Header () {
           onInput={handleChange}
           autoFocus
           ref={inputRef as React.MutableRefObject<HTMLInputElement>}
-          style={docName ? { paddingLeft: inputPaddingLeft } : {}} onKeyDown={handleKeyDown} />
-        {docName ? <div className='_search-tag' ref={scopeRef as React.MutableRefObject<HTMLDivElement>}>{docName}</div> : null}
+          style={docName ? { paddingLeft: inputPaddingLeft } : {}}
+          onKeyDown={handleKeyDown}
+        />
+        {docName ? (
+          <div className='_search-tag' ref={scopeRef as React.MutableRefObject<HTMLDivElement>}>
+            {docName}
+          </div>
+        ) : null}
       </form>
 
       <svg className='_settings' xmlns='http://www.w3.org/2000/svg'>
         <defs>
-          <symbol id='icon-search' viewBox='0 0 24 24'><path d='M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z' /></symbol>
+          <symbol id='icon-search' viewBox='0 0 24 24'>
+            <path d='M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z' />
+          </symbol>
         </defs>
       </svg>
     </div>

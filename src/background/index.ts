@@ -1,16 +1,15 @@
 import browser from 'webextension-polyfill'
-import { isDev, isTest } from '../common/env'
-import { storage } from '../common/storage'
 import { defaultOptions } from '../common/default-options'
+import { isDev, isTest } from '../common/env'
 import { log } from '../common/log'
-import { messageHandlers, errorHandler } from './message'
+import { storage } from '../common/storage'
 import { updateDocs } from './docs-utils'
+import { errorHandler, messageHandlers } from './message'
 
-async function initializeOptions () {
+async function initializeOptions() {
   const options: Record<string, string | number> = {}
   for (const option in defaultOptions) {
     if (Object.prototype.hasOwnProperty.call(defaultOptions, option)) {
-      // eslint-disable-next-line no-await-in-loop
       const { [option]: previousValue } = await storage.get(option)
       const value = previousValue
       const defaultValue = (defaultOptions as Record<string, string | number | boolean>)[option]
@@ -20,10 +19,14 @@ async function initializeOptions () {
   storage.set(options)
 }
 
-function initializeListeners () {
+function initializeListeners() {
   browser.cookies.onChanged.addListener(({ cookie }) => {
-    if (!['devdocs.io', '.devdocs.io'].includes(cookie.domain)) return
-    if (cookie.name !== 'docs') return
+    if (!['devdocs.io', '.devdocs.io'].includes(cookie.domain)) {
+      return
+    }
+    if (cookie.name !== 'docs') {
+      return
+    }
     updateDocs()
   })
 
@@ -53,7 +56,7 @@ function initializeListeners () {
   })
 }
 
-function main () {
+function main() {
   initializeOptions()
   initializeListeners()
   if (isDev) {

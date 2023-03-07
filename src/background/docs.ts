@@ -1,5 +1,5 @@
-import _ from 'lodash'
 import ky from 'ky'
+import _ from 'lodash'
 import Searcher from '../../vendor/devdocs/assets/javascripts/app/searcher.coffee'
 import Entry from '../../vendor/devdocs/assets/javascripts/models/entry.coffee'
 import { log } from '../common/log'
@@ -17,56 +17,53 @@ export class Docs {
 
   private syncingDocNames: string[] = []
 
-  private static extendDocs (docs: Doc[]) {
+  private static extendDocs(docs: Doc[]) {
     return Promise.all(_.map(docs, (doc) => Docs.extendDoc(doc)))
   }
 
-  private static async extendDoc (doc: Doc) {
+  private static async extendDoc(doc: Doc) {
     const extendedDoc = {
       ...doc,
       fullName: doc.name + (doc.version ? ` ${doc.version}` : ''),
       slug_without_version: doc.slug.split('~')[0],
       icon: doc.slug.split('~')[0],
       short_version: doc.version ? doc.version.split(' ')[0] : '',
-      text: [doc.name, doc.slug]
+      text: [doc.name, doc.slug],
     }
     const docEntry = new Entry({
       ...extendedDoc,
-      ...{
-        name: extendedDoc.fullName
-      }
+
+      name: extendedDoc.fullName,
     }) as { addAlias: (alias: string) => undefined } & typeof extendedDoc
 
     if (docEntry.version) {
       docEntry.addAlias(doc.name)
     }
 
-    const index = await Docs.getDocIndexByName(doc.slug) as Index
+    const index = (await Docs.getDocIndexByName(doc.slug)) as Index
     index.entries = _.map(index.entries, (entry) => ({
       ...new Entry(entry),
-      doc: { ...extendedDoc }
+      doc: { ...extendedDoc },
     }))
 
     return {
       ...doc,
       ...index,
-      ...docEntry
+      ...docEntry,
     }
   }
 
-  private static async getDocIndexByName (docName: string) {
+  private static async getDocIndexByName(docName: string) {
     const docUrl = `https://documents.devdocs.io/${docName}/index.json`
-    const index = await ky(docUrl).json()
-    return index
+    return await ky(docUrl).json()
   }
 
-  private static async getAllDocs () {
+  private static async getAllDocs() {
     const docsUrl = 'https://devdocs.io/docs/docs.json'
-    const docs = await ky(docsUrl).json() as Doc[]
-    return docs
+    return (await ky(docsUrl).json()) as Doc[]
   }
 
-  static searchEntriesInDoc (query: string, doc: Doc & Index) {
+  static searchEntriesInDoc(query: string, doc: Doc & Index) {
     const { entries } = doc
     const searcher = new Searcher()
 
@@ -78,11 +75,11 @@ export class Docs {
     }) as Promise<typeof entries>
   }
 
-  private static attemptToMatchOneDoc<T> (rawQuery: string, docs: T[]) {
+  private static attemptToMatchOneDoc<T>(rawQuery: string, docs: T[]) {
     const query = rawQuery.replace('_', ' ')
     const searcher = new Searcher({
       max_results: 1,
-      fuzzy_min_length: 1
+      fuzzy_min_length: 1,
     })
 
     return new Promise((resolve) => {
@@ -94,26 +91,24 @@ export class Docs {
     }) as Promise<T | null>
   }
 
-  load ({ docNames, docs, allDocs }: Pick<Docs, 'docNames' | 'docs' | 'allDocs'>) {
+  load({ docNames, docs, allDocs }: Pick<Docs, 'docNames' | 'docs' | 'allDocs'>) {
     this.docNames = docNames
     this.docs = docs
     this.allDocs = allDocs
   }
 
-  dump () {
+  dump() {
     return {
       docNames: this.docNames,
       docs: this.docs,
-      allDocs: this.allDocs
+      allDocs: this.allDocs,
     }
   }
 
-  async sync () {
-    if (this.status === 'pending') {
-      if (_.isEqual(this.docNames, this.syncingDocNames)) {
-        await this.syncProcess
-        return
-      }
+  async sync() {
+    if (this.status === 'pending' && _.isEqual(this.docNames, this.syncingDocNames)) {
+      await this.syncProcess
+      return
     }
 
     this.syncProcess = this.startSyncProcess()
@@ -121,7 +116,7 @@ export class Docs {
     this.syncProcess = null
   }
 
-  private async startSyncProcess () {
+  private async startSyncProcess() {
     this.status = 'pending'
     this.syncingDocNames = [...this.docNames]
     const { syncingDocNames } = this
@@ -143,9 +138,9 @@ export class Docs {
     }
   }
 
-  searchEntries (query: string) {
+  searchEntries(query: string) {
     const groupedEntries = _.map(this.docs, (doc) => doc.entries)
-    const entries = _.flatten(groupedEntries)
+    const entries = groupedEntries.flat()
 
     const searcher = new Searcher()
 
@@ -157,11 +152,11 @@ export class Docs {
     }) as Promise<typeof entries>
   }
 
-  attemptToMatchOneDocInEnabledDocs (query: string) {
+  attemptToMatchOneDocInEnabledDocs(query: string) {
     return Docs.attemptToMatchOneDoc(query, this.docs)
   }
 
-  attemptToMatchOneDocInAllDocs (query: string) {
+  attemptToMatchOneDocInAllDocs(query: string) {
     return Docs.attemptToMatchOneDoc(query, this.allDocs)
   }
 }

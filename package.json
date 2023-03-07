@@ -2,10 +2,7 @@
   "name": "devdocs-web-ext",
   "version": "0.4.1",
   "description": "Find documents in devdocs.io with a popup window from a Chrome Extension!",
-  "main": "index.js",
-  "engines": {
-    "node": ">=10"
-  },
+  "type": "module",
   "dependencies": {
     "classnames": "^2.3.2",
     "compass-mixins": "^0.12.11",
@@ -27,6 +24,7 @@
     "webextension-polyfill": "0.9.0"
   },
   "devDependencies": {
+    "@arianrhodsandlot/eslint-config": "0.2.0",
     "@types/firefox-webext-browser": "94.0.1",
     "@types/html-webpack-plugin": "^3.2.6",
     "@types/keymaster": "^1.6.30",
@@ -45,7 +43,7 @@
     "core-js": "^3.27.0",
     "cross-env": "^7.0.3",
     "css-loader": "^3.6.0",
-    "eslint-config-argreion": "https://gist.github.com/86724154ca49ee8b3f9aebae3fe44e0a.git#02f8e2b",
+    "eslint": "^8.35.0",
     "exports-loader": "^0.7.0",
     "file-loader": "^6.2.0",
     "html-webpack-plugin": "^3.2.0",
@@ -88,22 +86,6 @@
     "url": "https://github.com/arianrhodsandlot/DevDocs-Web-Ext/issues"
   },
   "homepage": "https://github.com/arianrhodsandlot/DevDocs-Web-Ext#readme",
-  "eslintConfig": {
-    "extends": "argreion",
-    "globals": {
-      "BUILD_MODE": "readonly",
-      "VERSION": "readonly",
-      "GIT_VERSION": "readonly"
-    },
-    "rules": {
-      "no-await-in-loop": "warn",
-      "no-console": "warn",
-      "node/no-deprecated-api": "warn",
-      "padded-blocks": "off",
-      "prefer-object-has-own": "off",
-      "react/no-find-dom-node": "warn"
-    }
-  },
   "ava": {
     "extensions": [
       "ts"

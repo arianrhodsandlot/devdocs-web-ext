@@ -1,14 +1,14 @@
-import url from 'url'
-import React, { useState, useEffect, useRef } from 'react'
-import browser from 'webextension-polyfill'
+import url from 'node:url'
 import classnames from 'classnames'
 import key from 'keymaster'
 import ky from 'ky'
+import React, { useEffect, useRef, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
+import browser from 'webextension-polyfill'
 import { lruGetItem, lruSetItem } from '../common/lru'
 import { sendMessage } from '../common/message'
 
-function cssEscape (selector: string) {
+function cssEscape(selector: string) {
   try {
     return CSS.escape(selector)
   } catch {
@@ -16,7 +16,7 @@ function cssEscape (selector: string) {
   }
 }
 
-export default function Content () {
+export default function Content() {
   const [loading, setLoading] = useState(false)
   const [contentUrl, setContentUrl] = useState('')
   const [content, setContent] = useState('')
@@ -36,7 +36,7 @@ export default function Content () {
         pageRef.current.scrollBy({
           top: 150,
           left: 0,
-          behavior: 'smooth'
+          behavior: 'smooth',
         })
       }
       return false
@@ -47,19 +47,19 @@ export default function Content () {
         pageRef.current.scrollBy({
           top: -150,
           left: 0,
-          behavior: 'smooth'
+          behavior: 'smooth',
         })
       }
       return false
-    });
-    (async () => {
+    })
+    ;(async () => {
       const scope = location.pathname.split('/')[1].split('~')[0]
       if (!scope) {
         return
       }
       const { content: contentDoc } = await sendMessage<Doc>({
         action: 'get-content-doc',
-        payload: { scope }
+        payload: { scope },
       })
       if (contentDoc) {
         setDoc(contentDoc)
@@ -87,7 +87,7 @@ export default function Content () {
       return
     }
 
-    (async () => {
+    ;(async () => {
       let docContent = await lruGetItem(contentUrl)
       if (docContent) {
         setContent(docContent)
@@ -106,13 +106,17 @@ export default function Content () {
       return
     }
     const preEls = document.querySelectorAll('pre[data-language]')
-    if (!preEls) return
-    preEls.forEach((el) => {
-      if (!el) return
-      const language = el.getAttribute('data-language')
-      el.classList.add(`language-${language}`);
-      (window as any).Prism.highlightElement(el)
-    })
+    if (!preEls) {
+      return
+    }
+    for (const el of preEls) {
+      if (!el) {
+        continue
+      }
+      const { language } = el.dataset
+      el.classList.add(`language-${language}`)
+      ;(window as any).Prism.highlightElement(el)
+    }
   }, [content])
 
   useEffect(() => {
@@ -125,7 +129,7 @@ export default function Content () {
     scrollToHash()
   }, [content, doc, location.hash])
 
-  function scrollToHash () {
+  function scrollToHash() {
     let entryHash = location.hash
     if (!entryHash || !pageRef.current) {
       return
@@ -142,7 +146,7 @@ export default function Content () {
     }
   }
 
-  function onContentClick (e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
+  function onContentClick(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
     let target = e.target as HTMLElement | null
     while (target && target.tagName !== 'A') {
       if (target === e.currentTarget) {
@@ -184,7 +188,8 @@ export default function Content () {
           className={classnames(['_page', doc ? `_${doc.type}` : ''])}
           onClick={onContentClick}
           ref={pageRef as React.MutableRefObject<HTMLDivElement>}
-          dangerouslySetInnerHTML={{ __html: content }} />
+          dangerouslySetInnerHTML={{ __html: content }}
+        />
       </div>
     </div>
   )

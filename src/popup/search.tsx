@@ -1,25 +1,25 @@
-import querystring from 'querystring'
-import React, { useState, useEffect } from 'react'
-import ReactDOM from 'react-dom'
-import browser from 'webextension-polyfill'
+import querystring from 'node:querystring'
 import classnames from 'classnames'
 import key from 'keymaster'
+import React, { useEffect, useState } from 'react'
+import ReactDOM from 'react-dom'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
-import { Docs } from '../background/docs'
+import browser from 'webextension-polyfill'
+import { type WrapedResponse } from '../../types/message'
+import { type Docs } from '../background/docs'
 import { sendMessage } from '../common/message'
-import { WrapedResponse } from '../../types/message'
 
-function getDocVersion (doc: Doc) {
+function getDocVersion(doc: Doc) {
   return doc.slug.includes('~') ? doc.slug.split('~')[1] : ''
 }
 
-function getEntryUrl (entry: Entry) {
+function getEntryUrl(entry: Entry) {
   const [entryPath, entryHash] = entry.path.split('#')
   const pathAndHash = entryHash ? `${entryPath}#${entryHash}` : `${entryPath}`
   return `/${entry.doc.slug}/${pathAndHash}`
 }
 
-export default function Search () {
+export default function Search() {
   const [entries, setEntries] = useState(null as null | Unpromisify<ReturnType<Docs['searchEntries']>>)
   const [focusPos, setFocusPos] = useState(0)
   const [failMessage, setFailMessage] = useState('')
@@ -64,13 +64,13 @@ export default function Search () {
       if (entryDomNode instanceof HTMLAnchorElement) {
         entryDomNode.scrollIntoView({
           block: 'end',
-          behavior: 'smooth'
+          behavior: 'smooth',
         })
       }
     }
   }, [focusPos])
 
-  function focusNextEntry () {
+  function focusNextEntry() {
     if (!entries) {
       return
     }
@@ -78,7 +78,7 @@ export default function Search () {
     setFocusPos(focusPos === maxFocusPos ? 0 : focusPos + 1)
   }
 
-  function focusPrevEntry () {
+  function focusPrevEntry() {
     if (!entries) {
       return
     }
@@ -86,7 +86,7 @@ export default function Search () {
     setFocusPos(focusPos === 0 ? maxFocusPos : focusPos - 1)
   }
 
-  function enterFocusEntry () {
+  function enterFocusEntry() {
     if (!entries) {
       return
     }
@@ -96,7 +96,7 @@ export default function Search () {
     }
   }
 
-  function getEntryRef (entry: Entry) {
+  function getEntryRef(entry: Entry) {
     if (!entries) {
       return null
     }
@@ -109,7 +109,7 @@ export default function Search () {
     return ref
   }
 
-  async function search () {
+  async function search() {
     const { query = '', scope = '' } = querystring.parse(location.search.slice(1))
     if (!query && !scope) {
       navigate('/', { replace: true })
@@ -124,7 +124,7 @@ export default function Search () {
     try {
       response = await sendMessage<Entry[]>({
         action: 'search-entry',
-        payload: { query, scope }
+        payload: { query, scope },
       })
       entries = response.content
     } catch (error) {
@@ -148,39 +148,47 @@ export default function Search () {
     )
   }
 
-  const noResults =
+  const noResults = (
     <>
+      <div className='_list-note'>No results.</div>
       <div className='_list-note'>
-        No results.
-      </div>
-      <div className='_list-note'>
-        Note: documentations must be <a href='https://devdocs.io/settings' className='_list-note-link' target='_blank' rel='noopener noreferrer' onClick={(e) => {
-          e.preventDefault()
-          browser.tabs.create({ url: e.currentTarget.href })
-        }}>enabled</a> to appear in the search.
+        Note: documentations must be{' '}
+        <a
+          href='https://devdocs.io/settings'
+          className='_list-note-link'
+          target='_blank'
+          rel='noopener noreferrer'
+          onClick={(e) => {
+            e.preventDefault()
+            browser.tabs.create({ url: e.currentTarget.href })
+          }}
+        >
+          enabled
+        </a>{' '}
+        to appear in the search.
       </div>
     </>
+  )
 
   const results = entries
-    ? entries.map((entry, i) => <Link
-      className={classnames(
-        '_list-item', '_list-hover', '_list-entry',
-        `_icon-${entry.doc.icon}`,
-        { focus: focusPos === i ? 'focus' : '' }
-      )}
-      key={`${entry.doc.slug}-${entry.doc.name}/${entry.path}-${entry.name}`}
-      to={getEntryUrl(entry)}
-      ref={getEntryRef(entry)}>
-      <div className='_list-count'>{getDocVersion(entry.doc)}</div>
-      <div className='_list-text'>{entry.name}</div>
-    </Link>)
+    ? entries.map((entry, i) => (
+        <Link
+          className={classnames('_list-item', '_list-hover', '_list-entry', `_icon-${entry.doc.icon}`, {
+            focus: focusPos === i ? 'focus' : '',
+          })}
+          key={`${entry.doc.slug}-${entry.doc.name}/${entry.path}-${entry.name}`}
+          to={getEntryUrl(entry)}
+          ref={getEntryRef(entry)}
+        >
+          <div className='_list-count'>{getDocVersion(entry.doc)}</div>
+          <div className='_list-text'>{entry.name}</div>
+        </Link>
+      ))
     : null
 
   return (
     <div className='_sidebar'>
-      <div className='_list'>
-        {entries ? (entries.length > 0 ? results : noResults) : null}
-      </div>
+      <div className='_list'>{entries ? (entries.length > 0 ? results : noResults) : null}</div>
     </div>
   )
 }

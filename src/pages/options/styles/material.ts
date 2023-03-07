@@ -1,0 +1,8 @@
+import '@material-design-icons/font'
+import '@rmwc/button/styles'
+import '@rmwc/checkbox/styles'
+import '@rmwc/elevation/styles'
+import '@rmwc/icon/styles'
+import '@rmwc/radio/styles'
+import '@rmwc/slider/styles'
+import '@rmwc/typography/styles'

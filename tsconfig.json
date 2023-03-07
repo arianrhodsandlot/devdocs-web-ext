@@ -1,34 +1,9 @@
 {
+  "extends": "@tsconfig/recommended",
   "compilerOptions": {
-    "allowJs": false,
-    "alwaysStrict": true,
-    "baseUrl": ".",
-    "checkJs": false,
-    "downlevelIteration": true,
     "esModuleInterop": true,
-    "experimentalDecorators": true,
-    "inlineSourceMap": false,
-    "inlineSources": false,
-    "lib": [
-      "dom",
-      "es2015"
-    ],
-    "module": "commonjs",
-    "moduleResolution": "node",
-    "pretty": true,
-    "removeComments": true,
-    "sourceMap": true,
-    "strict": true,
-    "target": "es6",
-    "paths": {
-      "@/*": [
-        "*"
-      ]
-    },
     "jsx": "react",
-    "resolveJsonModule": true
-  },
-  "typeRoots": [
-    "node_modules/@types"
-  ]
+    "module": "esnext",
+    "moduleResolution": "node"
+  }
 }

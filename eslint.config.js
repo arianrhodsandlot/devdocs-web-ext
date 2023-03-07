@@ -2,11 +2,5 @@ import { createConfig } from '@arianrhodsandlot/eslint-config'
 
 export default createConfig({
   typeChecking: false,
-  append: {
-    rules: {
-      '@typescript-eslint/no-shadow': 'off',
-      'jsx-a11y/no-autofocus': 'off',
-      'unicorn/no-null': 'off',
-    },
-  },
+  overrides: { js: { ignores: ['src/lib/vendor/devdocs/**/*.js'] } },
 })

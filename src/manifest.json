@@ -1,0 +1,46 @@
+{
+  "name": "__MSG_appName__",
+  "version": "0.4.1",
+  "manifest_version": 3,
+  "description": "__MSG_appDescription__",
+  "homepage_url": "https://github.com/arianrhodsandlot/DevDocs-Web-Ext",
+  "icons": {
+    "16": "assets/images/icon-16.png",
+    "128": "assets/images/icon-128.png"
+  },
+  "default_locale": "en",
+  "background": {
+    "service_worker": "pages/background/index.ts",
+    "type": "module"
+  },
+  "action": {
+    "default_icon": {
+      "19": "assets/images/icon-19.png",
+      "38": "assets/images/icon-38.png"
+    },
+    "default_title": "DevDocs Web Ext",
+    "default_popup": "pages/popup/index.pug"
+  },
+  "options_ui": {
+    "page": "pages/options/index.pug"
+  },
+  "permissions": [
+    "cookies",
+    "activeTab",
+    "storage",
+    "contextMenus"
+  ],
+  "host_permissions": [
+    "*://devdocs.io/",
+    "*://docs.devdocs.io/",
+    "*://documents.devdocs.io/"
+  ],
+  "commands": {
+    "_execute_action": {
+      "suggested_key": {
+        "default": "Alt+S"
+      },
+      "description": "Open the popup window"
+    }
+  }
+}

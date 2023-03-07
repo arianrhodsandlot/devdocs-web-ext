@@ -1,39 +1,39 @@
 interface Doc {
-  name: string;
-  slug: string;
-  type: string;
+  name: string
+  slug: string
+  type: string
   links: {
-    home: string;
-    code: string;
-  };
-  version: string;
-  release: string;
-  mtime: number;
-  db_size: number;
-}
-
-interface Entry {
-  name: string;
-  path: string;
-  type: string;
-  doc: ExtendedDoc;
+    home: string
+    code: string
+  }
+  version: string
+  release: string
+  mtime: number
+  db_size: number
 }
 
 interface Type {
-  name: string;
-  count: number;
-  slug: string;
+  name: string
+  count: number
+  slug: string
+}
+
+interface Entry {
+  name: string
+  path: string
+  type: string
+  doc: ExtendedDoc
 }
 
 interface Index {
-  entries: Entry[];
-  types: Type[];
+  entries: Entry[]
+  types: Type[]
 }
 
 interface ExtendedDoc extends Doc, Index {
-  fullName: string;
-  slug_without_version: string;
-  icon: string;
-  short_version: string;
-  text: string[];
+  fullName: string
+  slug_without_version: string
+  icon: string
+  short_version: string
+  text: string[]
 }

@@ -1,9 +1,10 @@
 import key from 'keymaster'
 import React from 'react'
 import { HashRouter } from 'react-router-dom'
-import { defaultOptions } from '../../lib/default-options'
-import { render } from '../../lib/render'
-import { storage } from '../../lib/storage'
+import { defaultOptions } from '~/src/lib/utils/default-options'
+import { isDarkColorScheme, onColorSchemeChange } from '~/src/lib/utils/media-query'
+import { render } from '~/src/lib/utils/render'
+import { storage } from '~/src/lib/utils/storage'
 import App from './components/app'
 import './styles'
 
@@ -22,15 +23,26 @@ async function initializeOptions() {
   storage.set(options)
 }
 
+function updateTheme(theme: string) {
+  const isDark = theme === 'system' ? isDarkColorScheme() : theme === 'dark'
+  if (isDark) {
+    document.documentElement.classList.remove('_theme-default')
+    document.documentElement.classList.add('_theme-dark')
+  } else {
+    document.documentElement.classList.add('_theme-default')
+    document.documentElement.classList.remove('_theme-dark')
+  }
+}
+
 async function main() {
   await initializeOptions()
 
   const { width, height, theme } = await storage.get()
 
-  if (theme === 'dark') {
-    document.documentElement.classList.remove('_theme-default')
-    document.documentElement.classList.add('_theme-dark')
-  }
+  onColorSchemeChange(() => {
+    updateTheme(theme)
+  })
+  updateTheme(theme)
 
   document.documentElement.style.width = `${width}px`
   document.documentElement.style.height = `${height}px`

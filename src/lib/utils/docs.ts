@@ -1,7 +1,7 @@
 import ky from 'ky'
 import _ from 'lodash'
-import { log } from '../../../lib/log'
-import { Entry, Searcher } from '../../../lib/vendor/devdocs'
+import { log } from '~/src/lib/utils/log'
+import { Entry, Searcher } from '~/src/lib/vendors/devdocs'
 
 export class Docs {
   docNames: string[] = []

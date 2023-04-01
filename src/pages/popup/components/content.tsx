@@ -6,7 +6,7 @@ import Prism from 'prismjs'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import browser from 'webextension-polyfill'
-import { sendMessage } from '../../../lib/message'
+import { sendMessage } from '~/src/lib/utils/message'
 
 function cssEscape(selector: string) {
   try {

@@ -1,7 +1,7 @@
 import key from 'keymaster'
 import React, { useEffect, useRef, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { sendMessage } from '../../../lib/message'
+import { sendMessage } from '~/src/lib/utils/message'
 
 async function attemptCompeleteDocName(docScope: string) {
   if (docScope === '') {

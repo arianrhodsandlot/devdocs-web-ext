@@ -1,10 +1,10 @@
 import browser from 'webextension-polyfill'
-import { defaultOptions } from '../../lib/default-options'
-import { isDev, isTest } from '../../lib/env'
-import { log } from '../../lib/log'
-import { errorHandler, messageHandlers } from '../../lib/message-handlers'
-import { storage } from '../../lib/storage'
-import { updateDocs } from './lib/docs-utils'
+import { defaultOptions } from '~/src/lib/utils/default-options'
+import { isDev, isTest } from '~/src/lib/utils/env'
+import { log } from '~/src/lib/utils/log'
+import { errorHandler, messageHandlers } from '~/src/lib/utils/message-handlers'
+import { storage } from '~/src/lib/utils/storage'
+import { updateDocs } from '../../lib/utils/docs-utils'
 
 async function initializeOptions() {
   const options: Record<string, string | number> = {}

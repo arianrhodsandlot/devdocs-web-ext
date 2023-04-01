@@ -40,6 +40,9 @@
   "optionsTheme": {
     "message": "主题"
   },
+  "optionsSystem": {
+    "message": "系统"
+  },
   "optionsLight": {
     "message": "亮色"
   },

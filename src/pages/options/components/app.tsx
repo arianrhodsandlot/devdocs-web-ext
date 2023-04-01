@@ -9,10 +9,11 @@ import { Typography } from '@rmwc/typography'
 import { debounce } from 'lodash'
 import React, { useEffect, useState } from 'react'
 import browser from 'webextension-polyfill'
-import { defaultOptions } from '../../../lib/default-options'
-import { isContextMenuEnabled } from '../../../lib/env'
-import i18n from '../../../lib/i18n'
-import { storage } from '../../../lib/storage'
+import { useTheme } from '~/src/lib/hooks/use-theme'
+import { defaultOptions } from '~/src/lib/utils/default-options'
+import { isContextMenuEnabled } from '~/src/lib/utils/env'
+import i18n from '~/src/lib/utils/i18n'
+import { storage } from '~/src/lib/utils/storage'
 
 const lazyPersist = debounce(async (data) => {
   await storage.set(data)
@@ -22,10 +23,11 @@ const { version } = browser.runtime.getManifest()
 
 function App() {
   const [initialized, setInitialized] = useState(false)
-  const [theme, setTheme] = useState(defaultOptions.theme)
   const [width, setWidth] = useState(defaultOptions.width)
   const [height, setHeight] = useState(defaultOptions.height)
   const [showContextMenu, setShowContextMenu] = useState(defaultOptions.showContextMenu)
+
+  const [{ theme, isDark }, setTheme] = useTheme(defaultOptions.theme)
 
   useEffect(() => {
     ;(async () => {
@@ -50,7 +52,7 @@ function App() {
   }, [theme, width, height, showContextMenu, initialized])
 
   return (
-    <form className={`theme-${theme}`}>
+    <form className={`theme-${isDark ? 'dark' : 'light'}`}>
       <Typography use='subtitle2' tag='h2'>
         {i18n('optionsWindowSize')}
       </Typography>
@@ -97,26 +99,23 @@ function App() {
         {i18n('optionsTheme')}
       </Typography>
       <Elevation z={0}>
-        <Radio
-          name='theme'
-          value='light'
-          checked={theme === 'light'}
-          onChange={(e) => {
-            setTheme(e.currentTarget.value)
-          }}
-        >
-          {i18n('optionsLight')}
-        </Radio>
-        <Radio
-          name='theme'
-          value='dark'
-          checked={theme === 'dark'}
-          onChange={(e) => {
-            setTheme(e.currentTarget.value)
-          }}
-        >
-          {i18n('optionsDark')}
-        </Radio>
+        {[
+          { value: 'system', label: i18n('optionsSystem') },
+          { value: 'light', label: i18n('optionsLight') },
+          { value: 'dark', label: i18n('optionsDark') },
+        ].map(({ value, label }) => (
+          <Radio
+            name='theme'
+            key={value}
+            value={value}
+            checked={theme === value}
+            onChange={() => {
+              setTheme(value)
+            }}
+          >
+            {label}
+          </Radio>
+        ))}
       </Elevation>
 
       {isContextMenuEnabled ? (

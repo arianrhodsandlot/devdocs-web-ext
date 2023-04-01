@@ -4,8 +4,8 @@ import React, { useCallback, useEffect, useState } from 'react'
 import ReactDOM from 'react-dom'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import browser from 'webextension-polyfill'
+import { sendMessage } from '~/src/lib/utils/message'
 import { type WrapedResponse } from '../../../../types/message'
-import { sendMessage } from '../../../lib/message'
 import { type Docs } from '../../background/lib/docs'
 
 function getDocVersion(doc: Doc) {

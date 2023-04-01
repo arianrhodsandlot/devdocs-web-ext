@@ -1,7 +1,7 @@
 import _ from 'lodash'
-import { type WrapedResponse } from '../../types/message'
-import { Docs } from '../pages/background/lib/docs'
-import { getDocs } from '../pages/background/lib/docs-utils'
+import { type WrapedResponse } from '~/types/message'
+import { Docs } from './docs'
+import { getDocs } from './docs-utils'
 
 async function searchEntry({ query, scope }: { query: string; scope: string }) {
   if (!query && !scope) {

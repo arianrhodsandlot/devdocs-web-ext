@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import browser from 'webextension-polyfill'
-import { log } from '../../../lib/log'
-import { Docs } from '../lib/docs'
+import { log } from '~/src/lib/utils/log'
+import { Docs } from './docs'
 
 const defaultDocNames = ['css', 'dom', 'dom_events', 'html', 'http', 'javascript']
 async function getDocNames() {

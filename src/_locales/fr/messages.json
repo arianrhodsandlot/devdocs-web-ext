@@ -40,6 +40,9 @@
   "optionsTheme": {
     "message": "Thème"
   },
+  "optionsSystem": {
+    "message": "système"
+  },
   "optionsLight": {
     "message": "clair"
   },

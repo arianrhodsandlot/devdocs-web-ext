@@ -61,6 +61,7 @@ function Header() {
       inputRef.current.focus()
       inputRef.current.select()
     })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {

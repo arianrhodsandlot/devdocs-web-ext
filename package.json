@@ -4,8 +4,9 @@
   "scripts": {
     "build": "parcel build --no-source-maps",
     "dev:browser": "tsx scripts/dev-browser",
-    "dev:bundler": "parcel watch --no-content-hash",
+    "dev:bundler": "parcel watch",
     "dev": "conc -c auto -k npm:dev:*",
+    "clean": "tsx scripts/dev-browser --clean",
     "lint": "eslint src",
     "test": "yarn lint && cross-env BUILD_MODE=test webpack -p && ava"
   },

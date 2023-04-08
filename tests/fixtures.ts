@@ -36,8 +36,6 @@ export const test = base.extend<{
         `--load-extension=${pathToExtension}`,
         '--start-maximized',
       ],
-      // eslint-disable-next-line unicorn/no-null
-      viewport: null,
     })
     await use(context)
     await context.close()

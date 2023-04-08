@@ -9,9 +9,8 @@
     "dev:browser": "tsx scripts/dev-browser",
     "dev:bundler": "parcel watch",
     "dev": "conc -c auto -k npm:dev:*",
-    "test:e2e": "pnpm build:bundler && playwright test -c tests",
-    "test:lint": "eslint src",
-    "test": "conc -c auto -k npm:test:*"
+    "lint": "eslint src",
+    "test": "pnpm build:bundler && playwright test -c tests"
   },
   "dependencies": {
     "@jridgewell/resolve-uri": "3.1.1",

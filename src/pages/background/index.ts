@@ -1,6 +1,6 @@
 import browser from 'webextension-polyfill'
 import { defaultOptions } from '~/src/lib/utils/default-options'
-import { isDev, isTest } from '~/src/lib/utils/env'
+import { isDev } from '~/src/lib/utils/env'
 import { log } from '~/src/lib/utils/log'
 import { errorHandler, messageHandlers } from '~/src/lib/utils/message-handlers'
 import { storage } from '~/src/lib/utils/storage'
@@ -47,14 +47,6 @@ function initializeListeners() {
 
   browser.runtime.onInstalled.addListener(async () => {
     await updateDocs()
-
-    const shouldOpenTabsForTest = isTest || isDev || browser
-    if (shouldOpenTabsForTest) {
-      const manifest = browser.runtime.getManifest()
-
-      browser.tabs.create({ url: manifest.options_ui?.page })
-      browser.tabs.create({ url: manifest.action?.default_popup })
-    }
   })
 }
 

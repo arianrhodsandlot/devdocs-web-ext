@@ -2,17 +2,19 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "parcel build --no-source-maps",
+    "build:bundler": "parcel build --no-source-maps --no-scope-hoist",
+    "build:web-ext": "web-ext build -s dist -a artifacts -o",
+    "build": "pnpm clean && pnpm build:bundler && pnpm build:web-ext",
+    "clean": "tsx scripts/clean",
     "dev:browser": "tsx scripts/dev-browser",
     "dev:bundler": "parcel watch",
     "dev": "conc -c auto -k npm:dev:*",
-    "clean": "tsx scripts/dev-browser --clean",
+    "test:e2e": "pnpm build:bundler && playwright test -c tests",
     "test:lint": "eslint src",
-    "test:e2e": "tsx scripts/test-e2e",
-    "test": "conc -c auto -k lint npm:test:*"
+    "test": "conc -c auto -k npm:test:*"
   },
   "dependencies": {
-    "@jridgewell/resolve-uri": "3.1.0",
+    "@jridgewell/resolve-uri": "3.1.1",
     "@material-design-icons/font": "0.14.5",
     "@rmwc/button": "8.0.7",
     "@rmwc/checkbox": "8.0.7",
@@ -28,6 +30,7 @@
     "ky": "0.33.3",
     "lodash": "4.17.21",
     "prismjs": "1.29.0",
+    "process": "0.11.10",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-router-dom": "6.10.0",
@@ -35,12 +38,13 @@
     "webextension-polyfill": "0.10.0"
   },
   "devDependencies": {
-    "@arianrhodsandlot/eslint-config": "0.3.1",
+    "@arianrhodsandlot/eslint-config": "0.4.1",
     "@parcel/config-webextension": "2.8.3",
     "@parcel/core": "2.8.3",
     "@parcel/resolver-default": "2.8.3",
     "@parcel/transformer-pug": "2.8.3",
     "@parcel/transformer-sass": "2.8.3",
+    "@playwright/test": "1.32.2",
     "@tsconfig/esm": "1.0.2",
     "@tsconfig/recommended": "1.0.2",
     "@types/firefox-webext-browser": "111.0.1",
@@ -60,5 +64,8 @@
     "web-ext": "7.6.0",
     "zx": "7.2.1"
   },
+  "sideEffects": [
+    "*.css"
+  ],
   "source": "src/manifest.json"
 }

@@ -159,7 +159,7 @@ export default function Content() {
     if (!target) {
       return
     }
-    const href = target.getAttribute('href') || ''
+    const href = target.getAttribute('href') ?? ''
     if (href.startsWith('http://') || href.startsWith('https://')) {
       browser.tabs.create({ url: href })
     } else {

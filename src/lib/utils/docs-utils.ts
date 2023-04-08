@@ -6,7 +6,7 @@ import { Docs } from './docs'
 const defaultDocNames = ['css', 'dom', 'dom_events', 'html', 'http', 'javascript']
 async function getDocNames() {
   const cookie =
-    (await browser.cookies.get({ url: 'https://devdocs.io', name: 'docs' })) ||
+    (await browser.cookies.get({ url: 'https://devdocs.io', name: 'docs' })) ??
     (await browser.cookies.get({ url: 'http://devdocs.io', name: 'docs' }))
   return cookie?.value?.split('/') ?? defaultDocNames
 }

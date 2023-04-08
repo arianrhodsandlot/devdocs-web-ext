@@ -32,7 +32,6 @@ function wrapResponse(rawResponse: unknown) {
   return wrapedResponse
 }
 
-// eslint-disable-next-line etc/prefer-interface
 type MessageHandler = (payload: unknown) => Promise<WrapedResponse>
 type MessageHandlers = Record<string, MessageHandler>
 export const messageHandlers: MessageHandlers = {

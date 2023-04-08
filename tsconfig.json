@@ -5,6 +5,7 @@
     "jsx": "react",
     "module": "esnext",
     "moduleResolution": "node",
+    "target": "es2017",
     "paths": {
       "~*": ["./*"]
     }

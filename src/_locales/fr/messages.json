@@ -80,7 +80,7 @@
     "message": "version: "
   },
   "optionsOpenSource": {
-    "message": "DevDocs Web Ext est un logiciel open-source, hébergé sur <a href=\"https://github.com/arianrhodsandlot/DevDocs-Web-Ext\">GitHub</a>."
+    "message": "DevDocs Web Ext est un logiciel open-source, hébergé sur <a href=\"https://github.com/arianrhodsandlot/devdocs-web-ext\">GitHub</a>."
   },
   "optionsShortcut": {
     "message": "Raccourci"

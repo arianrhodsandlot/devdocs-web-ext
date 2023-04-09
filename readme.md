@@ -4,29 +4,32 @@
 
 <h1 align="center">DevDocs Web Ext</h1>
 
-[![Chrome Web Store](https://img.shields.io/chrome-web-store/v/kdjoccdpjblcefijcfhnjoljodddedpj.svg)](https://chrome.google.com/webstore/detail/devdocs-web-ext/kdjoccdpjblcefijcfhnjoljodddedpj)
-[![Chrome Web Store](https://img.shields.io/chrome-web-store/users/kdjoccdpjblcefijcfhnjoljodddedpj.svg)](https://chrome.google.com/webstore/detail/devdocs-web-ext/kdjoccdpjblcefijcfhnjoljodddedpj) [![Chrome Web Store](https://img.shields.io/chrome-web-store/stars/kdjoccdpjblcefijcfhnjoljodddedpj.svg)](https://chrome.google.com/webstore/detail/devdocs-web-ext/kdjoccdpjblcefijcfhnjoljodddedpj)
+<p align="center">
+  <a href="https://chrome.google.com/webstore/detail/devdocs-web-ext/kdjoccdpjblcefijcfhnjoljodddedpj">
+    <img src="https://img.shields.io/chrome-web-store/v/kdjoccdpjblcefijcfhnjoljodddedpj.svg" alt="Chrome Web Store">
+  </a>
+  <a href="https://chrome.google.com/webstore/detail/devdocs-web-ext/kdjoccdpjblcefijcfhnjoljodddedpj">
+    <img src="https://img.shields.io/chrome-web-store/users/kdjoccdpjblcefijcfhnjoljodddedpj.svg" alt="users">
+  </a>
+  <a href="https://chrome.google.com/webstore/detail/devdocs-web-ext/kdjoccdpjblcefijcfhnjoljodddedpj">
+    <img src="https://img.shields.io/chrome-web-store/stars/kdjoccdpjblcefijcfhnjoljodddedpj.svg" alt="rating">
+  </a>
+</p>
 
 ## Overview
-DevDocs Web Ext is a browser extension that allows you to quickly search and browse online documentations, from within your browser.
+DevDocs Web Ext is a browser extension that allows you to quickly search and browse online documentations from [DevDocs](https://devdocs.io).
 
 ![popup search scope](./docs/images/screenshots/popup-doc.png)
 
 ## Features
-+ Quick access to documentation for over 200 development libraries provided by [DevDocs]([devdocs](https://devdocs.io)).
++ Quick access to documentation for over 200 development libraries provided by [DevDocs](https://devdocs.io).
 + Search in a certain library or a certain version of the library.
 + Dark theme is supported.
 
 ## Install
-### Chrome / Chromium based browsers (Vivaldi, Brave, etc.)
 Visit [Chrome Web Store](https://chrome.google.com/webstore/detail/quick-devdocs/kdjoccdpjblcefijcfhnjoljodddedpj) to install it.
 
 [![Chrome Web Store](https://storage.googleapis.com/web-dev-uploads/image/WlD8wC6g8khYWPJUsQceQkhXSlv1/UV4C4ybeBTsZt43U4xis.png)](https://chrome.google.com/webstore/detail/quick-devdocs/kdjoccdpjblcefijcfhnjoljodddedpj)
-
-### Microsoft Edge
-Visit [Microsoft Edge Add-ons](https://chrome.google.com/webstore/detail/quick-devdocs/kdjoccdpjblcefijcfhnjoljodddedpj) to install it.
-
-[![Chrome Web Store](https://user-images.githubusercontent.com/72879799/229780441-610f727a-edb4-41e0-a1fb-6593af3d4485.svg)](https://chrome.google.com/webstore/detail/quick-devdocs/kdjoccdpjblcefijcfhnjoljodddedpj)
 
 ## Usage
 To use DevDocs Web Ext, simply click on the extension icon in your browser's toolbar to open the popup window. From there, you can search for the library you need and browse through its documentation.
@@ -51,8 +54,9 @@ DevDocs Web Ext is an open-source project, and contributions are always welcome!
 
 Here is a simple overview about how to set up development environment.
 ```sh
-git clone https://github.com/arianrhodsandlot/DevDocs-Web-Ext.git
-cd DevDocs-Web-Ext
+# initialize the development environment
+git clone https://github.com/arianrhodsandlot/devdocs-web-ext.git
+cd devdocs-web-ext
 pnpm i
 
 # start a fresh browser using Playwright with the develop version extension installed

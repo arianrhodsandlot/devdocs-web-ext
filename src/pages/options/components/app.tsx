@@ -181,7 +181,7 @@ function App() {
             {i18n('optionsRate')}
           </a>
           <span className='space'>·</span>
-          <a href='https://github.com/arianrhodsandlot/DevDocs-Web-Ext'>
+          <a href='https://github.com/arianrhodsandlot/devdocs-web-ext'>
             <Icon icon={{ icon: 'code' }}></Icon>
             {i18n('optionsSource')}
           </a>
@@ -195,7 +195,7 @@ function App() {
 
       <a
         className='github-fork-ribbon right-bottom fixed'
-        href='https://github.com/arianrhodsandlot/DevDocs-Web-Ext'
+        href='https://github.com/arianrhodsandlot/devdocs-web-ext'
         data-ribbon='Star me on GitHub'
         title='Star me on GitHub'
       >

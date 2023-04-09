@@ -23,18 +23,13 @@ function Header() {
   const [scope, setScope] = useState('')
   const [query, setQuery] = useState('')
   const [docName, setDocName] = useState('')
-  const inputRef = useRef<HTMLInputElement>()
-  const scopeRef = useRef<HTMLInputElement>()
+  const inputRef = useRef<HTMLInputElement>(null)
+  const scopeRef = useRef<HTMLInputElement>(null)
 
   const location = useLocation()
   const navigate = useNavigate()
 
   useEffect(() => {
-    if (!inputRef.current) {
-      return
-    }
-    inputRef.current.select()
-
     key('/', (e) => {
       if (!inputRef.current) {
         return
@@ -52,15 +47,13 @@ function Header() {
   useEffect(() => {
     const lastPopupPath = localStorage.getItem('lastPopupPath')
     if (lastPopupPath) {
-      navigate(lastPopupPath, { replace: true })
+      navigate(lastPopupPath, {
+        replace: true,
+        state: {
+          autoRedirectByLocalStorage: true,
+        },
+      })
     }
-    setTimeout(() => {
-      if (!inputRef.current) {
-        return
-      }
-      inputRef.current.focus()
-      inputRef.current.select()
-    })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -88,6 +81,14 @@ function Header() {
       setQuery(inputState.query)
     }
   }, [location])
+
+  useEffect(() => {
+    if (location.state?.autoRedirectByLocalStorage) {
+      inputRef.current?.select()
+      inputRef.current?.focus()
+    }
+  }, [location, query])
+
   function clearDoc() {
     setScope('')
     setQuery('')
@@ -149,7 +150,7 @@ function Header() {
           className='input _search-input'
           spellCheck={false}
           onInput={handleChange}
-          ref={inputRef as React.MutableRefObject<HTMLInputElement>}
+          ref={inputRef}
           style={docName ? { paddingLeft: inputPaddingLeft } : {}}
           onKeyDown={handleKeyDown}
         />

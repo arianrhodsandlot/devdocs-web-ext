@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import { type WrapedResponse } from '~/types/message'
+import { type WrapedResponse } from '~/src/types/message'
 import { Docs } from './docs'
 import { getDocs } from './docs-utils'
 

@@ -6,7 +6,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 import browser from 'webextension-polyfill'
 import { type Docs } from '~/src/lib/utils/docs'
 import { sendMessage } from '~/src/lib/utils/message'
-import { type WrapedResponse } from '~/types/message'
+import { type WrapedResponse } from '~/src/types/message'
 
 function getDocVersion(doc: Doc) {
   return doc.slug.includes('~') ? doc.slug.split('~')[1] : ''

@@ -22,6 +22,7 @@ interface Entry {
   name: string
   path: string
   type: string
+  // eslint-disable-next-line no-use-before-define
   doc: ExtendedDoc
 }
 

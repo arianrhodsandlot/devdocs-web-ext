@@ -70,8 +70,8 @@ dependencies:
 
 devDependencies:
   '@arianrhodsandlot/eslint-config':
-    specifier: 0.4.1
-    version: 0.4.1(eslint@8.38.0)(typescript@5.0.4)
+    specifier: 0.5.0
+    version: 0.5.0(eslint@8.38.0)(typescript@5.0.4)
   '@parcel/config-webextension':
     specifier: 2.8.3
     version: 2.8.3(@parcel/core@2.8.3)
@@ -147,8 +147,8 @@ devDependencies:
 
 packages:
 
-  /@arianrhodsandlot/eslint-config@0.4.1(eslint@8.38.0)(typescript@5.0.4):
-    resolution: {integrity: sha512-lvTEnGQxe32cM0Ne2tI3g1CjPfJIsA6GWdeDcs8c23wjB8HqgtPICeIANZpJZxBtB1Og05pkqMCVaGrzWjQjNQ==}
+  /@arianrhodsandlot/eslint-config@0.5.0(eslint@8.38.0)(typescript@5.0.4):
+    resolution: {integrity: sha512-cRAEetfIBU05q47weL5KALKb9nCB9wbJINJ5eHvdekrxXZwkb7oYhy8tV5oCFVz0DLlbganr8QTptLnSkAJZnw==}
     peerDependencies:
       eslint: '*'
     dependencies:
@@ -2663,8 +2663,8 @@ packages:
     engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
     hasBin: true
     dependencies:
-      caniuse-lite: 1.0.30001474
-      electron-to-chromium: 1.4.355
+      caniuse-lite: 1.0.30001476
+      electron-to-chromium: 1.4.356
       node-releases: 2.0.10
       update-browserslist-db: 1.0.10(browserslist@4.21.5)
     dev: true
@@ -2750,8 +2750,8 @@ packages:
     engines: {node: '>=14.16'}
     dev: true
 
-  /caniuse-lite@1.0.30001474:
-    resolution: {integrity: sha512-iaIZ8gVrWfemh5DG3T9/YqarVZoYf0r188IjaGwx68j4Pf0SGY6CQkmJUIE+NZHkkecQGohzXmBGEwWDr9aM3Q==}
+  /caniuse-lite@1.0.30001476:
+    resolution: {integrity: sha512-JmpktFppVSvyUN4gsLS0bShY2L9ZUslHLE72vgemBkS43JD2fOvKTKs+GtRwuxrtRGnwJFW0ye7kWRRlLJS9vQ==}
     dev: true
 
   /caseless@0.12.0:
@@ -3040,7 +3040,7 @@ packages:
       date-fns: 2.29.3
       lodash: 4.17.21
       rxjs: 7.8.0
-      shell-quote: 1.8.0
+      shell-quote: 1.8.1
       spawn-command: 0.0.2-1
       supports-color: 8.1.1
       tree-kill: 1.2.2
@@ -3463,8 +3463,8 @@ packages:
       safe-buffer: 5.2.1
     dev: true
 
-  /electron-to-chromium@1.4.355:
-    resolution: {integrity: sha512-056hxzEE4l667YeOccgjhRr5fTiwZ6EIJ4FpzGps4k3YcS8iAhiaBYUBrv5E2LDQJsussscv9EEUwAYKnv+ZKg==}
+  /electron-to-chromium@1.4.356:
+    resolution: {integrity: sha512-nEftV1dRX3omlxAj42FwqRZT0i4xd2dIg39sog/CnCJeCcL1TRd2Uh0i9Oebgv8Ou0vzTPw++xc+Z20jzS2B6A==}
     dev: true
 
   /emittery@1.0.1:
@@ -4058,8 +4058,8 @@ packages:
       doctrine: 3.0.0
       escape-string-regexp: 4.0.0
       eslint-scope: 7.1.1
-      eslint-visitor-keys: 3.4.0
-      espree: 9.5.1
+      eslint-visitor-keys: 3.3.0
+      espree: 9.5.0
       esquery: 1.5.0
       esutils: 2.0.3
       fast-deep-equal: 3.1.3
@@ -4143,7 +4143,7 @@ packages:
     dependencies:
       acorn: 8.8.2
       acorn-jsx: 5.3.2(acorn@8.8.2)
-      eslint-visitor-keys: 3.4.0
+      eslint-visitor-keys: 3.3.0
     dev: true
 
   /espree@9.5.1:
@@ -7116,8 +7116,8 @@ packages:
     resolution: {integrity: sha512-Vpfqwm4EnqGdlsBFNmHhxhElJYrdfcxPThu+ryKS5J8L/fhAwLazFZtq+S+TWZ9ANj2piSQLGj6NQg+lKPmxrw==}
     dev: true
 
-  /shell-quote@1.8.0:
-    resolution: {integrity: sha512-QHsz8GgQIGKlRi24yFc6a6lN69Idnx634w49ay6+jA5yFh7a1UY+4Rp6HPx/L/1zcEDPEij8cIsiqR6bQsE5VQ==}
+  /shell-quote@1.8.1:
+    resolution: {integrity: sha512-6j1W9l1iAs/4xYBI1SYOVZyFcCis9b4KCLQ8fgAGG07QvzaRLVVRQvAy85yNmmZSjYjg4MWh4gNvlPujU/5LpA==}
     dev: true
 
   /shellwords@0.1.1:

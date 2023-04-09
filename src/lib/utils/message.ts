@@ -1,5 +1,5 @@
 import browser from 'webextension-polyfill'
-import { type WrapedResponse } from '~/types/message'
+import { type WrapedResponse } from '~/src/types/message'
 import { log } from './log'
 import { messageHandlers } from './message-handlers'
 

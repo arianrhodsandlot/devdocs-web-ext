@@ -9,7 +9,7 @@
     "dev:browser": "tsx scripts/dev-browser",
     "dev:bundler": "parcel watch",
     "dev": "conc -c auto -k npm:dev:*",
-    "lint": "eslint src",
+    "lint": "eslint .",
     "test": "pnpm build:bundler && playwright test -c tests"
   },
   "dependencies": {
@@ -37,7 +37,7 @@
     "webextension-polyfill": "0.10.0"
   },
   "devDependencies": {
-    "@arianrhodsandlot/eslint-config": "0.4.1",
+    "@arianrhodsandlot/eslint-config": "0.5.0",
     "@parcel/config-webextension": "2.8.3",
     "@parcel/core": "2.8.3",
     "@parcel/resolver-default": "2.8.3",

@@ -1,6 +1,5 @@
 import browser from 'webextension-polyfill'
 import { defaultOptions } from '~/src/lib/utils/default-options'
-import { isDev } from '~/src/lib/utils/env'
 import { log } from '~/src/lib/utils/log'
 import { errorHandler, messageHandlers } from '~/src/lib/utils/message-handlers'
 import { storage } from '~/src/lib/utils/storage'
@@ -53,11 +52,6 @@ function initializeListeners() {
 function main() {
   initializeOptions()
   initializeListeners()
-
-  if (isDev) {
-    browser.action.setBadgeBackgroundColor({ color: 'white' })
-    browser.action.setBadgeText({ text: '🚧' })
-  }
 }
 
 main()

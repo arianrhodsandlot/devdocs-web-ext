@@ -23,7 +23,7 @@ export const test = base.extend<{
   optionsPage: Page
 }>({
   userDataDir({}, use) {
-    const userDataDir = path.join(tmpdir, `${Date.now()}`)
+    const userDataDir = path.join(tmpdir, `user-data-dir-test-${Date.now()}`)
     use(userDataDir)
   },
 

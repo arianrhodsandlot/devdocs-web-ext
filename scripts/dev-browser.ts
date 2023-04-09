@@ -1,4 +1,3 @@
-import os from 'node:os'
 import path from 'node:path'
 import { setTimeout } from 'node:timers/promises'
 import { fileURLToPath } from 'node:url'
@@ -12,16 +11,22 @@ async function waitForFile(file: string) {
 }
 
 const pathToExtension = path.resolve(fileURLToPath(import.meta.url), '../../dist')
-const tmpdir = path.resolve(fileURLToPath(import.meta.url), '../../temp')
-const userDataDir = path.join(tmpdir, `${Date.now()}`)
+const tmpdir = path.resolve(fileURLToPath(import.meta.url), '../../tmp')
+const userDataDir = path.join(tmpdir, 'user-data-dir-dev')
 const extensionManifest = path.join(pathToExtension, 'manifest.json')
 
 await waitForFile(extensionManifest)
 const context = await chromium.launchPersistentContext(userDataDir, {
-  args: [`--disable-extensions-except=${pathToExtension}`, `--load-extension=${pathToExtension}`, '--start-maximized'],
+  headless: false,
   devtools: true,
   // eslint-disable-next-line unicorn/no-null
   viewport: null,
+  args: [
+    `--disable-extensions-except=${pathToExtension}`,
+    `--load-extension=${pathToExtension}`,
+    '--start-maximized',
+    '--lang=en-US',
+  ],
 })
 
 async function getExtensionPageFilenames() {

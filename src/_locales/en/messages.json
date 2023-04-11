@@ -96,8 +96,5 @@
   },
   "optionsSource": {
     "message": "Source"
-  },
-  "contextMenuTemplate": {
-    "message": "Search DevDocs Web Ext for \"%s\""
   }
 }

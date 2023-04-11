@@ -96,8 +96,5 @@
   },
   "optionsSource": {
     "message": "原始碼"
-  },
-  "contextMenuTemplate": {
-    "message": "在DevDocs Web Ext中搜索“%s”"
   }
 }

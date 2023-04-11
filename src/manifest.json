@@ -1,6 +1,6 @@
 {
   "name": "__MSG_appName__",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "manifest_version": 3,
   "description": "__MSG_appDescription__",
   "homepage_url": "https://github.com/arianrhodsandlot/devdocs-web-ext",
@@ -27,8 +27,7 @@
   "permissions": [
     "cookies",
     "activeTab",
-    "storage",
-    "contextMenus"
+    "storage"
   ],
   "host_permissions": [
     "*://devdocs.io/",

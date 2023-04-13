@@ -8,6 +8,10 @@
   <a href="https://chrome.google.com/webstore/detail/devdocs-web-ext/kdjoccdpjblcefijcfhnjoljodddedpj">
     <img src="https://img.shields.io/chrome-web-store/v/kdjoccdpjblcefijcfhnjoljodddedpj.svg" alt="Chrome Web Store">
   </a>
+  <a href="https://microsoftedge.microsoft.com/addons/detail/devdocs-web-ext/dglcbgdedngbiaaohopncfonhdngodmo">
+    <img src="https://img.shields.io/badge/dynamic/json?label=edge%20add-on&prefix=v&query=%24.version&url=https%3A%2F%2Fmicrosoftedge.microsoft.com%2Faddons%2Fgetproductdetailsbycrxid%2Fdglcbgdedngbiaaohopncfonhdngodmo" alt="Microsoft Edge Add-ons">
+  </a>
+  <br>
   <a href="https://chrome.google.com/webstore/detail/devdocs-web-ext/kdjoccdpjblcefijcfhnjoljodddedpj">
     <img src="https://img.shields.io/chrome-web-store/users/kdjoccdpjblcefijcfhnjoljodddedpj.svg" alt="users">
   </a>
@@ -27,16 +31,23 @@ DevDocs Web Ext is a browser extension that allows you to quickly search and bro
 + Dark theme is supported.
 
 ## Install
+### Google Chrome / Chromium based browsers (Vivaldi, Brave, etc.)
 Visit [Chrome Web Store](https://chrome.google.com/webstore/detail/quick-devdocs/kdjoccdpjblcefijcfhnjoljodddedpj) to install it.
 
 [![Chrome Web Store](https://storage.googleapis.com/web-dev-uploads/image/WlD8wC6g8khYWPJUsQceQkhXSlv1/UV4C4ybeBTsZt43U4xis.png)](https://chrome.google.com/webstore/detail/quick-devdocs/kdjoccdpjblcefijcfhnjoljodddedpj)
 
+### Microsoft Edge
+Visit [Microsoft Edge Add-ons](https://microsoftedge.microsoft.com/addons/detail/devdocs-web-ext/dglcbgdedngbiaaohopncfonhdngodmo) to install it.
+
+[![Microsoft Edge Add-ons](https://user-images.githubusercontent.com/72879799/229780441-610f727a-edb4-41e0-a1fb-6593af3d4485.svg)](https://microsoftedge.microsoft.com/addons/detail/devdocs-web-ext/dglcbgdedngbiaaohopncfonhdngodmo)
+
 ## Usage
-To use DevDocs Web Ext, simply click on the extension icon in your browser's toolbar to open the popup window. From there, you can search for the library you need and browse through its documentation.
+To use DevDocs Web Ext, simply click on the extension icon in your browser's toolbar to open the popup window. From there, you can search for the library you need and browse through its documentation. There is also a default shortcut for opening the popup window: <kbd>ALT<kbd> + <kbd>S<kbd>.
 
 You can also click open the options page to customize the extension's behavior, including changing your appearance and theme.
 
 ## Screenshots
+Screenshots are captured using Google Chrome.
 | Description | Screenshot |
 |---|---|
 | Open the extension | <img src="./docs/images/screenshots/popup.png" width="320" height="200"> |
@@ -66,8 +77,10 @@ pnpm dev
 pnpm t
 
 # debug test cases
+# see https://playwright.dev/docs/debug#run-in-debug-mode-1 for more information about Playwright
 pnpm playwright test -c tests --debug
-# or
+# or debug using Playwright's Browser Developer Tools
+# see https://playwright.dev/docs/debug#browser-developer-tools
 PWDEBUG=console p playwright test -c tests
 ```
 

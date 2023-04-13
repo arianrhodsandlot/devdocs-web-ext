@@ -23,7 +23,7 @@
 ## Overview
 DevDocs Web Ext is a browser extension that allows you to quickly search and browse online documentations from [DevDocs](https://devdocs.io).
 
-![popup search scope](./docs/images/screenshots/popup-doc.png)
+<img src='./docs/images/screenshots/popup-doc.png' width='600' alt="popup search scope" />
 
 ## Features
 + Quick access to documentation for over 200 development libraries provided by [DevDocs](https://devdocs.io).
@@ -42,7 +42,7 @@ Visit [Microsoft Edge Add-ons](https://microsoftedge.microsoft.com/addons/detail
 [![Microsoft Edge Add-ons](https://user-images.githubusercontent.com/72879799/229780441-610f727a-edb4-41e0-a1fb-6593af3d4485.svg)](https://microsoftedge.microsoft.com/addons/detail/devdocs-web-ext/dglcbgdedngbiaaohopncfonhdngodmo)
 
 ## Usage
-To use DevDocs Web Ext, simply click on the extension icon in your browser's toolbar to open the popup window. From there, you can search for the library you need and browse through its documentation. There is also a default shortcut for opening the popup window: <kbd>ALT<kbd> + <kbd>S<kbd>.
+To use DevDocs Web Ext, simply click on the extension icon in your browser's toolbar to open the popup window. From there, you can search for the library you need and browse through its documentation. There is also a default shortcut for opening the popup window: <kbd>ALT</kbd> + <kbd>S</kbd>.
 
 You can also click open the options page to customize the extension's behavior, including changing your appearance and theme.
 

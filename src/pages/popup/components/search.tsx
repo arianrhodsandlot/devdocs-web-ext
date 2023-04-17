@@ -107,7 +107,7 @@ export default function Search() {
       setFocusPos(newFocusPos)
       setFailMessage(newFailMessage)
     },
-    [location.search, navigate]
+    [location, navigate]
   )
 
   useEffect(() => {

@@ -1,6 +1,7 @@
 import key from 'keymaster'
 import React from 'react'
 import { HashRouter } from 'react-router-dom'
+import 'prismjs-components-importer'
 import { defaultOptions } from '~/src/lib/utils/default-options'
 import { isDarkColorScheme, onColorSchemeChange } from '~/src/lib/utils/media-query'
 import { render } from '~/src/lib/utils/render'

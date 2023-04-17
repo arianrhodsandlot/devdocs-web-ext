@@ -2,7 +2,7 @@ import resolve from '@jridgewell/resolve-uri'
 import classnames from 'classnames'
 import key from 'keymaster'
 import ky from 'ky'
-import Prism from 'prismjs'
+import { highlightElement } from 'prismjs'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import browser from 'webextension-polyfill'
@@ -132,7 +132,7 @@ export default function Content() {
       if (el) {
         const { language } = el.dataset
         el.classList.add(`language-${language}`)
-        Prism.highlightElement(el)
+        highlightElement(el)
       }
     }
   }, [content])

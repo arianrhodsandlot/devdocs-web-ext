@@ -20,8 +20,8 @@ async function attemptCompeleteDocName(docScope: string) {
 
 function Header() {
   const [inputPaddingLeft, setInputPaddingLeft] = useState(0)
-  const [scope, setScope] = useState('')
-  const [query, setQuery] = useState('')
+  const [scope, setScope] = useState(localStorage.lastScope ?? '')
+  const [query, setQuery] = useState(localStorage.lastQuery ?? '')
   const [docName, setDocName] = useState('')
   const inputRef = useRef<HTMLInputElement>(null)
   const scopeRef = useRef<HTMLInputElement>(null)
@@ -58,6 +58,18 @@ function Header() {
   }, [])
 
   useEffect(() => {
+    if (!location.state?.autoRedirectByLocalStorage) {
+      localStorage.lastScope = scope
+    }
+  }, [location, scope])
+
+  useEffect(() => {
+    if (!location.state?.autoRedirectByLocalStorage) {
+      localStorage.lastQuery = query
+    }
+  }, [location, query])
+
+  useEffect(() => {
     ;(async () => {
       const completedDocName = await attemptCompeleteDocName(scope)
       setDocName(completedDocName)
@@ -74,7 +86,7 @@ function Header() {
   }, [docName])
 
   useEffect(() => {
-    if (location.pathname === '/search' || location.pathname === '/') {
+    if (location.pathname === '/search') {
       const params = new URLSearchParams(location.search.slice(1))
       const inputState = { query: params.get('query') ?? '', scope: params.get('scope') ?? '' }
       setScope(inputState.scope)

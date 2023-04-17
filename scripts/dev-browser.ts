@@ -38,15 +38,19 @@ async function getExtensionPageFilenames() {
 }
 
 let [background] = context.serviceWorkers()
-background ??= await context.waitForEvent('serviceworker')
-const extensionId = background.url().split('/')[2]
-const popupPage = await context.newPage()
-const { popup } = await getExtensionPageFilenames()
-await popupPage.goto(`chrome-extension://${extensionId}/${popup}`)
-const optionsPage = await context.newPage()
-const { options } = await getExtensionPageFilenames()
-await optionsPage.goto(`chrome-extension://${extensionId}/${options}`)
-await context
-  .pages()
-  .find((page) => page.url() === 'about:blank')
-  ?.close()
+try {
+  background ??= await context.waitForEvent('serviceworker')
+  const extensionId = background.url().split('/')[2]
+  const popupPage = await context.newPage()
+  const { popup } = await getExtensionPageFilenames()
+  await popupPage.goto(`chrome-extension://${extensionId}/${popup}`)
+  const optionsPage = await context.newPage()
+  const { options } = await getExtensionPageFilenames()
+  await optionsPage.goto(`chrome-extension://${extensionId}/${options}`)
+  await context
+    .pages()
+    .find((page) => page.url() === 'about:blank')
+    ?.close()
+} catch (error) {
+  console.error(error)
+}

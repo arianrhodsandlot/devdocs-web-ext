@@ -68,3 +68,26 @@ test('content display and scroll', async ({ popupPage }) => {
   await popupPage.waitForTimeout(500)
   expect(await popupPage.locator('._page._mdn').evaluate(({ scrollTop }) => scrollTop)).toBe(0)
 })
+
+test('docs content syntax highlighting', async ({ context, optionsPage, popupPage }) => {
+  await optionsPage.bringToFront()
+  await optionsPage.click('.mdc-button')
+
+  await context.waitForEvent('page', { predicate: (page) => page.url().includes('devdocs.io') })
+  const devdocsPage = context.pages().find((page) => page.url().includes('devdocs.io'))!
+  await devdocsPage.locator('[name=rust]').click({ force: true })
+  await devdocsPage.locator('._settings-btn-save').click({ force: true })
+
+  await popupPage.bringToFront()
+  await popupPage.locator('input').focus()
+  await popupPage.keyboard.type('rust')
+  await popupPage.keyboard.press('Tab')
+  await popupPage.waitForSelector('._search-tag')
+  await popupPage.keyboard.type('helloworld')
+  await popupPage.getByText('Hello, World!').waitFor()
+  await popupPage.keyboard.press('Enter')
+
+  const codeElement = popupPage.locator('[data-language="rust"]').first()
+  const [textContent, innerHTML] = await Promise.all([codeElement.textContent(), codeElement.innerHTML()])
+  expect(textContent).not.toBe(innerHTML)
+})

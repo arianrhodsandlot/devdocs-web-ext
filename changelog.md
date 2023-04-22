@@ -10,7 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.5.3] - 2023-04-22
 ### Fixed
 - Fix syntax highlighting for non-default languages in prismjs, fix #40.
-- Fix remember last inputs.
+- Fix the issue of input box failing to remember previous inputs.
 
 ## [0.5.2] - 2023-04-11
 ### Fixed

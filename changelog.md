@@ -52,15 +52,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Minor ui optimizations
 
-[unreleased]: https://github.com/arianrhodsandlot/eslint-config/compare/v0.5.0...HEAD
-[0.5.3]: https://github.com/arianrhodsandlot/eslint-config/compare/v0.5.2...v0.5.3
-[0.5.2]: https://github.com/arianrhodsandlot/eslint-config/compare/v0.5.0...v0.5.2
-[0.5.0]: https://github.com/arianrhodsandlot/eslint-config/compare/v0.4.0...v0.5.0
-[0.4.0]: https://github.com/arianrhodsandlot/eslint-config/compare/v0.3.1...v0.4.0
-[0.3.1]: https://github.com/arianrhodsandlot/eslint-config/compare/v0.3.0...v0.3.1
-[0.3.0]: https://github.com/arianrhodsandlot/eslint-config/compare/v0.2.4...v0.3.0
-[0.2.4]: https://github.com/arianrhodsandlot/eslint-config/compare/v0.2.3...v0.2.4
-[0.2.3]: https://github.com/arianrhodsandlot/eslint-config/compare/v0.2.2...v0.2.3
-[0.2.2]: https://github.com/arianrhodsandlot/eslint-config/compare/v0.2.1...v0.2.2
-[0.2.1]: https://github.com/arianrhodsandlot/eslint-config/compare/v0.2.0...v0.2.1
-[0.2.0]: https://github.com/arianrhodsandlot/eslint-config/compare/v0.1.10...v0.2.0
+[unreleased]: https://github.com/arianrhodsandlot/devdocs-web-ext/compare/v0.5.3...HEAD
+[0.5.3]: https://github.com/arianrhodsandlot/devdocs-web-ext/compare/v0.5.2...v0.5.3
+[0.5.2]: https://github.com/arianrhodsandlot/devdocs-web-ext/compare/v0.5.0...v0.5.2
+[0.5.0]: https://github.com/arianrhodsandlot/devdocs-web-ext/compare/v0.4.0...v0.5.0
+[0.4.0]: https://github.com/arianrhodsandlot/devdocs-web-ext/compare/v0.3.1...v0.4.0
+[0.3.1]: https://github.com/arianrhodsandlot/devdocs-web-ext/compare/v0.3.0...v0.3.1
+[0.3.0]: https://github.com/arianrhodsandlot/devdocs-web-ext/compare/v0.2.4...v0.3.0
+[0.2.4]: https://github.com/arianrhodsandlot/devdocs-web-ext/compare/v0.2.3...v0.2.4
+[0.2.3]: https://github.com/arianrhodsandlot/devdocs-web-ext/compare/v0.2.2...v0.2.3
+[0.2.2]: https://github.com/arianrhodsandlot/devdocs-web-ext/compare/v0.2.1...v0.2.2
+[0.2.1]: https://github.com/arianrhodsandlot/devdocs-web-ext/compare/v0.2.0...v0.2.1
+[0.2.0]: https://github.com/arianrhodsandlot/devdocs-web-ext/compare/v0.1.10...v0.2.0

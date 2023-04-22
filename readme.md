@@ -23,7 +23,9 @@
 ## Overview
 DevDocs Web Ext is a browser extension that allows you to quickly search and browse online documentations from [DevDocs](https://devdocs.io).
 
-<img src='./docs/images/screenshots/popup-doc.png' width='600' alt="popup search scope" />
+<p align="center">
+  <img src='./docs/images/screenshots/popup-doc.png' width='600' alt="popup search scope" />
+</p>
 
 ## Features
 + Quick access to documentation for over 200 development libraries provided by [DevDocs](https://devdocs.io).

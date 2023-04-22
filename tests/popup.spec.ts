@@ -91,3 +91,29 @@ test('docs content syntax highlighting', async ({ context, optionsPage, popupPag
   const [textContent, innerHTML] = await Promise.all([codeElement.textContent(), codeElement.innerHTML()])
   expect(textContent).not.toBe(innerHTML)
 })
+
+test.only('remember previous inputs', async ({ context, optionsPage, popupPage }) => {
+  await popupPage.bringToFront()
+  await popupPage.keyboard.type('aaa')
+  await popupPage.goto(popupPage.url().split('#')[0])
+  expect(await popupPage.locator('input').inputValue()).toBe('aaa')
+
+  await popupPage.keyboard.type('html')
+  await popupPage.keyboard.press('Tab')
+  expect(await popupPage.locator('._search-tag').innerHTML()).toBe('HTML')
+  await popupPage.goto(popupPage.url().split('#')[0])
+  expect(await popupPage.locator('._search-tag').innerHTML()).toBe('HTML')
+  expect(await popupPage.locator('input').inputValue()).toBe('')
+
+  await popupPage.keyboard.press('Backspace')
+  await popupPage.goto(popupPage.url().split('#')[0])
+  expect(await popupPage.locator('input').inputValue()).toBe('')
+
+  await popupPage.keyboard.type('html')
+  await popupPage.keyboard.press('Tab')
+  expect(await popupPage.locator('._search-tag').innerHTML()).toBe('HTML')
+  await popupPage.keyboard.type('bbb')
+  await popupPage.goto(popupPage.url().split('#')[0])
+  expect(await popupPage.locator('._search-tag').innerHTML()).toBe('HTML')
+  expect(await popupPage.locator('input').inputValue()).toBe('bbb')
+})

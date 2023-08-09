@@ -152,19 +152,19 @@ function Header() {
 
   return (
     <div className='_header'>
-      <form className='_search' autoComplete='off'>
+      <form autoComplete='off' className='_search'>
         <svg>
           <use href='#icon-search' />
         </svg>
         <input
-          defaultValue={query}
-          placeholder='Search...'
           className='input _search-input'
-          spellCheck={false}
+          defaultValue={query}
           onInput={handleChange}
-          ref={inputRef}
-          style={docName ? { paddingLeft: inputPaddingLeft } : {}}
           onKeyDown={handleKeyDown}
+          placeholder='Search...'
+          ref={inputRef}
+          spellCheck={false}
+          style={docName ? { paddingLeft: inputPaddingLeft } : {}}
         />
         {docName ? (
           <div className='_search-tag' ref={scopeRef as React.MutableRefObject<HTMLDivElement>}>

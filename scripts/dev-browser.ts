@@ -19,7 +19,7 @@ await waitForFile(extensionManifest)
 const context = await chromium.launchPersistentContext(userDataDir, {
   headless: false,
   devtools: true,
-  // eslint-disable-next-line unicorn/no-null
+
   viewport: null,
   args: [
     `--disable-extensions-except=${pathToExtension}`,

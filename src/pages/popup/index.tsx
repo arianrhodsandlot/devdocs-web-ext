@@ -53,7 +53,7 @@ async function main() {
   render(
     <HashRouter>
       <App />
-    </HashRouter>
+    </HashRouter>,
   )
 }
 

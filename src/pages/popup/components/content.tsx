@@ -12,7 +12,7 @@ function cssEscape(selector: string) {
   try {
     return CSS.escape(selector)
   } catch {
-    return selector.replace(/([#,./:[\]])/gu, '\\$1')
+    return selector.replaceAll(/([#,./:[\]])/gu, '\\$1')
   }
 }
 
@@ -45,7 +45,7 @@ export default function Content() {
         }
       }
     },
-    [location]
+    [location],
   )
 
   useEffect(() => {
@@ -183,11 +183,11 @@ export default function Content() {
     <div className='_container' role='document'>
       <div className='_content' role='main'>
         <div
+          aria-hidden='true'
           className={classnames(['_page', doc ? `_${doc.type}` : ''])}
+          dangerouslySetInnerHTML={{ __html: content }}
           onClick={onContentClick}
           ref={pageRef as React.MutableRefObject<HTMLDivElement>}
-          dangerouslySetInnerHTML={{ __html: content }}
-          aria-hidden='true'
         />
       </div>
     </div>

@@ -34,7 +34,7 @@ export default function Search() {
       const maxFocusPos = entries.length - 1
       setFocusPos(focusPos === maxFocusPos ? 0 : focusPos + 1)
     },
-    [focusPos, entries]
+    [focusPos, entries],
   )
 
   const focusPrevEntry = useCallback(
@@ -45,7 +45,7 @@ export default function Search() {
       const maxFocusPos = entries.length - 1
       setFocusPos(focusPos === 0 ? maxFocusPos : focusPos - 1)
     },
-    [focusPos, entries]
+    [focusPos, entries],
   )
 
   const enterFocusEntry = useCallback(
@@ -58,7 +58,7 @@ export default function Search() {
         navigate(getEntryUrl(focusEntry))
       }
     },
-    [focusPos, entries, navigate]
+    [focusPos, entries, navigate],
   )
 
   const getEntryRef = useCallback(
@@ -75,7 +75,7 @@ export default function Search() {
       }
       return ref
     },
-    [entries]
+    [entries],
   )
 
   const search = useCallback(
@@ -107,7 +107,7 @@ export default function Search() {
       setFocusPos(newFocusPos)
       setFailMessage(newFailMessage)
     },
-    [location, navigate]
+    [location, navigate],
   )
 
   useEffect(() => {
@@ -170,14 +170,14 @@ export default function Search() {
       <div className='_list-note'>
         Note: documentations must be{' '}
         <a
-          href='https://devdocs.io/settings'
           className='_list-note-link'
-          target='_blank'
-          rel='noopener noreferrer'
+          href='https://devdocs.io/settings'
           onClick={(e) => {
             e.preventDefault()
             browser.tabs.create({ url: e.currentTarget.href })
           }}
+          rel='noopener noreferrer'
+          target='_blank'
         >
           enabled
         </a>{' '}
@@ -193,8 +193,8 @@ export default function Search() {
             focus: focusPos === i ? 'focus' : '',
           })}
           key={`${entry.doc.slug}-${entry.doc.name}/${entry.path}-${entry.name}`}
-          to={getEntryUrl(entry)}
           ref={getEntryRef(entry)}
+          to={getEntryUrl(entry)}
         >
           <div className='_list-count'>{getDocVersion(entry.doc)}</div>
           <div className='_list-text'>{entry.name}</div>

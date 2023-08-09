@@ -1,4 +1,3 @@
-// eslint-disable-next-line no-use-before-define
 type WrapedResponseContent = WrapedResponseContentRecord | WrapedResponseContentRecord[]
 
 type WrapedResponseContentRecord = Record<

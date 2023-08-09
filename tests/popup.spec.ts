@@ -92,7 +92,7 @@ test('docs content syntax highlighting', async ({ context, optionsPage, popupPag
   expect(textContent).not.toBe(innerHTML)
 })
 
-test.only('remember previous inputs', async ({ context, optionsPage, popupPage }) => {
+test('remember previous inputs', async ({ popupPage }) => {
   await popupPage.bringToFront()
   await popupPage.keyboard.type('aaa')
   await popupPage.goto(popupPage.url().split('#')[0])

@@ -1,7 +1,7 @@
 import path from 'node:path'
 import { setTimeout } from 'node:timers/promises'
 import { fileURLToPath } from 'node:url'
-import { chromium } from 'playwright'
+import { chromium } from '@playwright/test'
 import { fs } from 'zx'
 
 async function waitForFile(file: string) {

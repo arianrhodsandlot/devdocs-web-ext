@@ -83,7 +83,7 @@ pnpm t
 pnpm playwright test -c tests --debug
 # or debug using Playwright's Browser Developer Tools
 # see https://playwright.dev/docs/debug#browser-developer-tools
-PWDEBUG=console p playwright test -c tests
+PWDEBUG=console pnpm playwright test -c tests
 ```
 
 ## Credits

@@ -34,9 +34,9 @@ DevDocs Web Ext is a browser extension that allows you to quickly search and bro
 
 ## Install
 ### Google Chrome / Chromium based browsers (Vivaldi, Brave, etc.)
-Visit [Chrome Web Store](https://chrome.google.com/webstore/detail/quick-devdocs/kdjoccdpjblcefijcfhnjoljodddedpj) to install it.
+Visit [Chrome Web Store](https://chrome.google.com/webstore/detail/devdocs-web-ext/kdjoccdpjblcefijcfhnjoljodddedpj) to install it.
 
-[![Chrome Web Store](https://storage.googleapis.com/web-dev-uploads/image/WlD8wC6g8khYWPJUsQceQkhXSlv1/UV4C4ybeBTsZt43U4xis.png)](https://chrome.google.com/webstore/detail/quick-devdocs/kdjoccdpjblcefijcfhnjoljodddedpj)
+[![Chrome Web Store](https://storage.googleapis.com/web-dev-uploads/image/WlD8wC6g8khYWPJUsQceQkhXSlv1/UV4C4ybeBTsZt43U4xis.png)](https://chrome.google.com/webstore/detail/devdocs-web-ext/kdjoccdpjblcefijcfhnjoljodddedpj)
 
 ### Microsoft Edge
 Visit [Microsoft Edge Add-ons](https://microsoftedge.microsoft.com/addons/detail/devdocs-web-ext/dglcbgdedngbiaaohopncfonhdngodmo) to install it.

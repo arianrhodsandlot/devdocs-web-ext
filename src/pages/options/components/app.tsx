@@ -5,7 +5,7 @@ import { Icon } from '@rmwc/icon'
 import { Radio } from '@rmwc/radio'
 import { Slider } from '@rmwc/slider'
 import { Typography } from '@rmwc/typography'
-import { debounce } from 'lodash'
+import { debounce, endsWith } from 'lodash'
 import React, { useEffect, useState } from 'react'
 import browser from 'webextension-polyfill'
 import { useTheme } from '~/src/lib/hooks/use-theme'
@@ -19,6 +19,12 @@ const lazyPersist = debounce(async (data) => {
 }, 100)
 
 const { version } = browser.runtime.getManifest()
+
+const edgeId = 'dglcbgdedngbiaaohopncfonhdngodmo'
+const isEdge = endsWith(location?.origin, edgeId)
+const rateUrl = isEdge
+  ? 'https://microsoftedge.microsoft.com/addons/detail/devdocs-web-ext/dglcbgdedngbiaaohopncfonhdngodmo'
+  : 'https://chrome.google.com/webstore/detail/devdocs-web-ext/kdjoccdpjblcefijcfhnjoljodddedpj'
 
 function App() {
   const [initialized, setInitialized] = useState(false)
@@ -175,7 +181,7 @@ function App() {
           {i18n('optionsAboutDesc')}
         </Typography>
         <Typography tag='div' use='caption'>
-          <a href='https://chrome.google.com/webstore/detail/devdocs-web-ext/kdjoccdpjblcefijcfhnjoljodddedpj'>
+          <a href={rateUrl}>
             <Icon icon={{ icon: 'star_half' }} />
             {i18n('optionsRate')}
           </a>

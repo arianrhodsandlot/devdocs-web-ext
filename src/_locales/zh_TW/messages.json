@@ -6,22 +6,6 @@
     "message": "通過一個擴展的彈出視窗來搜索devdocs.io中的文檔！"
   },
 
-  "readmeTitle": {
-    "message": "感謝安裝DevDocs Web Ext！"
-  },
-  "readmeP1": {
-    "message": "這個擴展用於彈出一個彈出視窗用來搜索<a href='http://devdocs.io'>DevDocs</a>中的文檔，免去打開單獨頁面的麻煩。"
-  },
-  "readmeP2": {
-    "message": "彈出視窗的預設快速鍵是<kbd>Alt</kbd>+<kbd>S</kbd>，如果希望修改請在Chrome的擴展管理介面（菜单 -> 更多工具 -> 擴充功能）中最下方的「鍵盤快速鍵」處進行設置。"
-  },
-  "readmeP3": {
-    "message": "預設啟用的文檔是CSS、DOM、DOM Events、HTML、HTTP和JavaScript。"
-  },
-  "readmeP4": {
-    "message": "設定需要搜索的其他文檔，比如Node、Python或Angular.js，請前往请前往<a href='#docs'>文檔選項</a>或<a href='http://devdocs.io'>devdocs.io</a>進行勾選。"
-  },
-
   "optionsTitle": {
     "message": "選項"
   },
@@ -71,7 +55,7 @@
     "message": "在devdocs.io中選擇"
   },
   "optionsAboutDesc": {
-    "message": "一個DevDocs的Google Chrome擴充功能。"
+    "message": "一個DevDocs的瀏覽器擴充功能。"
   },
   "optionsReport": {
     "message": "回報問題"

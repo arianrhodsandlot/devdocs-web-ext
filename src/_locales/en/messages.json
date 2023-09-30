@@ -3,23 +3,7 @@
     "message": "DevDocs Web Ext"
   },
   "appDescription": {
-    "message": "Find documents in devdocs.io with a popup window from a Chrome Extension!"
-  },
-
-  "readmeTitle": {
-    "message": "Thanks for installing DevDocs Web Ext!"
-  },
-  "readmeP1": {
-    "message": "This extension is used for showing up a popup window for searching documents in <a href='http://devdocs.io'>DevDocs</a>, to avoid opening a single browser tab."
-  },
-  "readmeP2": {
-    "message": "The default hotkey of showing the popup window is <kbd>Alt</kbd>+<kbd>S</kbd>. If you want to edit this, go to the bottom of Chrome's extensions page (Menu -> More tools -> Extensions)."
-  },
-  "readmeP3": {
-    "message": "The default enabled documents are CSS, DOM, DOM Events, HTML, HTTP, and JavaScript."
-  },
-  "readmeP4": {
-    "message": "To select other documents you need, such as Node, Python or Angular.js, go to <a href='#docs'>Docs tab</a> or <a href='http://devdocs.io'>devdocs.io</a> to select them."
+    "message": "Find documents in devdocs.io with a popup window from a browser Extension!"
   },
 
   "optionsTitle": {
@@ -71,7 +55,7 @@
     "message": "Select in devdocs.io"
   },
   "optionsAboutDesc": {
-    "message": "A DevDocs extension for Google Chrome."
+    "message": "A DevDocs extension for your browser."
   },
   "optionsReport": {
     "message": "Report an issue"

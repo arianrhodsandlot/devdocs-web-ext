@@ -3,23 +3,7 @@
     "message": "DevDocs Web Ext"
   },
   "appDescription": {
-    "message": "Trouvez de la documentation depuis devdocs.io grâce à une popup depuis une extension Chrome!"
-  },
-
-  "readmeTitle": {
-    "message": "Merci d'avoir installé DevDocs Web Ext!"
-  },
-  "readmeP1": {
-    "message": "Cette extension permet d'afficher une popup pour rechercher de la documentation dans <a href='http://devdocs.io'>DevDocs</a>, plutôt que d'ouvrir un nouvel onglet."
-  },
-  "readmeP2": {
-    "message": "Le raccourci clavier par défaut pour afficher la popup est <kbd>Alt</kbd>+<kbd>S</kbd>. Si vous souhaitez le changer, allez en bas de la page des extensions Chrome (Menu -> Plus d'outils -> Extensions)."
-  },
-  "readmeP3": {
-    "message": "Les documentations activées par défaut sont CSS, DOM, Événements DOM, HTML, HTTP, et JavaScript."
-  },
-  "readmeP4": {
-    "message": "Pour ajouter d'autres documentations (comme Node, Python ou Angular.js) allez sur <a href='#docs'>l'onglet Documentations</a> ou <a href='http://devdocs.io'>devdocs.io</a> pour les sélectionner."
+    "message": "Trouvez des documents dans devdocs.io avec une fenêtre contextuelle d'une extension de navigateur！"
   },
 
   "optionsTitle": {
@@ -71,7 +55,7 @@
     "message": "Choisir sur devdocs.io"
   },
   "optionsAboutDesc": {
-    "message": "Une extension DevDocs pour Google Chrome."
+    "message": "Une extension DevDocs pour votre navigateur."
   },
   "optionsReport": {
     "message": "Signaler un bug"

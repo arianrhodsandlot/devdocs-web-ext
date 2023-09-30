@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.5.4] - 2023-09-30
+### Fixed
+- Fix locales and broken links.
+- update devdocs assets.
+
 ## [0.5.3] - 2023-04-22
 ### Fixed
 - Fix syntax highlighting for non-default languages in prismjs, fix #40.

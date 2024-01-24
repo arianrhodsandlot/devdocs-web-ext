@@ -1,29 +1,23 @@
 import { useEffect, useState } from 'react'
 import { isDarkColorScheme, offColorSchemeChange, onColorSchemeChange } from '../utils/media-query'
+import { useOptions } from './use-options'
 
-export function useTheme(initialTheme: string) {
-  const [theme, setTheme] = useState(initialTheme)
-  const [isDark, setIsDark] = useState(theme === 'dark')
-
-  function calcIsDark() {
-    if (theme === 'system') {
-      setIsDark(isDarkColorScheme())
-    } else {
-      setIsDark(theme === 'dark')
-    }
-  }
+export function useTheme() {
+  const {
+    options: { theme },
+  } = useOptions()
+  const [isSystemDark, setIsSystemDark] = useState(isDarkColorScheme())
+  const isDark = theme === 'system' ? isSystemDark : theme === 'dark'
 
   useEffect(() => {
-    onColorSchemeChange(calcIsDark)
-
+    function updateIsSystemDark() {
+      setIsSystemDark(isDarkColorScheme())
+    }
+    onColorSchemeChange(updateIsSystemDark)
     return () => {
-      offColorSchemeChange(calcIsDark)
+      offColorSchemeChange(updateIsSystemDark)
     }
   }, [])
 
-  useEffect(() => {
-    calcIsDark()
-  }, [theme])
-
-  return [{ theme, isDark }, setTheme] as const
+  return { isDark }
 }

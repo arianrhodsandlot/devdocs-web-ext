@@ -1,13 +1,9 @@
 {
-  "extends": "@tsconfig/recommended",
+  "extends": "@tsconfig/create-react-app",
   "compilerOptions": {
-    "esModuleInterop": true,
-    "jsx": "react",
-    "module": "esnext",
-    "moduleResolution": "node",
-    "target": "es2017",
     "paths": {
       "~*": ["./*"]
-    }
-  }
+    },
+  },
+  "exclude": ["dist"]
 }

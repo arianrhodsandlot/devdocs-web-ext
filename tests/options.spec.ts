@@ -2,7 +2,7 @@ import { expect, test } from './fixtures.js'
 
 test('update size', async ({ popupPage, optionsPage }) => {
   await optionsPage.bringToFront()
-  const [widthSlider, heightSlider] = await optionsPage.locator('.mdc-slider').all()
+  const [widthSlider, heightSlider] = await optionsPage.locator('.slider').all()
 
   await widthSlider.focus()
   await widthSlider.press('ArrowRight')

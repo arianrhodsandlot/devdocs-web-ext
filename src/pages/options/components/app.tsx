@@ -1,22 +1,14 @@
 import { Button } from '@rmwc/button'
-import { Checkbox } from '@rmwc/checkbox'
 import { Elevation } from '@rmwc/elevation'
 import { Icon } from '@rmwc/icon'
 import { Radio } from '@rmwc/radio'
-import { Slider } from '@rmwc/slider'
 import { Typography } from '@rmwc/typography'
-import { debounce, endsWith } from 'lodash'
-import React, { useEffect, useState } from 'react'
+import { endsWith } from 'lodash'
+import { type MouseEvent } from 'react'
 import browser from 'webextension-polyfill'
 import { useTheme } from '~/src/lib/hooks/use-theme'
-import { defaultOptions } from '~/src/lib/utils/default-options'
-import { isContextMenuEnabled } from '~/src/lib/utils/env'
 import i18n from '~/src/lib/utils/i18n'
-import { storage } from '~/src/lib/utils/storage'
-
-const lazyPersist = debounce(async (data) => {
-  await storage.set(data)
-}, 100)
+import { useOptions } from '~src/lib/hooks/use-options'
 
 const { version } = browser.runtime.getManifest()
 
@@ -27,35 +19,12 @@ const rateUrl = isEdge
   : 'https://chrome.google.com/webstore/detail/devdocs-web-ext/kdjoccdpjblcefijcfhnjoljodddedpj'
 
 function App() {
-  const [initialized, setInitialized] = useState(false)
-  const [width, setWidth] = useState(defaultOptions.width)
-  const [height, setHeight] = useState(defaultOptions.height)
-  const [showContextMenu, setShowContextMenu] = useState(defaultOptions.showContextMenu)
+  const { options, updateOptions, loaded } = useOptions()
+  const { isDark } = useTheme()
 
-  const [{ theme, isDark }, setTheme] = useTheme(defaultOptions.theme)
-
-  useEffect(() => {
-    ;(async () => {
-      const { theme, width, height, showContextMenu } = await storage.get()
-      setTheme(theme)
-      setWidth(width)
-      setHeight(height)
-      setShowContextMenu(showContextMenu)
-      setInitialized(true)
-    })()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
-  useEffect(() => {
-    if (initialized) {
-      lazyPersist({
-        theme,
-        width,
-        height,
-        showContextMenu,
-      })
-    }
-  }, [theme, width, height, showContextMenu, initialized])
+  if (!loaded) {
+    return
+  }
 
   return (
     <form className={`theme-${isDark ? 'dark' : 'light'}`}>
@@ -67,36 +36,38 @@ function App() {
           <Typography tag='h3' use='subtitle2'>
             {i18n('optionsWidth')}
           </Typography>
-          <Slider
-            className='slider-size slider-width'
-            discrete
-            displayMarkers
+          <div style={{ margin: '8px 0', opacity: '0.5' }}>{options.width}px</div>
+          <input
+            className='slider'
             max={800}
             min={300}
-            name='width'
+            name='height'
             onInput={(e) => {
-              setWidth(e.detail.value)
+              updateOptions({ width: e.currentTarget.value })
             }}
             step={50}
-            value={width}
+            style={{ margin: '8px 0', width: '100%', display: 'block' }}
+            type='range'
+            value={options.width}
           />
         </Elevation>
         <Elevation z={0}>
           <Typography tag='h3' use='subtitle2'>
             {i18n('optionsHeight')}
           </Typography>
-          <Slider
-            className='slider-size slider-height'
-            discrete
-            displayMarkers
+          <div style={{ margin: '8px 0', opacity: '0.5' }}>{options.height}px</div>
+          <input
+            className='slider'
             max={600}
             min={300}
             name='height'
             onInput={(e) => {
-              setHeight(e.detail.value)
+              updateOptions({ height: e.currentTarget.value })
             }}
             step={50}
-            value={height}
+            style={{ margin: '8px 0', width: '60%', display: 'block' }}
+            type='range'
+            value={options.height}
           />
         </Elevation>
       </Elevation>
@@ -111,11 +82,11 @@ function App() {
           { value: 'dark', label: i18n('optionsDark') },
         ].map(({ value, label }) => (
           <Radio
-            checked={theme === value}
+            checked={options.theme === value}
             key={value}
             name='theme'
             onChange={() => {
-              setTheme(value)
+              updateOptions({ theme: value })
             }}
             value={value}
           >
@@ -123,24 +94,6 @@ function App() {
           </Radio>
         ))}
       </Elevation>
-
-      {isContextMenuEnabled ? (
-        <>
-          <Typography tag='h3' use='subtitle2'>
-            {i18n('optionsShowContextMenu')}
-          </Typography>
-          <Elevation z={0}>
-            <Checkbox
-              checked={showContextMenu}
-              label={showContextMenu ? i18n('optionsEnabled') : i18n('optionsDisabled')}
-              name='showContextMenu'
-              onChange={(e) => {
-                setShowContextMenu(e.currentTarget.checked)
-              }}
-            />
-          </Elevation>
-        </>
-      ) : undefined}
 
       <Typography tag='h3' use='subtitle2'>
         {i18n('optionsDocs')}
@@ -159,7 +112,7 @@ function App() {
           dense
           href='chrome://extensions/shortcuts'
           icon='keyboard'
-          onClick={(e) => {
+          onClick={(e: MouseEvent<HTMLAnchorElement, MouseEvent>) => {
             e.preventDefault()
             browser.tabs.create({ url: e.currentTarget.href })
           }}

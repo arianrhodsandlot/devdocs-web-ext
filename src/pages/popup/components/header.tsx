@@ -1,5 +1,5 @@
 import key from 'keymaster'
-import React, { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { sendMessage } from '~/src/lib/utils/message'
 

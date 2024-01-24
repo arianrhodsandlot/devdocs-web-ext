@@ -1,5 +1,4 @@
 import key from 'keymaster'
-import React from 'react'
 import { HashRouter } from 'react-router-dom'
 import 'prismjs-components-importer'
 import { defaultOptions } from '~/src/lib/utils/default-options'

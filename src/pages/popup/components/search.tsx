@@ -1,7 +1,7 @@
 import classnames from 'classnames'
 import key from 'keymaster'
-import React, { useCallback, useEffect, useState } from 'react'
-import ReactDOM from 'react-dom'
+import { type RefObject, createRef, useCallback, useEffect, useState } from 'react'
+import { findDOMNode } from 'react-dom'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import browser from 'webextension-polyfill'
 import { type Docs } from '~/src/lib/utils/docs'
@@ -63,14 +63,14 @@ export default function Search() {
 
   const getEntryRef = useCallback(
     function (entry: Entry) {
-      const entryRefs: React.RefObject<any>[] = []
+      const entryRefs: RefObject<any>[] = []
       if (!entries) {
         return
       }
       const index = entries.indexOf(entry)
       let ref = entryRefs[index]
       if (!ref) {
-        ref = React.createRef()
+        ref = createRef()
         entryRefs[index] = ref
       }
       return ref
@@ -99,7 +99,7 @@ export default function Search() {
           payload: { query, scope },
         })
         newEntries = response.content
-      } catch (error) {
+      } catch (error: any) {
         newFailMessage = error.message
       }
 
@@ -142,7 +142,7 @@ export default function Search() {
     const ref = getEntryRef(entries[focusPos])
     if (ref?.current) {
       // eslint-disable-next-line react/no-find-dom-node
-      const entryDomNode = ReactDOM.findDOMNode(ref.current)
+      const entryDomNode = findDOMNode(ref.current)
       if (entryDomNode instanceof HTMLAnchorElement) {
         entryDomNode.scrollIntoView({
           block: 'end',

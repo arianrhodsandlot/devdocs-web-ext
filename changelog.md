@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.5.5] - 2024-01-24
+### Fixed
+- update devdocs assets.
+
 ## [0.5.4] - 2023-09-30
 ### Fixed
 - Fix locales and broken links.
@@ -57,7 +61,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Minor ui optimizations
 
-[unreleased]: https://github.com/arianrhodsandlot/devdocs-web-ext/compare/v0.5.3...HEAD
+[unreleased]: https://github.com/arianrhodsandlot/devdocs-web-ext/compare/v0.5.5...HEAD
+[0.5.5]: https://github.com/arianrhodsandlot/devdocs-web-ext/compare/v0.5.4...v0.5.5
+[0.5.4]: https://github.com/arianrhodsandlot/devdocs-web-ext/compare/v0.5.3...v0.5.4
 [0.5.3]: https://github.com/arianrhodsandlot/devdocs-web-ext/compare/v0.5.2...v0.5.3
 [0.5.2]: https://github.com/arianrhodsandlot/devdocs-web-ext/compare/v0.5.0...v0.5.2
 [0.5.0]: https://github.com/arianrhodsandlot/devdocs-web-ext/compare/v0.4.0...v0.5.0
